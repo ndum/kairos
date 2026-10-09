@@ -1,10 +1,64 @@
+<script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+import { useAppearance } from './composables/use-appearance'
+import AppTabBar from './layout/AppTabBar.vue'
+import AppTopBar from './layout/AppTopBar.vue'
+import AppScene from './scene/AppScene.vue'
+
+const { t } = useI18n()
+const { still } = useAppearance()
+</script>
+
 <template>
-  <main class="grid min-h-dvh place-items-center p-6">
-    <div class="text-center">
-      <h1 class="text-5xl font-semibold tracking-tight">Kairos</h1>
-      <p class="mt-3 text-lg text-slate-600 dark:text-slate-300">
-        Wann du losmusst, auf die Minute.
-      </p>
-    </div>
-  </main>
+  <AppScene :still="still" />
+
+  <div class="shell relative z-10 mx-auto flex min-h-dvh max-w-[3840px] flex-col">
+    <AppTopBar />
+    <main class="flex-1">
+      <RouterView />
+    </main>
+    <p class="credit">{{ t('credit') }}</p>
+  </div>
+
+  <AppTabBar />
 </template>
+
+<style scoped>
+.shell {
+  gap: clamp(0.875rem, 1.3vw, 2rem);
+  padding-inline: clamp(1rem, 2.4vw, 5rem);
+  padding-top: max(0.875rem, env(safe-area-inset-top, 0px));
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 7rem);
+}
+
+.credit {
+  align-self: flex-start;
+  border-radius: 1rem;
+  padding: 0.5rem 0.875rem;
+  background: linear-gradient(165deg, var(--color-glass), var(--color-glass-deep));
+  box-shadow: inset 0 0 0 1px var(--color-edge-faint);
+  color: var(--color-ink-muted);
+  font-size: 0.78rem;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
+@media (min-width: 900px) {
+  .shell {
+    padding-bottom: 28vh;
+  }
+
+  .credit {
+    position: fixed;
+    right: clamp(1rem, 2.4vw, 5rem);
+    bottom: 0.625rem;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    color: rgb(255 255 255 / 0.8);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+</style>
