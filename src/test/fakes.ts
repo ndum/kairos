@@ -1,6 +1,8 @@
 import type { Clock } from '@/application/ports/clock'
 import type { CachedJourneys, JourneyCache } from '@/application/ports/journey-cache'
+import type { RouteRepository } from '@/application/ports/route-repository'
 import type { Cancel, Scheduler } from '@/application/ports/scheduler'
+import type { Route } from '@/domain/route'
 import type { Duration, Instant } from '@/domain/time'
 
 export class FakeClock implements Clock {
@@ -78,6 +80,60 @@ export class MemoryJourneyCache implements JourneyCache {
     for (const listener of this.#listeners) listener(key, entry)
   }
 }
+
+export class MemoryRouteRepository implements RouteRepository {
+  routes: Route[]
+  /** Makes every save fail, as when storage is full or blocked. */
+  failing = false
+  readonly #listeners = new Set<(routes: Route[]) => void>()
+
+  constructor(routes: Route[] = []) {
+    this.routes = routes
+  }
+
+  get listeners(): number {
+    return this.#listeners.size
+  }
+
+  load(): Route[] {
+    return [...this.routes]
+  }
+
+  save(routes: readonly Route[]): void {
+    if (this.failing) throw new Error('The storage is full.')
+    this.routes = [...routes]
+  }
+
+  subscribe(listener: (routes: Route[]) => void): Cancel {
+    this.#listeners.add(listener)
+    return () => {
+      this.#listeners.delete(listener)
+    }
+  }
+
+  /** Simulates routes saved by another tab. */
+  saveFromElsewhere(routes: Route[]): void {
+    this.routes = routes
+    for (const listener of this.#listeners) listener([...routes])
+  }
+}
+
+/** The part of the Web Storage API that the adapters use. */
+export class MemoryStorage implements Pick<Storage, 'getItem' | 'setItem'> {
+  readonly items = new Map<string, string>()
+
+  getItem(key: string): string | null {
+    return this.items.get(key) ?? null
+  }
+
+  setItem(key: string, value: string): void {
+    this.items.set(key, value)
+  }
+}
+
+/** A "storage" event as another tab triggers it. */
+export const storageEvent = (key: string, newValue: string | null): Event =>
+  Object.assign(new Event('storage'), { key, newValue })
 
 /** Lets pending promise callbacks run. */
 export const settle = (): Promise<void> =>
