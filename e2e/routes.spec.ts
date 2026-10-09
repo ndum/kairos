@@ -1,13 +1,6 @@
-import { readFileSync } from 'node:fs'
+import type { Page } from '@playwright/test'
 
-import { type Page, expect, test } from '@playwright/test'
-
-// Recorded responses of the Transport API, so the tests neither depend on nor load it.
-const fixture = (name: string): string =>
-  readFileSync(
-    new URL(`../src/infrastructure/transport-opendata/fixtures/${name}`, import.meta.url),
-    'utf8',
-  )
+import { expect, fixture, test } from './support'
 
 const thun = {
   id: '8507100',
