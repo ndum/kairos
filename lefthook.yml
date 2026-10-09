@@ -1,0 +1,14 @@
+pre-commit:
+  parallel: true
+  jobs:
+    - name: format
+      glob: '*.{ts,vue,js,mjs,json,css,html,md,yml,yaml}'
+      run: npx prettier --check {staged_files}
+    - name: lint
+      glob: '*.{ts,vue,js,mjs}'
+      run: npx eslint {staged_files}
+
+commit-msg:
+  jobs:
+    - name: commitlint
+      run: npx commitlint --edit {1}
