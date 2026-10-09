@@ -60,6 +60,7 @@ Run everything locally before opening a pull request:
 npm run lint
 npm run typecheck
 npm run test:coverage
+npm run test:browser
 npm run test:e2e
 ```
 
