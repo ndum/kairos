@@ -5,6 +5,7 @@ import type { RouteCodec } from '@/application/ports/route-codec'
 import type { TimetablePort } from '@/application/ports/timetable'
 import type { RouteLibrary } from '@/application/route-library'
 import type { StopSearch } from '@/application/stop-search'
+import type { TripMonitor } from '@/application/trip-monitor'
 
 /** Application services, created in the composition root and provided to the whole app. */
 export interface AppServices {
@@ -13,6 +14,8 @@ export interface AppServices {
   readonly routes: RouteLibrary
   readonly stops: StopSearch
   readonly codec: RouteCodec
+  /** Each board watches its connection with a monitor of its own. */
+  readonly createTripMonitor: () => TripMonitor
 }
 
 export const servicesKey: InjectionKey<AppServices> = Symbol('services')

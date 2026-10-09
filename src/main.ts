@@ -3,9 +3,12 @@ import { createApp } from 'vue'
 
 import { RouteLibrary } from './application/route-library'
 import { StopSearch } from './application/stop-search'
+import { TripMonitor } from './application/trip-monitor'
+import { LocalStorageJourneyCache } from './infrastructure/browser/local-storage-journey-cache'
 import { LocalStorageRouteRepository } from './infrastructure/browser/local-storage-route-repository'
 import { randomId } from './infrastructure/browser/random-id'
 import { systemClock } from './infrastructure/browser/system-clock'
+import { timerScheduler } from './infrastructure/browser/timer-scheduler'
 import { CompressedRouteCodec } from './infrastructure/sharing/compressed-route-codec'
 import { TransportOpendataTimetable } from './infrastructure/transport-opendata/transport-opendata-timetable'
 import App from './ui/App.vue'
@@ -16,12 +19,15 @@ import './ui/styles/main.css'
 
 // Composition root: the only place that knows the concrete adapters.
 const timetable = new TransportOpendataTimetable()
+const cache = new LocalStorageJourneyCache()
 const services: AppServices = {
   clock: systemClock,
   timetable,
   routes: new RouteLibrary({ repository: new LocalStorageRouteRepository(), createId: randomId }),
   stops: new StopSearch(timetable),
   codec: new CompressedRouteCodec(),
+  createTripMonitor: () =>
+    new TripMonitor({ timetable, cache, clock: systemClock, scheduler: timerScheduler }),
 }
 
 createApp(App)

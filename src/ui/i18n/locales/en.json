@@ -14,6 +14,72 @@
       "title": "No route yet",
       "text": "Add a route between two places, for example from home to work. Kairos then shows you when to leave.",
       "action": "Add a route"
+    },
+    "title": "Now",
+    "routeChoice": "Route",
+    "to": "to",
+    "leaveIn": "Leave in",
+    "leave": "Leave",
+    "leaveAt": "Leave at",
+    "minutesUnit": "min",
+    "now": "now",
+    "urgency": {
+      "relaxed": "Plenty of time",
+      "soon": "Leave soon",
+      "tight": "Tight",
+      "missed": "Missed"
+    },
+    "from": "from {stop}",
+    "departure": "Departure",
+    "arrival": "Arrival",
+    "delay": "{minutes} min late",
+    "delayShort": "+{minutes}",
+    "platform": {
+      "track": "Platform {platform}",
+      "bay": "Bay {platform}",
+      "instead": "instead of {platform}"
+    },
+    "alternative": {
+      "faster": "Faster with",
+      "details": "leave {leave}, arrive {arrival}"
+    },
+    "tight": {
+      "minutes": "Still reachable without the reserve: departs {time}, leave in {minutes} min.",
+      "now": "Still reachable without the reserve: departs {time}, leave right now."
+    },
+    "loading": "Loading connections …",
+    "unavailable": "The timetable cannot be reached right now.",
+    "retry": "Try again",
+    "noTrips": "No connection in the next hours.",
+    "swap": "Switch direction",
+    "journey": {
+      "title": "Your connection",
+      "walkTo": "{minutes} min walk to {stop}",
+      "walkToWithReserve": "{minutes} min walk to {stop}, {reserve} min reserve",
+      "towards": "towards {headsign}",
+      "from": "from {stop}",
+      "until": "to {stop}, arrives {time}",
+      "transfer": "Change at {stop}",
+      "transferTime": "no time to change | 1 min to change | {count} min to change",
+      "transferWithWalk": "{walk} min walk, {time}",
+      "walkFrom": "{minutes} min walk from {stop}"
+    },
+    "risk": {
+      "tight": "Tight connection",
+      "broken": "Connection missed"
+    },
+    "upcoming": {
+      "title": "Later",
+      "empty": "No further connections.",
+      "times": "departs {departure}, arrives {arrival}"
+    },
+    "live": {
+      "loading": "Loading",
+      "live": "Live",
+      "stale": "Offline",
+      "error": "Offline",
+      "updated": "As of {time}",
+      "refresh": "Refresh now"
     }
   },
   "plan": {
