@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Test and audit reports
+coverage/
+playwright-report/
+test-results/
+blob-report/
+.lighthouseci/
+__screenshots__/
+
+# Local environment
+.env.local
+.env.*.local
+
+# Editors and operating systems
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.log
