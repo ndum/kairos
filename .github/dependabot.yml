@@ -1,0 +1,43 @@
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    commit-message:
+      prefix: build
+      include: scope
+    groups:
+      vue:
+        patterns: ['vue', 'vue-*', '@vue/*', 'pinia', '@vueuse/*', '@vitejs/plugin-vue']
+      build:
+        patterns: ['vite', '@vitejs/*', 'tailwindcss', '@tailwindcss/*']
+      testing:
+        patterns: ['vitest', '@vitest/*', 'vitest-*', 'playwright', '@playwright/*']
+      linting:
+        patterns:
+          [
+            'eslint',
+            'eslint-*',
+            '@eslint/*',
+            'typescript-eslint',
+            'prettier',
+            'prettier-*',
+            'globals',
+          ]
+      git-hooks:
+        patterns: ['lefthook', '@commitlint/*']
+    ignore:
+      # The Vue language tools do not support TypeScript 7 yet (docs/adr/0005-frontend-stack.md).
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major']
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    commit-message:
+      prefix: ci
