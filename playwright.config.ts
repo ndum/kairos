@@ -14,6 +14,8 @@ export default defineConfig({
   reporter: isCI ? [['github'], ['html', { open: 'never' }]] : 'list',
   use: {
     baseURL: `http://localhost:${port}`,
+    locale: 'de-CH',
+    timezoneId: 'Europe/Zurich',
     trace: 'on-first-retry',
   },
   projects: [
