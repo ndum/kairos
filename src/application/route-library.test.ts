@@ -135,6 +135,36 @@ describe('RouteLibrary', () => {
     expect(idsOf(library)).toEqual(['commute', 'evening', 'training'])
   })
 
+  it('merges shared routes, adding new ones and replacing the ones with the same id', () => {
+    const { library, repository } = setup([commute, training])
+    const renamed = { ...training, name: 'Gym' }
+
+    const result = library.merge([renamed, evening, route('broken', '')])
+
+    expect(result).toEqual({ added: 1, updated: 1 })
+    expect(repository.routes).toEqual([commute, renamed, evening])
+  })
+
+  it('forgets the position of a place whose stop changes', () => {
+    const position = { latitude: 46.8, longitude: 7.5 }
+    const located = route('training', 'Training', [{ ...home, coordinates: position }, gym])
+    const { library } = setup([located])
+
+    library.merge([route('training', 'Training', [{ ...home, stop: office.stop }, gym])])
+
+    expect(library.find('training')?.places[0]).not.toHaveProperty('coordinates')
+  })
+
+  it('keeps the position of a place whose stop stays the same', () => {
+    const position = { latitude: 46.8, longitude: 7.5 }
+    const located = route('training', 'Training', [{ ...home, coordinates: position }, gym])
+    const { library } = setup([located])
+
+    library.merge([{ ...training, name: 'Gym' }])
+
+    expect(library.find('training')?.places[0].coordinates).toEqual(position)
+  })
+
   it('notifies listeners about changes until they unsubscribe', () => {
     const { library } = setup([commute])
     const listener = vi.fn()

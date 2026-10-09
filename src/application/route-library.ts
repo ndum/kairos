@@ -18,6 +18,11 @@ export interface RemovedRoute {
   readonly index: number
 }
 
+export interface MergeResult {
+  readonly added: number
+  readonly updated: number
+}
+
 export class InvalidRouteError extends Error {
   override readonly name = 'InvalidRouteError'
 }
@@ -38,6 +43,20 @@ function tidy(route: Route): Route {
   }
   if (!isValidRoute(tidied)) throw new InvalidRouteError(`The route "${route.name}" is invalid.`)
   return tidied
+}
+
+function keepPositions(current: Route, incoming: Route): Route {
+  const keep = (local: Place, shared: Place): Place =>
+    local.coordinates && !shared.coordinates && local.stop.id === shared.stop.id
+      ? { ...shared, coordinates: local.coordinates }
+      : shared
+  return {
+    ...incoming,
+    places: [
+      keep(current.places[0], incoming.places[0]),
+      keep(current.places[1], incoming.places[1]),
+    ],
+  }
 }
 
 /**
@@ -107,6 +126,31 @@ export class RouteLibrary {
     const to = Math.min(Math.max(from + offset, 0), this.#routes.length - 1)
     if (to === from) return
     this.#commit(this.#routes.toSpliced(from, 1).toSpliced(to, 0, route))
+  }
+
+  /**
+   * Adds shared routes and replaces the ones with the same id. Invalid routes are skipped.
+   * Positions of places stay as known on this device as long as their stop is the same.
+   */
+  merge(incoming: readonly Route[]): MergeResult {
+    const routes = [...this.#routes]
+    let added = 0
+    let updated = 0
+    for (const candidate of incoming) {
+      if (!isValidRoute(candidate)) continue
+      const route = tidy(candidate)
+      const index = routes.findIndex(({ id }) => id === route.id)
+      const current = routes[index]
+      if (current) {
+        routes[index] = keepPositions(current, route)
+        updated++
+      } else {
+        routes.push(route)
+        added++
+      }
+    }
+    this.#commit(routes)
+    return { added, updated }
   }
 
   dispose(): void {
