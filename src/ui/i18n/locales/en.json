@@ -160,5 +160,19 @@
       "action": "Go to routes"
     }
   },
+  "settings": {
+    "open": "Settings",
+    "title": "Settings",
+    "theme": {
+      "label": "Appearance",
+      "auto": "Automatic",
+      "light": "Light",
+      "dark": "Dark"
+    },
+    "language": {
+      "label": "Language",
+      "auto": "Automatic"
+    }
+  },
   "credit": "Timetable data: opentransportdata.swiss"
 }

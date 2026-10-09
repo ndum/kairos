@@ -160,5 +160,19 @@
       "action": "Zu den Routen"
     }
   },
+  "settings": {
+    "open": "Einstellungen",
+    "title": "Einstellungen",
+    "theme": {
+      "label": "Darstellung",
+      "auto": "Automatisch",
+      "light": "Hell",
+      "dark": "Dunkel"
+    },
+    "language": {
+      "label": "Sprache",
+      "auto": "Automatisch"
+    }
+  },
   "credit": "Fahrplandaten: opentransportdata.swiss"
 }
