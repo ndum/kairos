@@ -2,20 +2,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { CachedJourneys } from '@/application/ports/journey-cache'
 import { at, journey, morningCommute, ride } from '@/test/builders'
+import { MemoryStorage, storageEvent } from '@/test/fakes'
 
-import { LocalStorageJourneyCache, type StorageEnvironment } from './local-storage-journey-cache'
-
-class MemoryStorage implements Pick<Storage, 'getItem' | 'setItem'> {
-  readonly items = new Map<string, string>()
-
-  getItem(key: string): string | null {
-    return this.items.get(key) ?? null
-  }
-
-  setItem(key: string, value: string): void {
-    this.items.set(key, value)
-  }
-}
+import { LocalStorageJourneyCache } from './local-storage-journey-cache'
+import type { StorageEnvironment } from './storage-environment'
 
 const entry: CachedJourneys = {
   journeys: [
@@ -24,9 +14,6 @@ const entry: CachedJourneys = {
   ],
   fetchedAt: at('06:40'),
 }
-
-const storageEvent = (key: string, newValue: string | null): Event =>
-  Object.assign(new Event('storage'), { key, newValue })
 
 describe('LocalStorageJourneyCache', () => {
   let storage: MemoryStorage

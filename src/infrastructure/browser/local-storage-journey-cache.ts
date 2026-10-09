@@ -4,23 +4,9 @@ import type { CachedJourneys, JourneyCache } from '@/application/ports/journey-c
 import type { Cancel } from '@/application/ports/scheduler'
 
 import { CACHE_VERSION, StoredJourneysSchema } from './journey-schema'
+import { type StorageEnvironment, browserStorage, watchStorage } from './storage-environment'
 
 const PREFIX = 'kairos:journeys:'
-
-export interface StorageEnvironment {
-  readonly storage: Pick<Storage, 'getItem' | 'setItem'>
-  /** Source of the "storage" events that report writes from other tabs. */
-  readonly events: Pick<EventTarget, 'addEventListener' | 'removeEventListener'>
-}
-
-/** Reading localStorage throws when the user blocks site data, so the cache stays optional. */
-function browserEnvironment(): StorageEnvironment | null {
-  try {
-    return typeof window === 'undefined' ? null : { storage: window.localStorage, events: window }
-  } catch {
-    return null
-  }
-}
 
 function decode(raw: string | null): CachedJourneys | null {
   if (raw === null) return null
@@ -37,7 +23,7 @@ function decode(raw: string | null): CachedJourneys | null {
 export class LocalStorageJourneyCache implements JourneyCache {
   readonly #env: StorageEnvironment | null
 
-  constructor(env: StorageEnvironment | null = browserEnvironment()) {
+  constructor(env: StorageEnvironment | null = browserStorage()) {
     this.#env = env
   }
 
@@ -58,18 +44,13 @@ export class LocalStorageJourneyCache implements JourneyCache {
   }
 
   subscribe(listener: (key: string, entry: CachedJourneys) => void): Cancel {
-    const env = this.#env
-    if (!env) return () => undefined
-
-    const onStorage = (event: Event): void => {
-      const { key, newValue } = event as StorageEvent
-      if (!key?.startsWith(PREFIX)) return
-      const entry = decode(newValue)
-      if (entry) listener(key.slice(PREFIX.length), entry)
-    }
-    env.events.addEventListener('storage', onStorage)
-    return () => {
-      env.events.removeEventListener('storage', onStorage)
-    }
+    return watchStorage(
+      this.#env,
+      (key) => key.startsWith(PREFIX),
+      (key, value) => {
+        const entry = decode(value)
+        if (entry) listener(key.slice(PREFIX.length), entry)
+      },
+    )
   }
 }

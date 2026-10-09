@@ -1,15 +1,6 @@
 import * as v from 'valibot'
 
-// Mirrors the domain types. Optional fields are left out by JSON.stringify, so they are
-// optional here rather than nullable.
-
-const CoordinatesSchema = v.object({ latitude: v.number(), longitude: v.number() })
-
-const StopSchema = v.object({
-  id: v.string(),
-  name: v.string(),
-  coordinates: v.optional(CoordinatesSchema),
-})
+import { StopSchema, TransportModeSchema } from './common-schemas'
 
 const StopEventSchema = v.object({
   stop: StopSchema,
@@ -21,7 +12,7 @@ const StopEventSchema = v.object({
 
 const LineSchema = v.object({
   name: v.string(),
-  mode: v.picklist(['train', 'tram', 'bus', 'ship', 'cableway', 'other']),
+  mode: TransportModeSchema,
   headsign: v.optional(v.string()),
 })
 
