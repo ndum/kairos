@@ -11,6 +11,7 @@ This folder records the significant decisions behind Kairos, one file per decisi
 | [5](0005-frontend-stack.md)                | Frontend stack                                           | Accepted |
 | [6](0006-github-pages-with-previews.md)    | Host on GitHub Pages with pull request previews          | Accepted |
 | [7](0007-timetable-source.md)              | Read timetables from transport.opendata.ch behind a port | Accepted |
+| [8](0008-adaptive-polling.md)              | Refresh with adaptive polling                            | Accepted |
 
 ## Template
 
