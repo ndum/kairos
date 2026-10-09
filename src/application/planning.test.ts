@@ -1,0 +1,100 @@
+import { describe, expect, it, vi } from 'vitest'
+
+import { at, home, journey, morningCommute, office, ride, walk } from '@/test/builders'
+
+import { PLAN_LIMIT, planTrips } from './planning'
+import type { TimetablePort } from './ports/timetable'
+
+const ends = { origin: home, destination: office }
+
+const viaTram = (departure: string, arrival: string) =>
+  journey(
+    ride('S1', 'Riverside', departure, 'Central', '07:30'),
+    walk('Central', 'Central, Bus Station', 1),
+    ride('9', 'Central, Bus Station', '07:33', 'Market Square', arrival, { mode: 'tram' }),
+  )
+
+function timetable(journeys = [morningCommute('07:05'), morningCommute('07:20')]) {
+  const findJourneys = vi.fn<TimetablePort['findJourneys']>().mockResolvedValue(journeys)
+  return { timetable: { findJourneys, searchStops: vi.fn() }, findJourneys }
+}
+
+describe('planTrips', () => {
+  it('asks for departures once the user has walked to the stop and kept the reserve', async () => {
+    const { timetable: source, findJourneys } = timetable()
+    const signal = new AbortController().signal
+
+    await planTrips(source, ends, [], { mode: 'depart', at: at('06:50') }, signal)
+
+    expect(findJourneys).toHaveBeenCalledWith(
+      { from: home.stop, to: office.stop, at: at('07:01'), limit: PLAN_LIMIT },
+      signal,
+    )
+  })
+
+  it('offers trips that leave no earlier than asked, the first one recommended', async () => {
+    const { timetable: source } = timetable([
+      morningCommute('07:05'),
+      morningCommute('07:20'),
+      morningCommute('07:35'),
+    ])
+
+    const plan = await planTrips(source, ends, [], { mode: 'depart', at: at('06:55') })
+
+    expect(plan.trips.map((trip) => trip.leaveAt)).toEqual([at('07:09'), at('07:24')])
+    expect(plan.recommended?.leaveAt).toBe(at('07:09'))
+  })
+
+  it('asks for arrivals at the stop, before the final walk', async () => {
+    const { timetable: source, findJourneys } = timetable()
+
+    await planTrips(source, ends, [], { mode: 'arrive', at: at('08:00') })
+
+    expect(findJourneys).toHaveBeenCalledWith(
+      { from: home.stop, to: office.stop, at: at('07:55'), limit: PLAN_LIMIT, arriveBy: true },
+      undefined,
+    )
+  })
+
+  it('offers trips that arrive in time, the last one to leave recommended', async () => {
+    const { timetable: source } = timetable([
+      morningCommute('07:05'),
+      morningCommute('07:20'),
+      morningCommute('07:35'),
+    ])
+
+    // The commutes arrive at 07:28, 07:43 and 07:58 including the walk of five minutes.
+    const plan = await planTrips(source, ends, [], { mode: 'arrive', at: at('07:50') })
+
+    expect(plan.trips.map((trip) => trip.arrivalAt)).toEqual([at('07:28'), at('07:43')])
+    expect(plan.recommended?.arrivalAt).toBe(at('07:43'))
+  })
+
+  it('prefers the chosen lines and keeps other trips as alternatives', async () => {
+    const { timetable: source } = timetable([morningCommute('07:20'), viaTram('07:21', '07:40')])
+
+    const plan = await planTrips(source, ends, ['S1', '20'], { mode: 'depart', at: at('06:50') })
+
+    expect(plan.trips).toHaveLength(1)
+    expect(plan.alternatives.map((trip) => trip.departureAt)).toEqual([at('07:21')])
+    expect(plan.recommended?.departureAt).toBe(at('07:20'))
+  })
+
+  it('keeps the preferred variant of a train that another variant would replace', async () => {
+    // The same S1, once with bus 20 and once with tram 9, which arrives earlier.
+    const { timetable: source } = timetable([morningCommute('07:20'), viaTram('07:20', '07:36')])
+
+    const plan = await planTrips(source, ends, ['S1', '20'], { mode: 'depart', at: at('06:50') })
+
+    expect(plan.recommended?.journey).toEqual(morningCommute('07:20'))
+    expect(plan.alternatives).toHaveLength(1)
+  })
+
+  it('recommends nothing when no trip fits', async () => {
+    const { timetable: source } = timetable([])
+
+    const plan = await planTrips(source, ends, [], { mode: 'arrive', at: at('06:00') })
+
+    expect(plan).toEqual({ trips: [], alternatives: [], recommended: null })
+  })
+})
