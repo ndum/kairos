@@ -1,5 +1,7 @@
 import type { Clock } from '@/application/ports/clock'
 import type { CachedJourneys, JourneyCache } from '@/application/ports/journey-cache'
+import type { PinnedTrip } from '@/application/pinned-trip'
+import type { PinStore } from '@/application/ports/pin-store'
 import type { RouteRepository } from '@/application/ports/route-repository'
 import type { Cancel, Scheduler } from '@/application/ports/scheduler'
 import type { Route } from '@/domain/route'
@@ -118,8 +120,24 @@ export class MemoryRouteRepository implements RouteRepository {
   }
 }
 
+export class MemoryPinStore implements PinStore {
+  pinned: PinnedTrip | null
+
+  constructor(pinned: PinnedTrip | null = null) {
+    this.pinned = pinned
+  }
+
+  load(): PinnedTrip | null {
+    return this.pinned
+  }
+
+  save(pinned: PinnedTrip | null): void {
+    this.pinned = pinned
+  }
+}
+
 /** The part of the Web Storage API that the adapters use. */
-export class MemoryStorage implements Pick<Storage, 'getItem' | 'setItem'> {
+export class MemoryStorage implements Pick<Storage, 'getItem' | 'setItem' | 'removeItem'> {
   readonly items = new Map<string, string>()
 
   getItem(key: string): string | null {
@@ -128,6 +146,10 @@ export class MemoryStorage implements Pick<Storage, 'getItem' | 'setItem'> {
 
   setItem(key: string, value: string): void {
     this.items.set(key, value)
+  }
+
+  removeItem(key: string): void {
+    this.items.delete(key)
   }
 }
 

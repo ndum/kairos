@@ -50,6 +50,7 @@ describe('LocalStorageRouteRepository', () => {
         setItem: () => {
           throw new DOMException('Full', 'QuotaExceededError')
         },
+        removeItem: () => undefined,
       },
       events,
     })

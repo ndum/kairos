@@ -1,7 +1,7 @@
 import type { Cancel } from '@/application/ports/scheduler'
 
 export interface StorageEnvironment {
-  readonly storage: Pick<Storage, 'getItem' | 'setItem'>
+  readonly storage: Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>
   /** Source of the "storage" events that report writes from other tabs. */
   readonly events: Pick<EventTarget, 'addEventListener' | 'removeEventListener'>
 }
