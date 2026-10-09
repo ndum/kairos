@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { onScopeDispose, ref, shallowRef } from 'vue'
 
-import type { RemovedRoute, RouteDraft } from '@/application/route-library'
+import type { MergeResult, RemovedRoute, RouteDraft } from '@/application/route-library'
 import type { Route } from '@/domain/route'
 
 import { useServices } from '../services'
@@ -35,5 +35,6 @@ export const useRouteStore = defineStore('routes', () => {
     move: (id: string, offset: number): void => {
       library.move(id, offset)
     },
+    merge: (incoming: readonly Route[]): MergeResult => library.merge(incoming),
   }
 })

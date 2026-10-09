@@ -2,6 +2,7 @@
 import type { Component } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 
+import BaseButton from './BaseButton.vue'
 import GlassCard from './GlassCard.vue'
 
 defineProps<{
@@ -19,12 +20,9 @@ defineProps<{
     </span>
     <h2 class="text-2xl font-semibold tracking-tight">{{ title }}</h2>
     <p class="text-base leading-relaxed text-ink-muted">{{ text }}</p>
-    <RouterLink
-      v-if="action"
-      :to="action.to"
-      class="glass inline-flex h-11 items-center gap-2 rounded-full px-5 font-semibold text-ink"
-    >
-      {{ action.label }}
-    </RouterLink>
+    <div v-if="action || $slots.default" class="flex flex-wrap gap-2">
+      <BaseButton v-if="action" variant="primary" :to="action.to">{{ action.label }}</BaseButton>
+      <slot />
+    </div>
   </GlassCard>
 </template>

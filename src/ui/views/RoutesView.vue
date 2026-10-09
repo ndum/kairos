@@ -1,18 +1,27 @@
 <script setup lang="ts">
+import { defineAsyncComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
 import IconAlertTriangle from '~icons/tabler/alert-triangle'
+import IconClipboard from '~icons/tabler/clipboard-text'
 import IconMapPin from '~icons/tabler/map-pin'
 import IconPlus from '~icons/tabler/plus'
+import IconShare from '~icons/tabler/share-2'
 
 import BaseButton from '../components/BaseButton.vue'
 import EmptyState from '../components/EmptyState.vue'
+import { useDialog } from '../composables/use-dialog'
 import RouteCard from '../routes/RouteCard.vue'
 import { useRouteStore } from '../stores/routes'
 import { useToastStore } from '../stores/toasts'
 
+const ShareDialog = defineAsyncComponent(() => import('../routes/ShareDialog.vue'))
+const LinkImportDialog = defineAsyncComponent(() => import('../routes/LinkImportDialog.vue'))
+
 const { t } = useI18n()
 const store = useRouteStore()
 const toasts = useToastStore()
+const share = useDialog()
+const linkImport = useDialog()
 
 function remove(id: string): void {
   const removed = store.remove(id)
@@ -30,10 +39,20 @@ function remove(id: string): void {
   <div class="flex flex-col gap-5">
     <div class="flex flex-wrap items-center justify-between gap-4">
       <h1 class="text-3xl font-bold tracking-tight">{{ t('routes.title') }}</h1>
-      <BaseButton v-if="store.routes.length > 0" variant="primary" :to="{ name: 'route-new' }">
-        <IconPlus aria-hidden="true" />
-        {{ t('routes.add') }}
-      </BaseButton>
+      <div v-if="store.routes.length > 0" class="flex flex-wrap gap-2">
+        <BaseButton variant="quiet" @click="linkImport.show">
+          <IconClipboard aria-hidden="true" />
+          {{ t('linkImport.action') }}
+        </BaseButton>
+        <BaseButton @click="share.show">
+          <IconShare aria-hidden="true" />
+          {{ t('share.action') }}
+        </BaseButton>
+        <BaseButton variant="primary" :to="{ name: 'route-new' }">
+          <IconPlus aria-hidden="true" />
+          {{ t('routes.add') }}
+        </BaseButton>
+      </div>
     </div>
 
     <p v-if="!store.saved" role="alert" class="glass flex gap-3 rounded-inner p-4 font-medium">
@@ -47,7 +66,11 @@ function remove(id: string): void {
       :title="t('routes.empty.title')"
       :text="t('routes.empty.text')"
       :action="{ label: t('routes.empty.action'), to: { name: 'route-new' } }"
-    />
+    >
+      <BaseButton variant="quiet" @click="linkImport.show">{{
+        t('linkImport.emptyAction')
+      }}</BaseButton>
+    </EmptyState>
 
     <TransitionGroup v-else tag="ol" name="list" class="route-grid grid gap-4">
       <li v-for="(route, index) in store.routes" :key="route.id">
@@ -60,6 +83,9 @@ function remove(id: string): void {
         />
       </li>
     </TransitionGroup>
+
+    <ShareDialog v-if="share.used.value" v-model:open="share.open.value" :routes="store.routes" />
+    <LinkImportDialog v-if="linkImport.used.value" v-model:open="linkImport.open.value" />
   </div>
 </template>
 

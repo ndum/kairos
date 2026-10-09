@@ -6,6 +6,7 @@ import { StopSearch } from './application/stop-search'
 import { LocalStorageRouteRepository } from './infrastructure/browser/local-storage-route-repository'
 import { randomId } from './infrastructure/browser/random-id'
 import { systemClock } from './infrastructure/browser/system-clock'
+import { CompressedRouteCodec } from './infrastructure/sharing/compressed-route-codec'
 import { TransportOpendataTimetable } from './infrastructure/transport-opendata/transport-opendata-timetable'
 import App from './ui/App.vue'
 import { createAppI18n } from './ui/i18n'
@@ -20,6 +21,7 @@ const services: AppServices = {
   timetable,
   routes: new RouteLibrary({ repository: new LocalStorageRouteRepository(), createId: randomId }),
   stops: new StopSearch(timetable),
+  codec: new CompressedRouteCodec(),
 }
 
 createApp(App)
