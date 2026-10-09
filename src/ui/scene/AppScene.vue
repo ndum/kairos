@@ -29,13 +29,16 @@ const NEAR_RIDGE =
   'M0 362 C300 346 600 356 900 349 S1500 353 1800 347 S2200 355 2400 351 L2400 420 L0 420 Z'
 const MASTS = Array.from({ length: 11 }, (_, index) => 40 + index * 230)
 
-const stars = Array.from({ length: 110 }, () => ({
-  left: Math.random() * 100,
-  top: Math.random() * 58,
-  duration: 2 + Math.random() * 4,
-  delay: -Math.random() * 5,
-  scale: 0.6 + Math.random() * 0.9,
-}))
+// Three layers of stars drawn as box shadows, each twinkling in its own rhythm. A few
+// elements are far cheaper to lay out and animate than one element per star.
+const starLayers = Array.from({ length: 3 }, () =>
+  Array.from({ length: 36 }, () => {
+    const x = (Math.random() * 100).toFixed(2)
+    const y = (Math.random() * 58).toFixed(2)
+    const size = (Math.random() * 0.8).toFixed(2)
+    return `${x}vw ${y}vh 0 ${size}px var(--color-scene-star)`
+  }).join(', '),
+)
 
 const now = ref(Date.now())
 useIntervalFn(() => {
@@ -113,17 +116,7 @@ onBeforeUnmount(() => {
     <div class="sun" />
     <div class="moon" />
     <div class="stars">
-      <i
-        v-for="(star, index) in stars"
-        :key="index"
-        :style="{
-          left: `${star.left}%`,
-          top: `${star.top}%`,
-          animationDuration: `${star.duration}s`,
-          animationDelay: `${star.delay}s`,
-          transform: `scale(${star.scale})`,
-        }"
-      />
+      <i v-for="(shadows, index) in starLayers" :key="index" :style="{ boxShadow: shadows }" />
     </div>
     <span ref="shooting" class="shooting" />
     <div class="cloud cloud-1" />
@@ -253,13 +246,33 @@ onBeforeUnmount(() => {
   box-shadow: 0 0 60px 16px color-mix(in srgb, var(--color-scene-moon) 28%, transparent);
 }
 
+/* Stars only show at night, so the light theme does not draw them at all. */
+.stars {
+  display: none;
+}
+
+.dark .stars {
+  display: block;
+}
+
 .stars i {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 2px;
   height: 2px;
   border-radius: 50%;
-  background: var(--color-scene-star);
-  animation: twinkle 3s ease-in-out infinite;
+  animation: twinkle 4.2s ease-in-out infinite;
+}
+
+.stars i:nth-child(2) {
+  animation-duration: 5.6s;
+  animation-delay: -2.1s;
+}
+
+.stars i:nth-child(3) {
+  animation-duration: 3.3s;
+  animation-delay: -1.2s;
 }
 
 .shooting {
