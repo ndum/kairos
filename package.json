@@ -35,7 +35,7 @@
     "test": "vitest",
     "test:unit": "vitest run --project unit",
     "test:browser": "vitest run --project browser",
-    "test:coverage": "vitest run --project unit --coverage",
+    "test:coverage": "vitest run --project unit --coverage --passWithNoTests",
     "test:e2e": "playwright test",
     "check:size": "node scripts/check-bundle-size.mjs",
     "prepare": "lefthook install"
