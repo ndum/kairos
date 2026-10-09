@@ -10,5 +10,5 @@ test('invites the user to add a first route', async () => {
   await expect.element(screen.getByRole('heading', { name: 'Noch keine Route' })).toBeVisible()
 
   await screen.getByRole('link', { name: 'Route anlegen' }).click()
-  await expect.poll(() => screen.router.currentRoute.value.name).toBe('routes')
+  await expect.poll(() => screen.router.currentRoute.value.name).toBe('route-new')
 })

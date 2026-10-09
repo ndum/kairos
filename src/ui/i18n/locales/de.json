@@ -24,10 +24,97 @@
     }
   },
   "routes": {
+    "title": "Routen",
+    "add": "Neue Route",
     "empty": {
       "title": "Hier entstehen deine Routen",
-      "text": "Eine Route verbindet zwei Orte, jeweils mit Haltestelle, Fussweg und Reserve."
+      "text": "Eine Route verbindet zwei Orte, jeweils mit Haltestelle, Fussweg und Reserve.",
+      "action": "Route anlegen"
+    },
+    "lines": "Linien",
+    "allLines": "Alle Linien",
+    "walk": "{minutes} Min. zu Fuss",
+    "reserve": "{minutes} Min. Reserve",
+    "edit": "Bearbeiten",
+    "editNamed": "«{name}» bearbeiten",
+    "remove": "Löschen",
+    "removeNamed": "«{name}» löschen",
+    "moveUp": "«{name}» nach oben verschieben",
+    "moveDown": "«{name}» nach unten verschieben",
+    "removed": "«{name}» gelöscht.",
+    "undo": "Rückgängig",
+    "saved": "«{name}» gespeichert.",
+    "notSaved": "Dieses Gerät lässt Kairos gerade keine Daten speichern. Deine Routen bleiben nur erhalten, bis du Kairos schliesst."
+  },
+  "editor": {
+    "newTitle": "Neue Route",
+    "editTitle": "Route bearbeiten",
+    "notFound": {
+      "title": "Route nicht gefunden",
+      "text": "Diese Route gibt es nicht mehr. Vielleicht wurde sie in einem anderen Fenster gelöscht.",
+      "action": "Zu den Routen"
+    },
+    "steps": "Schritte",
+    "step": "Schritt {current} von {total}",
+    "cancel": "Abbrechen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "save": "Route speichern",
+    "origin": {
+      "label": "Start",
+      "title": "Wo startest du?",
+      "text": "Zum Beispiel zuhause. Wähle die Haltestelle, an der du einsteigst."
+    },
+    "destination": {
+      "label": "Ziel",
+      "title": "Wohin fährst du?",
+      "text": "Zum Beispiel zur Arbeit oder in die Schule. Wähle die Haltestelle, an der du aussteigst."
+    },
+    "place": {
+      "name": "Name des Ortes",
+      "suggestions": {
+        "home": "Zuhause",
+        "work": "Arbeit",
+        "school": "Schule"
+      },
+      "stop": "Haltestelle",
+      "stopPlaceholder": "Name der Haltestelle",
+      "walk": "Fussweg",
+      "walkHint": "Minuten zwischen dem Ort und der Haltestelle.",
+      "reserve": "Reserve",
+      "reserveHint": "Zusätzliche Minuten, damit du nicht rennen musst."
+    },
+    "errors": {
+      "nameMissing": "Gib einen Namen ein.",
+      "nameTooLong": "Höchstens {max} Zeichen.",
+      "stopMissing": "Wähle eine Haltestelle aus der Liste.",
+      "stopSame": "Wähle eine andere Haltestelle als beim Start."
+    },
+    "lines": {
+      "label": "Linien",
+      "title": "Welche Linien nimmst du?",
+      "text": "Kairos zeigt zuerst Verbindungen mit diesen Linien. Andere erscheinen nur, wenn sie schneller sind oder deine Linie ausfällt.",
+      "loading": "Kairos sucht die nächsten Verbindungen …",
+      "failed": "Die Verbindungen konnten nicht geladen werden. Du kannst die Route trotzdem speichern.",
+      "retry": "Erneut versuchen",
+      "none": "Gerade fahren keine Verbindungen. Ohne Auswahl berücksichtigt Kairos alle Linien.",
+      "all": "Ohne Auswahl berücksichtigt Kairos alle Linien.",
+      "coverage": "Passt zu {count} von {total} Verbindungen.",
+      "uncovered": "Keine der nächsten Verbindungen fährt nur mit diesen Linien. Wähle auch die Linien, auf die du umsteigst, zum Beispiel den Bus nach dem Zug.",
+      "journeys": "in keiner Verbindung | in einer Verbindung | in {count} Verbindungen",
+      "name": "Name der Route"
     }
+  },
+  "stopField": {
+    "noResults": "Keine Haltestelle gefunden.",
+    "failed": "Die Suche ist gerade nicht möglich. Prüfe die Internetverbindung.",
+    "found": "Keine Haltestelle gefunden | Eine Haltestelle gefunden | {count} Haltestellen gefunden"
+  },
+  "field": {
+    "inMinutes": "in Minuten",
+    "minutesShort": "Min.",
+    "lessMinutes": "{label}: eine Minute weniger",
+    "moreMinutes": "{label}: eine Minute mehr"
   },
   "credit": "Fahrplandaten: opentransportdata.swiss"
 }

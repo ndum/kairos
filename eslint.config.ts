@@ -52,6 +52,14 @@ export default defineConfigWithVueTs(
     ),
   },
   {
+    name: 'kairos/architecture/ui',
+    files: ['src/ui/**'],
+    rules: layerRule(
+      ['@/infrastructure/**'],
+      'The UI receives adapters through the application services provided in main.ts.',
+    ),
+  },
+  {
     name: 'kairos/architecture/infrastructure',
     files: ['src/infrastructure/**'],
     rules: layerRule(
