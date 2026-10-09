@@ -80,6 +80,10 @@
       "error": "Offline",
       "updated": "Stand {time}",
       "refresh": "Jetzt aktualisieren"
+    },
+    "pinned": {
+      "label": "Gemerkte Fahrt",
+      "missed": "Diese Fahrt ist nicht mehr erreichbar."
     }
   },
   "plan": {
@@ -87,6 +91,32 @@
       "title": "Zuerst eine Route anlegen",
       "text": "Sobald du eine Route eingerichtet hast, planst du hier Fahrten nach Ankunfts- oder Abfahrtszeit.",
       "action": "Zu den Routen"
+    },
+    "title": "Planen",
+    "direction": "Richtung",
+    "mode": {
+      "label": "Zeit",
+      "depart": "Abfahrt ab",
+      "arrive": "Ankunft bis"
+    },
+    "date": "Datum",
+    "time": "Uhrzeit",
+    "now": "Jetzt",
+    "results": "Verbindungen",
+    "loading": "Verbindungen werden gesucht …",
+    "failed": "Die Verbindungen konnten nicht geladen werden.",
+    "retry": "Erneut versuchen",
+    "none": "Keine passende Verbindung gefunden. Versuche eine andere Zeit.",
+    "alternatives": "Mit anderen Linien",
+    "with": "mit {lines}",
+    "recommended": "Empfohlen",
+    "pinned": "Gemerkt",
+    "details": "Details",
+    "pin": "Merken",
+    "unpin": "Nicht mehr merken",
+    "pinnedToast": "Fahrt gemerkt. Ihr Countdown erscheint unter «Jetzt».",
+    "sheet": {
+      "title": "Losgehen um {time}"
     }
   },
   "routes": {
