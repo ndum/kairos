@@ -30,6 +30,25 @@ test('counts down to leaving for the next train', async ({ page }) => {
   await expect(hero).toContainText('Bald los')
 })
 
+test.describe('at work in the morning', () => {
+  test.use({ geolocation: { latitude: 46.9481, longitude: 7.4469 }, permissions: ['geolocation'] })
+
+  test('starts with the way home once the location may choose the direction', async ({ page }) => {
+    await expect(page.getByRole('region', { name: /Zuhause nach Arbeit Losgehen/ })).toBeVisible()
+
+    await page.getByRole('button', { name: 'Einstellungen' }).click()
+    // The switch only turns on once the browser has given the position.
+    const location = page.getByRole('switch', { name: 'Richtung nach Standort' })
+    await location.click()
+    await expect(location).toBeChecked()
+    await page.getByRole('button', { name: 'Schliessen' }).click()
+
+    await expect(page.getByRole('region', { name: /Arbeit nach Zuhause Losgehen/ })).toContainText(
+      'Keine Verbindung in den nächsten Stunden.',
+    )
+  })
+})
+
 test('shows the other direction and switches to it', async ({ page }) => {
   const back = page.getByRole('region', { name: /Arbeit nach Zuhause/ })
   await expect(back).toContainText('Keine Verbindung in den nächsten Stunden.')

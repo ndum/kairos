@@ -50,7 +50,11 @@ export const thunToZytglogge = {
     },
     {
       name: 'Arbeit',
-      stop: { id: '8507110', name: 'Bern, Zytglogge' },
+      stop: {
+        id: '8507110',
+        name: 'Bern, Zytglogge',
+        coordinates: { latitude: 46.94784, longitude: 7.4475 },
+      },
       walk: 5 * minute,
       reserve: 3 * minute,
     },
