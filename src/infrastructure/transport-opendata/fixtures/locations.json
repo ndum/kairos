@@ -1,0 +1,14 @@
+{
+  "stations": [
+    {
+      "id": "8507110",
+      "name": "Bern, Zytglogge",
+      "coordinate": { "type": "WGS84", "x": 46.947838, "y": 7.447501 }
+    },
+    {
+      "id": "8576899",
+      "name": "Wangen a.d.Aare, Zytglogge",
+      "coordinate": { "type": "WGS84", "x": 47.234489, "y": 7.65564 }
+    }
+  ]
+}
