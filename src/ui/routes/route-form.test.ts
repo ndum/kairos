@@ -36,6 +36,14 @@ describe('formOf and draftOf', () => {
     })
   })
 
+  it('keep the position of a place', () => {
+    const position = { latitude: 46.8, longitude: 7.5 }
+    const located = route('commute', 'Commute', [{ ...home, coordinates: position }, office])
+
+    expect(formOf(located).places[0].coordinates).toEqual(position)
+    expect(draftOf(formOf(located)).places[0].coordinates).toEqual(position)
+  })
+
   it('refuse a form without stops', () => {
     expect(() => draftOf(emptyForm())).toThrow()
   })

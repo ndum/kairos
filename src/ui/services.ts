@@ -1,6 +1,7 @@
 import { type InjectionKey, inject } from 'vue'
 
 import type { Clock } from '@/application/ports/clock'
+import type { LocationPort } from '@/application/ports/location'
 import type { RouteCodec } from '@/application/ports/route-codec'
 import type { TimetablePort } from '@/application/ports/timetable'
 import type { RouteLibrary } from '@/application/route-library'
@@ -14,6 +15,7 @@ export interface AppServices {
   readonly routes: RouteLibrary
   readonly stops: StopSearch
   readonly codec: RouteCodec
+  readonly location: LocationPort
   /** Each board watches its connection with a monitor of its own. */
   readonly createTripMonitor: () => TripMonitor
 }

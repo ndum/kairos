@@ -2,6 +2,7 @@ import { useStorage } from '@vueuse/core'
 import { type Ref, computed, ref } from 'vue'
 
 import { chooseDirection } from '@/domain/direction'
+import type { Coordinates } from '@/domain/geo'
 import { toLocal } from '@/domain/local-time'
 import { type Direction, type Route, oppositeDirection } from '@/domain/route'
 import type { Instant } from '@/domain/time'
@@ -10,10 +11,15 @@ import type { Instant } from '@/domain/time'
 export const SELECTED_ROUTE_KEY = 'kairos:route'
 
 /**
- * The route on the board and its direction. The direction follows the time of day until the
- * user swaps it, which holds for that route until another one is chosen.
+ * The route on the board and its direction. The direction follows the position of the device
+ * if allowed, or else the time of day, until the user swaps it. A swap holds for that route
+ * until another one is chosen.
  */
-export function useRouteChoice(routes: Ref<readonly Route[]>, now: Ref<Instant>) {
+export function useRouteChoice(
+  routes: Ref<readonly Route[]>,
+  now: Ref<Instant>,
+  location: Ref<Coordinates | null> = ref(null),
+) {
   const selectedId = useStorage<string>(SELECTED_ROUTE_KEY, '')
   const swapped = ref<{ routeId: string; direction: Direction } | null>(null)
 
@@ -25,7 +31,11 @@ export function useRouteChoice(routes: Ref<readonly Route[]>, now: Ref<Instant>)
     const current = route.value
     if (!current) return 'outbound'
     if (swapped.value?.routeId === current.id) return swapped.value.direction
-    return chooseDirection(current, { minuteOfDay: toLocal(now.value).minuteOfDay })
+    const { minuteOfDay } = toLocal(now.value)
+    return chooseDirection(current, {
+      minuteOfDay,
+      ...(location.value && { location: location.value }),
+    })
   })
 
   function select(id: string): void {

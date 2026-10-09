@@ -148,7 +148,18 @@
       "walk": "Walk",
       "walkHint": "Minutes between the place and the stop.",
       "reserve": "Reserve",
-      "reserveHint": "Extra minutes, so you do not have to run."
+      "reserveHint": "Extra minutes, so you do not have to run.",
+      "position": {
+        "label": "Exact position",
+        "hint": "Optional. Helps to choose the direction by location when the place is further from its stop. Stays on this device.",
+        "set": "Use current location",
+        "update": "Update location",
+        "remove": "Remove location",
+        "found": "Location saved.",
+        "denied": "No access to your location.",
+        "unavailable": "Your location is not available right now.",
+        "removed": "Location removed."
+      }
     },
     "errors": {
       "nameMissing": "Enter a name.",
@@ -238,6 +249,12 @@
     "language": {
       "label": "Language",
       "auto": "Automatic"
+    },
+    "location": {
+      "label": "Direction by location",
+      "hint": "Kairos first shows the direction that starts where you are. Your location stays on this device.",
+      "denied": "The browser does not allow Kairos to access your location. You can allow it in the settings of the browser.",
+      "unavailable": "Your location is not available right now. Try again later."
     }
   },
   "credit": "Timetable data: opentransportdata.swiss"
