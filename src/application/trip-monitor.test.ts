@@ -58,6 +58,28 @@ describe('TripMonitor', () => {
     expect(cache.read(key)).toEqual({ journeys: firstBatch, fetchedAt: at('06:40') })
   })
 
+  it('asks for journeys from a later time and keeps them apart from the next ones', async () => {
+    monitor.watch({ ...target, at: at('17:00') })
+    await settle()
+
+    expect(findJourneys).toHaveBeenCalledWith(
+      { from, to, at: at('17:00'), limit: JOURNEY_LIMIT },
+      expect.any(AbortSignal),
+    )
+    expect(cache.read(cacheKey(from, to, at('17:00')))?.journeys).toEqual(firstBatch)
+    expect(cache.read(key)).toBeNull()
+  })
+
+  it('asks from now on once the later time has come', async () => {
+    monitor.watch({ ...target, at: at('06:00') })
+    await settle()
+
+    expect(findJourneys).toHaveBeenCalledWith(
+      expect.objectContaining({ at: at('06:40') }),
+      expect.any(AbortSignal),
+    )
+  })
+
   it('shows cached journeys while it refreshes', async () => {
     cache.write(key, { journeys: secondBatch, fetchedAt: at('06:20') })
 
