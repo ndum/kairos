@@ -1,4 +1,4 @@
-import { type RouterHistory, createRouter, createWebHashHistory } from 'vue-router'
+import { type RouterHistory, START_LOCATION, createRouter, createWebHashHistory } from 'vue-router'
 
 import type { NavigationSection } from './layout/navigation'
 import NowView from './views/NowView.vue'
@@ -48,6 +48,7 @@ export function createAppRouter(
       },
       { path: '/:pathMatch(.*)*', redirect: '/' },
     ],
-    scrollBehavior: (_to, _from, saved) => saved ?? { top: 0 },
+    // The browser restores the position on load. Scrolling then would force an early layout.
+    scrollBehavior: (_to, from, saved) => (from === START_LOCATION ? false : (saved ?? { top: 0 })),
   })
 }
