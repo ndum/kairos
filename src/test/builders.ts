@@ -1,5 +1,5 @@
 import type { Journey, Leg, RideLeg, StopEvent, TransportMode, WalkLeg } from '@/domain/journey'
-import type { Place, StopRef } from '@/domain/route'
+import type { Place, PreferredLine, Route, StopRef } from '@/domain/route'
 import { type Instant, minutes } from '@/domain/time'
 
 /** An instant on Monday, 12 October 2026, in Swiss summer time. */
@@ -70,6 +70,17 @@ export const place = (
 
 export const home = place('Home', 'Riverside', { walk: 8, reserve: 3 })
 export const office = place('Office', 'Market Square', { walk: 5, reserve: 3 })
+export const gym = place('Gym', 'Lakeside', { walk: 4, reserve: 2 })
+
+export const route = (
+  id: string,
+  name = 'Commute',
+  places: readonly [Place, Place] = [home, office],
+  preferredLines: readonly PreferredLine[] = [],
+): Route => ({ id, name, places, preferredLines })
+
+export const trainLine = (name: string): PreferredLine => ({ name, mode: 'train' })
+export const busLine = (name: string): PreferredLine => ({ name, mode: 'bus' })
 
 /** S1 to Central, then bus 20 to Market Square. */
 export const morningCommute = (departure = '07:05', options: RideOptions = {}): Journey => {
