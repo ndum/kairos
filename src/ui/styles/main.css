@@ -39,6 +39,7 @@
   --color-ink: #14163a;
   --color-ink-muted: #3f4171;
   --color-ink-subtle: #5c5e93;
+  --color-on-ink: #ffffff;
   --color-glass: rgb(255 255 255 / 0.56);
   --color-glass-deep: rgb(255 255 255 / 0.32);
   --color-glass-soft: rgb(255 255 255 / 0.42);
@@ -47,6 +48,7 @@
   --color-highlight: rgb(255 255 255 / 0.6);
   --color-hairline: rgb(20 22 58 / 0.1);
   --color-spotlight: rgb(255 255 255 / 0.3);
+  --color-popover: rgb(250 248 255 / 0.94);
 
   --color-train: #3f52d4;
   --color-bus: #0d977a;
@@ -98,6 +100,7 @@
   --color-ink: #f2f2ff;
   --color-ink-muted: #babde8;
   --color-ink-subtle: #9093c6;
+  --color-on-ink: #0b0c2b;
   --color-glass: rgb(36 38 92 / 0.5);
   --color-glass-deep: rgb(14 15 46 / 0.62);
   --color-glass-soft: rgb(255 255 255 / 0.06);
@@ -106,6 +109,7 @@
   --color-highlight: rgb(255 255 255 / 0.12);
   --color-hairline: rgb(255 255 255 / 0.09);
   --color-spotlight: rgb(150 165 255 / 0.14);
+  --color-popover: rgb(26 28 72 / 0.96);
 
   --color-train: #8e9bff;
   --color-bus: #3ad8ad;
@@ -130,7 +134,16 @@
 @layer base {
   html {
     color-scheme: light;
+    /* Keeps focused fields clear of the notch and the floating tab bar. */
+    scroll-padding-top: env(safe-area-inset-top, 0px);
+    scroll-padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 6.5rem);
     -webkit-tap-highlight-color: transparent;
+  }
+
+  @media (min-width: 900px) {
+    html {
+      scroll-padding-bottom: 0;
+    }
   }
 
   body {
@@ -173,6 +186,36 @@
       linear-gradient(#000 0 0);
     mask-composite: exclude;
     pointer-events: none;
+  }
+}
+
+/* Text inputs. At 16 pixels and more, Safari on the iPhone does not zoom in on focus. */
+@utility field {
+  width: 100%;
+  min-height: 3rem;
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-inner);
+  padding-inline: 1rem;
+  background: var(--color-glass-soft);
+  color: var(--color-ink);
+  font-size: max(1rem, 16px);
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+
+  &::placeholder {
+    color: var(--color-ink-subtle);
+    opacity: 1;
+  }
+
+  &:focus-visible {
+    border-color: var(--color-train);
+    outline: none;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-train) 28%, transparent);
+  }
+
+  &[aria-invalid='true'] {
+    border-color: var(--color-late);
   }
 }
 

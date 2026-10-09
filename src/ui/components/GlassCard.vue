@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-withDefaults(defineProps<{ tag?: string }>(), { tag: 'section' })
+withDefaults(
+  defineProps<{
+    tag?: string
+    /** Raises the card slightly on hover. Off for forms, which should stay in place. */
+    lift?: boolean
+  }>(),
+  { tag: 'section', lift: true },
+)
 
 // A light spot follows the mouse across the card, like a reflection on glass.
 const spot = ref<{ x: string; y: string } | null>(null)
@@ -18,6 +25,7 @@ function follow(event: PointerEvent): void {
   <component
     :is="tag"
     class="glass-card glass rounded-card"
+    :class="{ lift }"
     :style="spot ? { '--spot-x': spot.x, '--spot-y': spot.y } : undefined"
     @pointermove="follow"
     @pointerleave="spot = null"
@@ -51,7 +59,7 @@ function follow(event: PointerEvent): void {
 }
 
 @media (hover: hover) {
-  .glass-card:hover {
+  .glass-card.lift:hover {
     transform: translateY(-3px);
   }
 
