@@ -72,8 +72,9 @@ The reasoning behind these choices is recorded in the [architecture decision rec
 | Area         | Choice                                                    |
 | ------------ | --------------------------------------------------------- |
 | Framework    | Vue 3.5, TypeScript 6 (strict)                            |
+| Libraries    | Vue Router 5, Vue I18n 11, VueUse 15, Valibot             |
 | Build        | Vite 8                                                    |
-| Styling      | Tailwind CSS 4                                            |
+| Styling      | Tailwind CSS 4, Geist, Tabler Icons                       |
 | Tests        | Vitest 5 (unit and browser mode), Playwright              |
 | Code quality | ESLint 10, typescript-eslint, eslint-plugin-vue, Prettier |
 | Git hooks    | Lefthook, commitlint                                      |
@@ -137,9 +138,11 @@ Pushes to `main` are published to [ndum.github.io/kairos](https://ndum.github.io
 
 Contributions are welcome. Please read the [contributing guide](CONTRIBUTING.md) and the [code of conduct](CODE_OF_CONDUCT.md).
 
-## Data source
+## Data source and credits
 
 Timetable data: [opentransportdata.swiss](https://opentransportdata.swiss), provided through the [Transport API](https://transport.opendata.ch) of Opendata.ch.
+
+The interface is set in [Geist](https://github.com/vercel/geist-font) under the [SIL Open Font License 1.1](public/licenses/geist-font.txt) and uses [Tabler Icons](https://tabler.io/icons) under the MIT License.
 
 ## License
 
