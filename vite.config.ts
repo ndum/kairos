@@ -8,6 +8,8 @@ import Icons from 'unplugin-icons/vite'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
+import { contentSecurityPolicy } from './scripts/vite-plugin-csp.ts'
+
 // KAIROS_BASE is set by the deployment workflows: /kairos/ for GitHub Pages and a
 // sub-path per pull request for previews. Local builds are served from the root.
 export default defineConfig(({ mode }) => ({
@@ -50,6 +52,7 @@ export default defineConfig(({ mode }) => ({
         cleanupOutdatedCaches: true,
       },
     }),
+    contentSecurityPolicy(['https://transport.opendata.ch']),
     mode === 'lan' && basicSsl(),
   ],
   resolve: {
