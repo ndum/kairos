@@ -59,7 +59,6 @@ export const liestalToMesseplatz = {
         coordinates: { latitude: 47.48446, longitude: 7.73137 },
       },
       walk: 8 * minute,
-      reserve: 3 * minute,
       coordinates: { latitude: 47.4861, longitude: 7.7302 },
     },
     {
@@ -70,9 +69,9 @@ export const liestalToMesseplatz = {
         coordinates: { latitude: 47.56345, longitude: 7.59961 },
       },
       walk: 5 * minute,
-      reserve: 3 * minute,
     },
   ],
+  buffer: 3 * minute,
   preferredLines: [],
 }
 
@@ -83,7 +82,7 @@ export async function seedRoutes(page: Page, routes: unknown[]): Promise<void> {
     (stored) => {
       localStorage.setItem('kairos:routes', stored)
     },
-    JSON.stringify({ version: 1, routes }),
+    JSON.stringify({ version: 2, routes }),
   )
   await page.reload()
 }

@@ -72,7 +72,7 @@ const tone = (mode: TransportMode): string => {
   color: var(--color-ink-muted);
 }
 
-.reserve,
+.buffer,
 .wait {
   background:
     repeating-linear-gradient(135deg, var(--color-buffer) 0 4px, transparent 4px 9px),

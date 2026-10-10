@@ -4,6 +4,7 @@ import { home, office } from '@/test/builders'
 
 import { chooseDirection } from './direction'
 import type { Route } from './route'
+import { minutes } from './time'
 
 const riverside = { latitude: 46.8, longitude: 7.5 }
 const marketSquare = { latitude: 46.95, longitude: 7.45 }
@@ -16,6 +17,7 @@ const route: Route = {
     { ...home, stop: { ...home.stop, coordinates: riverside } },
     { ...office, stop: { ...office.stop, coordinates: marketSquare } },
   ],
+  buffer: minutes(3),
   preferredLines: [],
 }
 

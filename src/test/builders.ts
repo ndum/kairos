@@ -1,5 +1,5 @@
 import type { Journey, Leg, RideLeg, StopEvent, TransportMode, WalkLeg } from '@/domain/journey'
-import type { Place, PreferredLine, Route, StopRef } from '@/domain/route'
+import type { Endpoints, Place, PreferredLine, Route, StopRef } from '@/domain/route'
 import { type Instant, minutes } from '@/domain/time'
 
 /** An instant on Monday, 12 October 2026, in Swiss summer time. */
@@ -70,24 +70,34 @@ export const journey = (...legs: Leg[]): Journey => ({ legs })
 export const place = (
   name: string,
   stopName: string,
-  { walk: walkMinutes = 0, reserve = 0 }: { walk?: number; reserve?: number } = {},
+  { walk: walkMinutes = 0 }: { walk?: number } = {},
 ): Place => ({
   name,
   stop: stop(stopName),
   walk: minutes(walkMinutes),
-  reserve: minutes(reserve),
 })
 
-export const home = place('Home', 'Riverside', { walk: 8, reserve: 3 })
-export const office = place('Office', 'Market Square', { walk: 5, reserve: 3 })
-export const gym = place('Gym', 'Lakeside', { walk: 4, reserve: 2 })
+export const home = place('Home', 'Riverside', { walk: 8 })
+export const office = place('Office', 'Market Square', { walk: 5 })
+export const gym = place('Gym', 'Lakeside', { walk: 4 })
+
+/** Two places with a buffer in minutes, three by default like a new route. */
+export const ends = (origin: Place, destination: Place, bufferMinutes = 3): Endpoints => ({
+  origin,
+  destination,
+  buffer: minutes(bufferMinutes),
+})
+
+/** From home to the office with a buffer of three minutes. */
+export const commute = ends(home, office)
 
 export const route = (
   id: string,
   name = 'Commute',
   places: readonly [Place, Place] = [home, office],
   preferredLines: readonly PreferredLine[] = [],
-): Route => ({ id, name, places, preferredLines })
+  bufferMinutes = 3,
+): Route => ({ id, name, places, buffer: minutes(bufferMinutes), preferredLines })
 
 export const trainLine = (name: string): PreferredLine => ({ name, mode: 'train' })
 export const busLine = (name: string): PreferredLine => ({ name, mode: 'bus' })

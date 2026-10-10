@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import { at } from '@/test/builders'
 
-import { type Urgency, isReachableWithReserve, urgencyOf } from './urgency'
+import { type Urgency, isReachableWithBuffer, urgencyOf } from './urgency'
 
 describe('urgencyOf', () => {
   const trip = { leaveAt: at('06:54'), latestLeaveAt: at('06:57') }
@@ -20,13 +20,13 @@ describe('urgencyOf', () => {
   })
 })
 
-describe('isReachableWithReserve', () => {
+describe('isReachableWithBuffer', () => {
   it.each<[Urgency, boolean]>([
     ['relaxed', true],
     ['soon', true],
     ['tight', false],
     ['missed', false],
   ])('is %s for %s', (urgency, expected) => {
-    expect(isReachableWithReserve(urgency)).toBe(expected)
+    expect(isReachableWithBuffer(urgency)).toBe(expected)
   })
 })

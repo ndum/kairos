@@ -10,7 +10,7 @@ import { type PlaceForm, emptyPlace } from './route-form'
 const Harness = defineComponent(() => {
   const place = ref<PlaceForm>(emptyPlace())
   return () => [
-    h(PlaceStep, { modelValue: place.value, errors: {} }),
+    h(PlaceStep, { modelValue: place.value, end: 'origin', errors: {} }),
     h('output', { 'data-testid': 'position' }, JSON.stringify(place.value.coordinates ?? null)),
   ]
 })

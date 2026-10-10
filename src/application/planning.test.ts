@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import { at, home, journey, morningCommute, office, ride, walk } from '@/test/builders'
+import { at, commute, home, journey, morningCommute, office, ride, walk } from '@/test/builders'
 
 import { PLAN_LIMIT, planTrips } from './planning'
 import type { TimetablePort } from './ports/timetable'
 
-const ends = { origin: home, destination: office }
+const ends = commute
 
 const viaTram = (departure: string, arrival: string) =>
   journey(
@@ -20,7 +20,7 @@ function timetable(journeys = [morningCommute('07:05'), morningCommute('07:20')]
 }
 
 describe('planTrips', () => {
-  it('asks for departures once the user has walked to the stop and kept the reserve', async () => {
+  it('asks for departures once the user has walked to the stop and kept the buffer', async () => {
     const { timetable: source, findJourneys } = timetable()
     const signal = new AbortController().signal
 

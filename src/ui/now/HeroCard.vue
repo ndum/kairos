@@ -45,7 +45,7 @@ const label = computed(() => {
   return t('now.leaveIn')
 })
 
-/** Minutes left to catch the tight trip, which no longer leaves room for the reserve. */
+/** Minutes left to catch the tight trip, which no longer leaves room for the buffer. */
 const tightMinutes = computed(() => {
   const tight = props.board.tight
   return tight ? Math.max(0, format.minutes(tight.latestLeaveAt - props.now)) : 0

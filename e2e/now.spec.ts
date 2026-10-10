@@ -14,7 +14,7 @@ test.beforeEach(async ({ page }) => {
 test('counts down to leaving for the next train', async ({ page }) => {
   const hero = page.getByRole('region', { name: /Zuhause nach Arbeit/ })
 
-  // The IR 37 leaves Liestal at 07:05: 8 minutes on foot and 3 minutes of reserve before.
+  // The IR 37 leaves Liestal at 07:05: 8 minutes on foot and 3 minutes of buffer before.
   await expect(hero).toContainText(/Losgehen in\s*9\s*Min\./)
   await expect(hero).toContainText('Genug Zeit')
   await expect(hero).toContainText('Gleis 4')
@@ -27,11 +27,11 @@ test('counts down to leaving for the next train', async ({ page }) => {
   await expect(hero).toContainText(/Losgehen in\s*4\s*Min\./)
   await expect(hero).toContainText('Bald los')
 
-  // Without the reserve, the IR 37 is still in reach. The S3 at 07:10 becomes the main trip.
+  // Without the buffer, the IR 37 is still in reach. The S3 at 07:10 becomes the main trip.
   await page.clock.fastForward('06:00')
 
   await expect(hero).toContainText(/Losgehen in\s*3\s*Min\./)
-  await expect(hero).toContainText('Ohne Reserve noch erreichbar: Abfahrt 07:05')
+  await expect(hero).toContainText('Ohne Puffer noch erreichbar: Abfahrt 07:05')
 })
 
 test.describe('at work in the morning', () => {

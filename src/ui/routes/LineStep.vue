@@ -8,15 +8,19 @@ import IconLoader from '~icons/tabler/loader-2'
 import { type LineOptions, findLineOptions } from '@/application/line-options'
 import { lineKey, usesPreferredLines } from '@/domain/line-preference'
 import type { PreferredLine, StopRef } from '@/domain/route'
-import { NAME_MAX_LENGTH } from '@/domain/route-rules'
+import { BUFFER_MAX, NAME_MAX_LENGTH } from '@/domain/route-rules'
+import { MINUTE } from '@/domain/time'
 
 import BaseButton from '../components/BaseButton.vue'
 import LineBadge from '../components/LineBadge.vue'
+import MinuteField from '../components/MinuteField.vue'
 import TextField from '../components/TextField.vue'
 import { useServices } from '../services'
 import type { NameError } from './route-form'
 
 const lines = defineModel<PreferredLine[]>('lines', { required: true })
+/** Minutes kept when leaving either place. */
+const buffer = defineModel<number>('buffer', { required: true })
 const name = defineModel<string>('name', { required: true })
 
 const props = defineProps<{
@@ -142,6 +146,12 @@ const nameErrorText = computed(() => {
       </p>
     </div>
 
+    <MinuteField
+      v-model="buffer"
+      :label="t('editor.buffer.label')"
+      :hint="t('editor.buffer.hint')"
+      :max="BUFFER_MAX / MINUTE"
+    />
     <TextField
       v-model="name"
       :label="t('editor.lines.name')"

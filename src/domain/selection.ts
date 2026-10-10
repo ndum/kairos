@@ -4,9 +4,9 @@ import type { Trip } from './trip'
 import { urgencyOf } from './urgency'
 
 export interface TripSelection {
-  /** First trip that is still reachable with the full reserve. */
+  /** First trip that is still reachable with the full buffer. */
   readonly main: Trip | null
-  /** An earlier trip that is only reachable without the reserve. */
+  /** An earlier trip that is only reachable without the buffer. */
   readonly tight: Trip | null
   /** Trips after the main one, in order of their leave time. */
   readonly upcoming: readonly Trip[]

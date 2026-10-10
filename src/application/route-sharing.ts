@@ -16,13 +16,14 @@ export interface ImportItem {
 }
 
 const samePlace = (a: Place, b: Place): boolean =>
-  a.name === b.name && a.stop.id === b.stop.id && a.walk === b.walk && a.reserve === b.reserve
+  a.name === b.name && a.stop.id === b.stop.id && a.walk === b.walk
 
 function sameRoute(a: Route, b: Route): boolean {
   const lines = (route: Route): string =>
     route.preferredLines.map((line) => `${lineKey(line.name)}:${line.mode}`).join(',')
   return (
     a.name === b.name &&
+    a.buffer === b.buffer &&
     samePlace(a.places[0], b.places[0]) &&
     samePlace(a.places[1], b.places[1]) &&
     lines(a) === lines(b)

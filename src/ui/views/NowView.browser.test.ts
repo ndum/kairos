@@ -3,6 +3,7 @@ import { afterEach, expect, test } from 'vitest'
 import { pinTrip } from '@/application/pinned-trip'
 import type { TimetablePort } from '@/application/ports/timetable'
 import type { Journey } from '@/domain/journey'
+import { endpoints } from '@/domain/route'
 import { planTrip } from '@/domain/trip'
 import {
   at,
@@ -56,7 +57,7 @@ test('counts down to leaving for the next trip', async () => {
   const screen = await renderWithApp(NowView, { routes: [commute], timetable: timetable(morning) })
   const hero = screen.getByRole('region', { name: /Home nach Office/ })
 
-  // The S1 at 07:20 leaves 8 minutes of walking and 3 minutes of reserve: leave at 07:09.
+  // The S1 at 07:20 leaves 8 minutes of walking and 3 minutes of buffer: leave at 07:09.
   await expect.element(hero).toMatchTextContent(/Losgehen in\s*9\s*Min\./)
   await expect.element(hero.getByText('Genug Zeit')).toBeVisible()
   await expect.element(hero.getByText('07:20')).toBeVisible()
@@ -74,14 +75,14 @@ test('shows the connection step by step and the trips after it', async () => {
   await expect.element(later).toMatchTextContent(/07:24.*07:39/)
 })
 
-test('warns about an earlier trip that is only reachable without the reserve', async () => {
+test('warns about an earlier trip that is only reachable without the buffer', async () => {
   const screen = await renderWithApp(NowView, {
     routes: [commute],
     timetable: timetable([morningCommute('07:10'), ...morning]),
   })
 
   await expect
-    .element(screen.getByText(/Ohne Reserve noch erreichbar: Abfahrt 07:10, losgehen in 2 Min\./))
+    .element(screen.getByText(/Ohne Puffer noch erreichbar: Abfahrt 07:10, losgehen in 2 Min\./))
     .toBeVisible()
 })
 
@@ -150,7 +151,7 @@ test('offers to try again when the timetable cannot be reached', async () => {
 })
 
 test('counts down to a pinned trip and forgets it on request', async () => {
-  const later = planTrip(morningCommute('07:50'), home, office)
+  const later = planTrip(morningCommute('07:50'), endpoints(commute, 'outbound'))
   if (!later) throw new Error('Expected a trip')
   const screen = await renderWithApp(NowView, {
     routes: [commute],

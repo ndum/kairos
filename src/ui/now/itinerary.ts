@@ -1,5 +1,5 @@
 import { type RideLeg, expectedTime, isRide, walkingTime } from '@/domain/journey'
-import type { Place } from '@/domain/route'
+import type { Endpoints, Place } from '@/domain/route'
 import type { Duration, Instant } from '@/domain/time'
 import { type Transfer, transfersOf } from '@/domain/transfer'
 import type { Trip } from '@/domain/trip'
@@ -7,17 +7,17 @@ import type { Trip } from '@/domain/trip'
 // Turns a trip into the parts the board draws: segments for the bar, steps for the timeline.
 
 export type Segment =
-  | { readonly kind: 'walk' | 'reserve' | 'wait'; readonly duration: Duration }
+  | { readonly kind: 'walk' | 'buffer' | 'wait'; readonly duration: Duration }
   | { readonly kind: 'ride'; readonly duration: Duration; readonly leg: RideLeg }
 
 /** Parts of a trip from leaving the place to arriving at the destination, in order. */
-export function segmentsOf(trip: Trip, origin: Place, destination: Place): Segment[] {
+export function segmentsOf(trip: Trip, { origin, destination, buffer }: Endpoints): Segment[] {
   const legs = trip.journey.legs
   const first = legs.findIndex(isRide)
   const last = legs.findLastIndex(isRide)
   const segments: Segment[] = [
     { kind: 'walk', duration: origin.walk + walkingTime(legs.slice(0, first)) },
-    { kind: 'reserve', duration: origin.reserve },
+    { kind: 'buffer', duration: buffer },
   ]
 
   let arrivedAt: Instant | null = null
@@ -47,7 +47,7 @@ export type Step =
   | { readonly kind: 'arrive'; readonly at: Instant; readonly place: Place }
 
 /** The trip as a timeline: leaving, each ride with the transfer after it, and the arrival. */
-export function stepsOf(trip: Trip, origin: Place, destination: Place): Step[] {
+export function stepsOf(trip: Trip, { origin, destination }: Endpoints): Step[] {
   const transfers = transfersOf(trip.journey)
   const rides = trip.journey.legs.filter(isRide)
   const steps: Step[] = [{ kind: 'leave', at: trip.leaveAt, place: origin }]

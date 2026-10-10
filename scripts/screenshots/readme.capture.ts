@@ -43,7 +43,7 @@ async function device(browser: Browser, shot: Shot) {
     (routes) => {
       localStorage.setItem('kairos:routes', routes)
     },
-    JSON.stringify({ version: 1, routes: [route] }),
+    JSON.stringify({ version: 2, routes: [route] }),
   )
   return { context, page }
 }

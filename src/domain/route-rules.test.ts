@@ -13,7 +13,13 @@ import {
 } from './route-rules'
 import { minutes } from './time'
 
-const route: Route = { id: 'commute', name: 'Commute', places: [home, office], preferredLines: [] }
+const route: Route = {
+  id: 'commute',
+  name: 'Commute',
+  places: [home, office],
+  buffer: minutes(3),
+  preferredLines: [],
+}
 
 describe('isValidName', () => {
   it('accepts names with up to the maximum length', () => {
@@ -33,10 +39,10 @@ describe('isValidName', () => {
 })
 
 describe('isValidPlace', () => {
-  it('accepts a named place with a stop and walking time and reserve in range', () => {
+  it('accepts a named place with a stop and a walking time in range', () => {
     expect(isValidPlace(home)).toBe(true)
-    expect(isValidPlace({ ...home, walk: 0, reserve: 0 })).toBe(true)
-    expect(isValidPlace({ ...home, walk: minutes(60), reserve: minutes(30) })).toBe(true)
+    expect(isValidPlace({ ...home, walk: 0 })).toBe(true)
+    expect(isValidPlace({ ...home, walk: minutes(60) })).toBe(true)
   })
 
   it('rejects a place without a name or a stop', () => {
@@ -44,11 +50,10 @@ describe('isValidPlace', () => {
     expect(isValidPlace({ ...home, stop: { id: '', name: 'Riverside' } })).toBe(false)
   })
 
-  it('rejects walking times and reserves out of range', () => {
+  it('rejects walking times out of range', () => {
     expect(isValidPlace({ ...home, walk: minutes(-1) })).toBe(false)
     expect(isValidPlace({ ...home, walk: minutes(61) })).toBe(false)
-    expect(isValidPlace({ ...home, reserve: minutes(31) })).toBe(false)
-    expect(isValidPlace({ ...home, reserve: Number.NaN })).toBe(false)
+    expect(isValidPlace({ ...home, walk: Number.NaN })).toBe(false)
   })
 })
 
@@ -73,6 +78,17 @@ describe('isValidRoute', () => {
 
   it('rejects a route that starts and ends at the same stop', () => {
     expect(isValidRoute({ ...route, places: [home, home] })).toBe(false)
+  })
+
+  it('accepts a buffer of up to half an hour', () => {
+    expect(isValidRoute({ ...route, buffer: 0 })).toBe(true)
+    expect(isValidRoute({ ...route, buffer: minutes(30) })).toBe(true)
+  })
+
+  it('rejects a buffer out of range', () => {
+    expect(isValidRoute({ ...route, buffer: minutes(-1) })).toBe(false)
+    expect(isValidRoute({ ...route, buffer: minutes(31) })).toBe(false)
+    expect(isValidRoute({ ...route, buffer: Number.NaN })).toBe(false)
   })
 })
 

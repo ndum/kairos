@@ -2,23 +2,33 @@ import { describe, expect, it } from 'vitest'
 
 import { planTrip } from '@/domain/trip'
 import { minutes } from '@/domain/time'
-import { at, home, journey, morningCommute, office, ride, walk } from '@/test/builders'
+import {
+  at,
+  commute,
+  ends,
+  home,
+  journey,
+  morningCommute,
+  office,
+  ride,
+  walk,
+} from '@/test/builders'
 
 import { segmentsOf, stepsOf } from './itinerary'
 
-const plan = (j = morningCommute()) => {
-  const trip = planTrip(j, home, office)
+const plan = (j = morningCommute(), endpoints = commute) => {
+  const trip = planTrip(j, endpoints)
   if (!trip) throw new Error('Expected a trip')
   return trip
 }
 
 describe('segmentsOf', () => {
-  it('splits a trip into walking, reserve, rides, transfers and the final walk', () => {
-    const segments = segmentsOf(plan(), home, office)
+  it('splits a trip into walking, buffer, rides, transfers and the final walk', () => {
+    const segments = segmentsOf(plan(), commute)
 
     expect(segments.map(({ kind, duration }) => [kind, duration / minutes(1)])).toEqual([
       ['walk', 8],
-      ['reserve', 3],
+      ['buffer', 3],
       ['ride', 9],
       ['walk', 4],
       ['wait', 1],
@@ -29,7 +39,8 @@ describe('segmentsOf', () => {
 
   it('leaves out empty parts and never shows negative waiting times', () => {
     const late = morningCommute('07:05', { delay: 3 })
-    const segments = segmentsOf(plan(late), { ...home, reserve: 0 }, office)
+    const withoutBuffer = ends(home, office, 0)
+    const segments = segmentsOf(plan(late, withoutBuffer), withoutBuffer)
 
     expect(segments.map(({ kind }) => kind)).toEqual(['walk', 'ride', 'walk', 'ride', 'walk'])
   })
@@ -40,7 +51,7 @@ describe('segmentsOf', () => {
       ride('BAT', 'Riverside, Pier', '07:10', 'Market Square', '07:30', { mode: 'ship' }),
     )
 
-    expect(segmentsOf(plan(viaFootpath), home, office)[0]).toEqual({
+    expect(segmentsOf(plan(viaFootpath), commute)[0]).toEqual({
       kind: 'walk',
       duration: minutes(10),
     })
@@ -49,7 +60,7 @@ describe('segmentsOf', () => {
 
 describe('stepsOf', () => {
   it('lists leaving, the rides with their transfers and the arrival', () => {
-    const steps = stepsOf(plan(), home, office)
+    const steps = stepsOf(plan(), commute)
 
     expect(steps.map((step) => step.kind)).toEqual(['leave', 'ride', 'transfer', 'ride', 'arrive'])
     expect(steps[0]).toMatchObject({ kind: 'leave', at: at('06:54'), place: home })

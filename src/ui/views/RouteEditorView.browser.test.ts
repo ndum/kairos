@@ -33,7 +33,7 @@ test('creates a route in three steps', async () => {
   await expect.element(screen.getByRole('heading', { name: 'Wo startest du?' })).toBeVisible()
   await choosePlace(screen, 'Zuhause', 'River', 'Riverside')
   for (let step = 0; step < 3; step++) {
-    await screen.getByRole('button', { name: 'Fussweg: eine Minute mehr' }).click()
+    await screen.getByRole('button', { name: 'Fussweg zur Haltestelle: eine Minute mehr' }).click()
   }
   await screen.getByRole('button', { name: 'Weiter' }).click()
 
@@ -51,6 +51,7 @@ test('creates a route in three steps', async () => {
   await expect.element(screen.getByText(/Keine der nächsten Verbindungen/)).toBeVisible()
   await screen.getByRole('button', { name: '20 in einer Verbindung' }).click()
   await expect.element(screen.getByText('Passt zu 1 von 2 Verbindungen.')).toBeVisible()
+  await screen.getByRole('button', { name: 'Puffer beim Losgehen: eine Minute mehr' }).click()
   await expect
     .element(screen.getByRole('textbox', { name: 'Name der Route' }))
     .toHaveValue('Zuhause ↔ Arbeit')
@@ -61,9 +62,10 @@ test('creates a route in three steps', async () => {
       id: 'route-1',
       name: 'Zuhause ↔ Arbeit',
       places: [
-        { name: 'Zuhause', stop: stop('Riverside'), walk: minutes(8), reserve: minutes(3) },
-        { name: 'Arbeit', stop: stop('Market Square'), walk: minutes(5), reserve: minutes(3) },
+        { name: 'Zuhause', stop: stop('Riverside'), walk: minutes(8) },
+        { name: 'Arbeit', stop: stop('Market Square'), walk: minutes(5) },
       ],
+      buffer: minutes(4),
       preferredLines: [
         { name: 'S1', mode: 'train' },
         { name: '20', mode: 'bus' },

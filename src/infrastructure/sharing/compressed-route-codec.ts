@@ -9,10 +9,13 @@ import { MINUTE } from '@/domain/time'
 // links and QR codes small:
 //
 //   [version, route, ...]
-//   route = [id, name, place, place, [[line, mode], ...]]
-//   place = [name, stop id, stop name, walk minutes, reserve minutes, latitude, longitude]
+//   route = [id, name, place, place, [[line, mode], ...], buffer minutes]
+//   place = [name, stop id, stop name, walk minutes, latitude, longitude]
+//
+// Codes of version 1 have no buffer on the route but a reserve in every place, after the walk
+// minutes. They are still read, and the larger reserve becomes the buffer.
 
-const VERSION = 1
+const VERSION = 2
 const MODES: readonly TransportMode[] = ['train', 'tram', 'bus', 'ship', 'cableway', 'other']
 
 /** Limits for codes from unknown sources: their length and the size of their content. */
@@ -21,36 +24,42 @@ const MAX_CONTENT_BYTES = 64_000
 
 const Text = v.pipe(v.string(), v.maxLength(200))
 const Minutes = v.pipe(v.number(), v.integer(), v.minValue(0))
+const Degrees = v.nullable(v.number())
+/** A code holds at most this many routes. */
+const MAX_ROUTES = 50
 
-const PlaceSchema = v.tuple([
-  Text,
-  Text,
-  Text,
-  Minutes,
-  Minutes,
-  v.nullable(v.number()),
-  v.nullable(v.number()),
-])
+const PlaceSchema = v.tuple([Text, Text, Text, Minutes, Degrees, Degrees])
 const LineSchema = v.tuple([
   Text,
   v.pipe(v.number(), v.integer(), v.minValue(0), v.maxValue(MODES.length - 1)),
 ])
-const RouteSchema = v.tuple([Text, Text, PlaceSchema, PlaceSchema, v.array(LineSchema)])
-const ShareSchema = v.pipe(v.tupleWithRest([v.literal(VERSION)], RouteSchema), v.maxLength(51))
+const RouteSchema = v.tuple([Text, Text, PlaceSchema, PlaceSchema, v.array(LineSchema), Minutes])
+const ShareSchema = v.pipe(
+  v.tupleWithRest([v.literal(VERSION)], RouteSchema),
+  v.maxLength(MAX_ROUTES + 1),
+)
+
+const PlaceV1Schema = v.tuple([Text, Text, Text, Minutes, Minutes, Degrees, Degrees])
+const RouteV1Schema = v.tuple([Text, Text, PlaceV1Schema, PlaceV1Schema, v.array(LineSchema)])
+const ShareV1Schema = v.pipe(
+  v.tupleWithRest([v.literal(1)], RouteV1Schema),
+  v.maxLength(MAX_ROUTES + 1),
+)
 
 type CompactPlace = v.InferOutput<typeof PlaceSchema>
 type CompactRoute = v.InferOutput<typeof RouteSchema>
+type CompactPlaceV1 = v.InferOutput<typeof PlaceV1Schema>
+type CompactRouteV1 = v.InferOutput<typeof RouteV1Schema>
 
 const round = (degrees: number): number => Math.round(degrees * 1e5) / 1e5
 
-function compactPlace({ name, stop, walk, reserve }: Place): CompactPlace {
+function compactPlace({ name, stop, walk }: Place): CompactPlace {
   const position = stop.coordinates
   return [
     name,
     stop.id,
     stop.name,
     Math.round(walk / MINUTE),
-    Math.round(reserve / MINUTE),
     position ? round(position.latitude) : null,
     position ? round(position.longitude) : null,
   ]
@@ -63,32 +72,32 @@ function compact(route: Route): CompactRoute {
     compactPlace(route.places[0]),
     compactPlace(route.places[1]),
     route.preferredLines.map(({ name, mode }) => [name, MODES.indexOf(mode)]),
+    Math.round(route.buffer / MINUTE),
   ]
 }
 
-function expandPlace([
-  name,
-  id,
-  stopName,
-  walk,
-  reserve,
-  latitude,
-  longitude,
-]: CompactPlace): Place {
+const placeFromV1 = ([name, id, stopName, walk, , latitude, longitude]: CompactPlaceV1) =>
+  [name, id, stopName, walk, latitude, longitude] satisfies CompactPlace
+
+function fromV1([id, name, first, second, lines]: CompactRouteV1): CompactRoute {
+  return [id, name, placeFromV1(first), placeFromV1(second), lines, Math.max(first[4], second[4])]
+}
+
+function expandPlace([name, id, stopName, walk, latitude, longitude]: CompactPlace): Place {
   const coordinates = latitude !== null && longitude !== null ? { latitude, longitude } : undefined
   return {
     name,
     stop: { id, name: stopName, ...(coordinates && { coordinates }) },
     walk: walk * MINUTE,
-    reserve: reserve * MINUTE,
   }
 }
 
-function expand([id, name, first, second, lines]: CompactRoute): Route {
+function expand([id, name, first, second, lines, buffer]: CompactRoute): Route {
   return {
     id,
     name,
     places: [expandPlace(first), expandPlace(second)],
+    buffer: buffer * MINUTE,
     preferredLines: lines.map(([line, mode]): PreferredLine => ({
       name: line,
       mode: MODES[mode] ?? 'other',
@@ -142,8 +151,14 @@ export class CompressedRouteCodec implements RouteCodec {
     }
     try {
       const json = await decompress(fromBase64Url(code), MAX_CONTENT_BYTES)
-      const [, ...routes] = v.parse(ShareSchema, JSON.parse(json))
-      return routes.map(expand)
+      const data: unknown = JSON.parse(json)
+      const current = v.safeParse(ShareSchema, data)
+      if (current.success) {
+        const [, ...routes] = current.output
+        return routes.map(expand)
+      }
+      const [, ...routes] = v.parse(ShareV1Schema, data)
+      return routes.map((route) => expand(fromV1(route)))
     } catch (error) {
       throw new InvalidShareCodeError('The share code is damaged or incomplete.', { cause: error })
     }

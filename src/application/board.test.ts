@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
 
-import { at, home, journey, morningCommute, office, ride, walk } from '@/test/builders'
+import { at, commute, journey, morningCommute, ride, walk } from '@/test/builders'
 
 import { buildBoard, nextLeaveAt } from './board'
 
-const endpoints = { origin: home, destination: office }
+const endpoints = commute
 const preferredLines = ['S1', '20']
 
 /** S1 to Central, then tram 9, which is not a preferred line. */

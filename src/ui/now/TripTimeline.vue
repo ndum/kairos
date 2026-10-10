@@ -25,11 +25,11 @@ const props = defineProps<{ trip: Trip; ends: Endpoints }>()
 const { t } = useI18n()
 const format = useFormat()
 
-const steps = computed(() => stepsOf(props.trip, props.ends.origin, props.ends.destination))
+const steps = computed(() => stepsOf(props.trip, props.ends))
 const rides = computed(() => ridesOf(props.trip.journey))
 
 const walkToStop = computed(() => format.minutes(props.trip.departureAt - props.trip.latestLeaveAt))
-const reserve = computed(() => format.minutes(props.trip.latestLeaveAt - props.trip.leaveAt))
+const buffer = computed(() => format.minutes(props.trip.latestLeaveAt - props.trip.leaveAt))
 const walkFromStop = computed(() => {
   const last = rides.value.at(-1)
   return last ? format.minutes(props.trip.arrivalAt - expectedTime(last.arrival)) : 0
@@ -46,10 +46,10 @@ const leaveDetail = computed(() => {
   const values = {
     minutes: walkToStop.value,
     stop: rides.value[0]?.departure.stop.name ?? '',
-    reserve: reserve.value,
+    buffer: buffer.value,
   }
-  return reserve.value > 0
-    ? t('now.journey.walkToWithReserve', values)
+  return buffer.value > 0
+    ? t('now.journey.walkToWithBuffer', values)
     : t('now.journey.walkTo', values)
 })
 </script>

@@ -28,19 +28,20 @@ export const PLAN_LIMIT = 6
 
 /**
  * Plans trips for one direction of a route. Times refer to the places, so walking times and
- * the reserve are taken into account before asking the timetable.
+ * the buffer are taken into account before asking the timetable.
  */
 export async function planTrips(
   timetable: TimetablePort,
-  { origin, destination }: Endpoints,
+  ends: Endpoints,
   preferredLines: readonly string[],
   request: PlanRequest,
   signal?: AbortSignal,
 ): Promise<Plan> {
+  const { origin, destination, buffer } = ends
   const between = { from: origin.stop, to: destination.stop, limit: PLAN_LIMIT }
   const query: JourneyQuery =
     request.mode === 'depart'
-      ? { ...between, at: request.at + origin.walk + origin.reserve }
+      ? { ...between, at: request.at + origin.walk + buffer }
       : { ...between, at: request.at - destination.walk, arriveBy: true }
 
   const fits = (trip: Trip): boolean =>
@@ -48,7 +49,7 @@ export async function planTrips(
 
   const journeys = await timetable.findJourneys(query, signal)
   const trips = journeys
-    .map((journey) => planTrip(journey, origin, destination))
+    .map((journey) => planTrip(journey, ends))
     .filter((trip) => trip !== null)
     .filter(fits)
 

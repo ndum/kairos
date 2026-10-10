@@ -165,12 +165,14 @@ function submit(): void {
           v-if="current === 'origin'"
           key="origin"
           v-model="form.places[0]"
+          end="origin"
           :errors="attempted ? errors.places[0] : {}"
         />
         <PlaceStep
           v-else-if="current === 'destination'"
           key="destination"
           v-model="form.places[1]"
+          end="destination"
           :errors="attempted ? errors.places[1] : {}"
           :other-name="form.places[0].name"
         />
@@ -178,6 +180,7 @@ function submit(): void {
           v-else-if="form.places[0].stop && form.places[1].stop"
           key="lines"
           v-model:lines="form.preferredLines"
+          v-model:buffer="form.buffer"
           v-model:name="form.name"
           :stops="[form.places[0].stop, form.places[1].stop]"
           :name-error="attempted ? errors.name : undefined"

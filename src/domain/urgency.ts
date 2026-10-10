@@ -5,7 +5,7 @@ import type { Trip } from './trip'
  * How pressing it is to leave for a trip:
  * - relaxed: more than five minutes until the leave time
  * - soon: five minutes or less
- * - tight: only reachable without the reserve
+ * - tight: only reachable without the buffer
  * - missed: no longer reachable
  */
 export type Urgency = 'relaxed' | 'soon' | 'tight' | 'missed'
@@ -18,5 +18,5 @@ export function urgencyOf(trip: Pick<Trip, 'leaveAt' | 'latestLeaveAt'>, now: In
   return trip.leaveAt - now <= SOON_THRESHOLD ? 'soon' : 'relaxed'
 }
 
-export const isReachableWithReserve = (urgency: Urgency): boolean =>
+export const isReachableWithBuffer = (urgency: Urgency): boolean =>
   urgency === 'relaxed' || urgency === 'soon'

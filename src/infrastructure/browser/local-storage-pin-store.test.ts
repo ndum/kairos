@@ -2,12 +2,12 @@ import { describe, expect, it } from 'vitest'
 
 import { pinTrip } from '@/application/pinned-trip'
 import { planTrip } from '@/domain/trip'
-import { home, morningCommute, office, route } from '@/test/builders'
+import { commute, morningCommute, route } from '@/test/builders'
 import { MemoryStorage } from '@/test/fakes'
 
 import { LocalStoragePinStore } from './local-storage-pin-store'
 
-const trip = planTrip(morningCommute('07:20', { delay: 3, platform: '2' }), home, office)
+const trip = planTrip(morningCommute('07:20', { delay: 3, platform: '2' }), commute)
 if (!trip) throw new Error('Expected a trip')
 const pinned = pinTrip(route('commute'), 'return', trip)
 

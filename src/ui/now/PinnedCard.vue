@@ -42,13 +42,13 @@ const unsubscribe = monitor.subscribe((next) => {
 })
 watch(
   [() => props.pinned, ends],
-  ([pinned, { origin, destination }]) => {
+  ([pinned, current]) => {
     monitor.watch({
-      from: origin.stop,
-      to: destination.stop,
+      from: current.origin.stop,
+      to: current.destination.stop,
       at: pinned.departureAt - 5 * MINUTE,
       nextLeaveAt: (journeys) =>
-        planTrip(currentJourney(pinned, journeys), origin, destination)?.leaveAt ?? null,
+        planTrip(currentJourney(pinned, journeys), current)?.leaveAt ?? null,
     })
   },
   { immediate: true },
@@ -59,11 +59,7 @@ onScopeDispose(() => {
 })
 
 const trip = computed(() =>
-  planTrip(
-    currentJourney(props.pinned, snapshot.value.journeys),
-    ends.value.origin,
-    ends.value.destination,
-  ),
+  planTrip(currentJourney(props.pinned, snapshot.value.journeys), ends.value),
 )
 const missed = computed(() => (trip.value ? urgencyOf(trip.value, props.now) === 'missed' : true))
 const countdown = computed(() => (trip.value ? countdownTo(trip.value.leaveAt, props.now) : null))

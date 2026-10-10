@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest'
 
 import type { Leg } from '@/domain/journey'
-import { at, home, journey, morningCommute, ride, walk, office } from '@/test/builders'
+import { at, commute, journey, morningCommute, ride, walk } from '@/test/builders'
 
 import { distinctByFirstDeparture, selectTrips, withoutSlowerTrips } from './selection'
 import { type Trip, planTrip } from './trip'
 
 const tripAt = (departure: string): Trip => {
-  const trip = planTrip(morningCommute(departure), home, office)
+  const trip = planTrip(morningCommute(departure), commute)
   if (!trip) throw new Error('Expected a trip')
   return trip
 }
@@ -17,7 +17,7 @@ const departures = (trips: readonly Trip[]) => trips.map((trip) => trip.departur
 describe('selectTrips', () => {
   const trips = [tripAt('07:29'), tripAt('06:59'), tripAt('07:35'), tripAt('07:05')]
 
-  it('picks the first trip reachable with the reserve and the next two', () => {
+  it('picks the first trip reachable with the buffer and the next two', () => {
     const selection = selectTrips(trips, at('06:40'))
 
     expect(selection.main?.departureAt).toBe(at('06:59'))
@@ -25,7 +25,7 @@ describe('selectTrips', () => {
     expect(selection.tight).toBeNull()
   })
 
-  it('reports an earlier trip that is only reachable without the reserve', () => {
+  it('reports an earlier trip that is only reachable without the buffer', () => {
     const selection = selectTrips(trips, at('06:50'))
 
     expect(selection.tight?.departureAt).toBe(at('06:59'))
@@ -58,8 +58,7 @@ describe('distinctByFirstDeparture', () => {
         ride('S1', 'Riverside', '07:05', 'Central', '07:14'),
         walk('Central', 'Market Square', 17),
       ),
-      home,
-      office,
+      commute,
     )
     if (!onFoot) throw new Error('Expected a trip')
 
@@ -72,7 +71,7 @@ describe('distinctByFirstDeparture', () => {
 
 describe('withoutSlowerTrips', () => {
   const trip = (...legs: Leg[]): Trip => {
-    const planned = planTrip(journey(...legs), home, office)
+    const planned = planTrip(journey(...legs), commute)
     if (!planned) throw new Error('Expected a trip')
     return planned
   }

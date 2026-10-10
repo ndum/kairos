@@ -1,5 +1,5 @@
 import { type Journey, delayOf, expectedTime, isRide, walkingTime } from './journey'
-import type { Place } from './route'
+import type { Endpoints } from './route'
 import { type Duration, type Instant, minutes } from './time'
 
 /**
@@ -11,9 +11,9 @@ export const DELAY_THRESHOLD: Duration = minutes(2)
 /** A journey evaluated from the origin place to the destination place. */
 export interface Trip {
   readonly journey: Journey
-  /** Leaving at this time keeps the full reserve. */
+  /** Leaving at this time keeps the full buffer. */
   readonly leaveAt: Instant
-  /** Leaving at this time uses up the whole reserve. */
+  /** Leaving at this time uses up the whole buffer. */
   readonly latestLeaveAt: Instant
   /** Departure of the first vehicle, including a relevant delay. */
   readonly departureAt: Instant
@@ -24,7 +24,10 @@ export interface Trip {
 }
 
 /** Returns null for journeys without any vehicle, which are no transit options. */
-export function planTrip(journey: Journey, origin: Place, destination: Place): Trip | null {
+export function planTrip(
+  journey: Journey,
+  { origin, destination, buffer }: Endpoints,
+): Trip | null {
   const firstRideIndex = journey.legs.findIndex(isRide)
   const lastRideIndex = journey.legs.findLastIndex(isRide)
   const firstRide = journey.legs[firstRideIndex]
@@ -40,7 +43,7 @@ export function planTrip(journey: Journey, origin: Place, destination: Place): T
 
   return {
     journey,
-    leaveAt: latestLeaveAt - origin.reserve,
+    leaveAt: latestLeaveAt - buffer,
     latestLeaveAt,
     departureAt,
     arrivalAt: expectedTime(lastRide.arrival) + walkFromLastRide,

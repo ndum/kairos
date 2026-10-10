@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { NAME_MAX_LENGTH } from '@/domain/route-rules'
+import { minutes } from '@/domain/time'
 import { busLine, home, office, route, stop, trainLine } from '@/test/builders'
 
 import {
@@ -18,9 +19,10 @@ const commute = route('commute', 'Commute', [home, office], [trainLine('S1'), bu
 const filled = (): RouteForm => ({
   name: 'Commute',
   places: [
-    { name: 'Home', stop: stop('Riverside'), walk: 8, reserve: 3 },
-    { name: 'Office', stop: stop('Market Square'), walk: 5, reserve: 3 },
+    { name: 'Home', stop: stop('Riverside'), walk: 8 },
+    { name: 'Office', stop: stop('Market Square'), walk: 5 },
   ],
+  buffer: 3,
   preferredLines: [trainLine('S1'), busLine('20')],
 })
 
@@ -32,8 +34,13 @@ describe('formOf and draftOf', () => {
     expect(draftOf(form)).toEqual({
       name: 'Commute',
       places: [home, office],
+      buffer: minutes(3),
       preferredLines: [trainLine('S1'), busLine('20')],
     })
+  })
+
+  it('start a new route with a buffer of three minutes', () => {
+    expect(emptyForm().buffer).toBe(3)
   })
 
   it('keep the position of a place', () => {

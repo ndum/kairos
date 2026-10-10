@@ -1,7 +1,7 @@
 import { type Journey, type TransportMode, ridesOf } from './journey'
 import type { Instant } from './time'
 import type { Trip } from './trip'
-import { isReachableWithReserve, urgencyOf } from './urgency'
+import { isReachableWithBuffer, urgencyOf } from './urgency'
 
 /** Compares line names regardless of case and surrounding spaces. */
 export const lineKey = (lineName: string): string => lineName.trim().toUpperCase()
@@ -42,7 +42,7 @@ export function noteworthyAlternative(
   now: Instant,
 ): Trip | null {
   const candidates = alternatives
-    .filter((trip) => !isCancelled(trip) && isReachableWithReserve(urgencyOf(trip, now)))
+    .filter((trip) => !isCancelled(trip) && isReachableWithBuffer(urgencyOf(trip, now)))
     .filter((trip) => !main || isCancelled(main) || trip.arrivalAt < main.arrivalAt)
     .sort((a, b) => a.arrivalAt - b.arrivalAt)
 
