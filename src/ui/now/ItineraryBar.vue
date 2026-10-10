@@ -40,52 +40,38 @@ const tone = (mode: TransportMode): string => {
 <style scoped>
 .bar {
   display: flex;
-  height: clamp(2.75rem, 4.5vw, 4.5rem);
-  gap: 4px;
+  height: 1.75rem;
+  gap: 3px;
+  font-size: 0.75rem;
 }
 
 .segment {
   display: flex;
-  min-width: 1.25rem;
+  min-width: 1rem;
   flex-basis: 0;
   align-items: center;
   justify-content: center;
-  gap: 0.35em;
+  gap: 0.3em;
   overflow: hidden;
-  border-radius: 0.75rem;
-  font-weight: 700;
+  border-radius: 0.5rem;
+  font-weight: 650;
   white-space: nowrap;
 }
 
-.segment:first-child {
-  border-radius: 9999px 0.75rem 0.75rem 9999px;
-}
-
-.segment:last-child {
-  border-radius: 0.75rem 9999px 9999px 0.75rem;
-}
-
 .walk {
-  background:
-    radial-gradient(circle, var(--color-walk) 0 1.6px, transparent 2.2px) 0 50% / 11px 100% repeat-x,
-    var(--color-glass-soft);
-  color: var(--color-ink-muted);
+  background: var(--color-buffer);
+  color: var(--color-ink-subtle);
 }
 
 .buffer,
 .wait {
-  background:
-    repeating-linear-gradient(135deg, var(--color-buffer) 0 4px, transparent 4px 9px),
-    var(--color-glass-soft);
+  background: repeating-linear-gradient(135deg, var(--color-buffer) 0 4px, transparent 4px 8px);
 }
 
 .ride {
-  min-width: 3.25rem;
-  padding-inline: 0.5em;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--tone) 72%, #fff), var(--tone) 70%);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.45),
-    0 10px 24px -12px var(--tone);
+  min-width: 2.75rem;
+  padding-inline: 0.4em;
+  background: var(--tone);
   color: var(--color-on-vehicle);
 }
 
@@ -99,5 +85,17 @@ const tone = (mode: TransportMode): string => {
 
 .other {
   --tone: var(--color-walk);
+}
+
+@media (min-width: 900px) {
+  .bar {
+    height: 2.125rem;
+    gap: 4px;
+    font-size: 0.8125rem;
+  }
+
+  .segment {
+    border-radius: 0.625rem;
+  }
 }
 </style>

@@ -20,8 +20,8 @@ const headingId = useId()
 </script>
 
 <template>
-  <GlassCard tag="section" :lift="false" :aria-labelledby="headingId" class="flex flex-col gap-2">
-    <h2 :id="headingId" class="text-xl font-semibold tracking-tight">
+  <GlassCard tag="section" :aria-labelledby="headingId" class="upcoming flex flex-col">
+    <h2 :id="headingId" class="mb-1.5 px-2.5 text-lg font-semibold min-[900px]:text-xl">
       {{ t('now.upcoming.title') }}
     </h2>
     <ol v-if="trips.length > 0">
@@ -29,74 +29,92 @@ const headingId = useId()
         <button type="button" class="option" @click="emit('details', trip)">
           <span class="leave">
             <span class="sr-only">{{ t('now.leaveAt') }}</span>
-            {{ format.time(trip.leaveAt) }}
-          </span>
-          <span class="grid min-w-0 gap-1">
-            <span class="flex flex-wrap gap-1.5">
-              <LineBadge
-                v-for="ride in ridesOf(trip.journey)"
-                :key="`${ride.line.name}@${ride.departure.scheduledAt}`"
-                :name="ride.line.name"
-                :mode="ride.line.mode"
-              />
-            </span>
-            <span class="text-sm text-ink-muted">
-              {{
-                t('now.upcoming.times', {
-                  departure: format.time(trip.departureAt),
-                  arrival: format.time(trip.arrivalAt),
-                })
-              }}
+            <span class="time">{{ format.time(trip.leaveAt) }}</span>
+            <span class="text-xs text-ink-subtle" aria-hidden="true">
+              {{ t('now.upcoming.leave') }}
             </span>
           </span>
-          <IconChevronRight aria-hidden="true" class="chevron" />
+          <span class="flex min-w-0 flex-1 flex-wrap gap-1.5">
+            <LineBadge
+              v-for="ride in ridesOf(trip.journey)"
+              :key="`${ride.line.name}@${ride.departure.scheduledAt}`"
+              :name="ride.line.name"
+              :mode="ride.line.mode"
+            />
+          </span>
+          <span class="text-sm whitespace-nowrap text-ink-muted">
+            {{ t('now.upcoming.arrival', { time: format.time(trip.arrivalAt) }) }}
+          </span>
+          <IconChevronRight aria-hidden="true" class="flex-none text-ink-subtle" />
           <span class="sr-only">{{ t('now.upcoming.details') }}</span>
         </button>
       </li>
     </ol>
-    <p v-else class="text-ink-muted">{{ t('now.upcoming.empty') }}</p>
+    <p v-else class="px-2.5 pb-3 text-ink-muted">{{ t('now.upcoming.empty') }}</p>
   </GlassCard>
 </template>
 
 <style scoped>
-li + li {
-  border-top: 1px solid var(--color-hairline);
+.upcoming {
+  padding: 1rem 0.625rem 0.5rem;
+}
+
+/* A fine line between the trips, which leaves the rows their full width to react on. */
+li + li::before {
+  display: block;
+  height: 1px;
+  margin-inline: 0.5rem;
+  background: var(--color-hairline);
+  content: '';
 }
 
 /* The whole row opens the details, so it reacts like a button across its full width. */
 .option {
-  display: grid;
+  display: flex;
   width: 100%;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  min-height: 3.5rem;
   align-items: center;
-  gap: 0.5rem 1rem;
-  margin-inline: -0.5rem;
+  gap: 0.75rem;
   border-radius: 0.875rem;
-  padding: 0.85rem 0.5rem;
-  box-sizing: content-box;
-  cursor: pointer;
+  padding: 0.5rem 0.625rem;
   text-align: left;
   transition: background-color 0.2s;
 }
 
 .option:hover {
-  background: var(--color-glass-soft);
-}
-
-.option:focus-visible {
-  outline: 2px solid var(--color-train);
-  outline-offset: 2px;
+  background: var(--color-press);
 }
 
 .leave {
-  font-size: 1.75rem;
-  font-variant-numeric: tabular-nums;
-  font-weight: 250;
-  letter-spacing: -0.04em;
+  display: flex;
+  width: 3.875rem;
+  flex: none;
+  flex-direction: column;
 }
 
-.chevron {
-  color: var(--color-ink-subtle);
-  font-size: 1.25rem;
+.time {
+  font-size: 1.375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+@media (min-width: 900px) {
+  .upcoming {
+    padding: 1.25rem 0.875rem 0.625rem;
+  }
+
+  .option {
+    min-height: 3.75rem;
+    gap: 0.875rem;
+  }
+
+  .leave {
+    width: 4.125rem;
+  }
+
+  .time {
+    font-size: 1.5rem;
+  }
 }
 </style>

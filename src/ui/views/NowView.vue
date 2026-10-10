@@ -76,7 +76,7 @@ watchEffect(() => {
           :selected="choice.route.value.id"
           @select="choice.select"
         />
-        <p v-else class="text-2xl font-bold tracking-tight">{{ choice.route.value.name }}</p>
+        <p v-else class="title">{{ choice.route.value.name }}</p>
       </template>
     </NowBoard>
   </div>
@@ -95,3 +95,18 @@ watchEffect(() => {
     <LinkImportDialog v-if="linkImport.used.value" v-model:open="linkImport.open.value" />
   </template>
 </template>
+
+<style scoped>
+.title {
+  font-size: 1.375rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+@media (min-width: 900px) {
+  .title {
+    font-size: 2.125rem;
+    letter-spacing: -0.02em;
+  }
+}
+</style>

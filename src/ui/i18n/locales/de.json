@@ -72,7 +72,10 @@
       "trainNumber": "Zug {number}",
       "stopovers": "keine Zwischenhalte | 1 Zwischenhalt | {count} Zwischenhalte",
       "transferWithWalk": "{walk} Min. Fussweg, {time}",
-      "walkFrom": "{minutes} Min. Fussweg ab {stop}"
+      "walkFrom": "{minutes} Min. Fussweg ab {stop}",
+      "summary": "{minutes} Min., {transfers}",
+      "transfers": "ohne Umsteigen | 1 Umstieg | {count} Umstiege",
+      "allStops": "Alle Halte und Gleise"
     },
     "risk": {
       "tight": "Anschluss knapp",
@@ -82,7 +85,9 @@
       "title": "Danach",
       "empty": "Keine weiteren Verbindungen.",
       "times": "ab {departure}, an {arrival}",
-      "details": "Details anzeigen"
+      "details": "Details anzeigen",
+      "leave": "losgehen",
+      "arrival": "an {time}"
     },
     "live": {
       "loading": "Lädt",
@@ -95,6 +100,11 @@
     "pinned": {
       "label": "Gemerkte Fahrt",
       "missed": "Diese Fahrt ist nicht mehr erreichbar."
+    },
+    "at": "um",
+    "arrivalAt": "Ankunft {place}",
+    "opposite": {
+      "next": "Nächste: losgehen {leave}, an {arrival}"
     }
   },
   "plan": {
@@ -129,7 +139,8 @@
     "unpin": "Nicht mehr merken",
     "pinnedToast": "Fahrt gemerkt. Ihr Countdown erscheint unter «Jetzt».",
     "sheet": {
-      "title": "Losgehen um {time}"
+      "title": "Losgehen um {time}",
+      "summary": "{leave} bis {arrival}, {minutes} Min., {transfers}"
     }
   },
   "routes": {
@@ -327,7 +338,7 @@
     "open": "Einstellungen",
     "title": "Einstellungen",
     "theme": {
-      "label": "Darstellung",
+      "label": "Erscheinungsbild",
       "auto": "Automatisch",
       "light": "Hell",
       "dark": "Dunkel"
@@ -338,19 +349,26 @@
     },
     "motion": {
       "label": "Bewegung reduzieren",
-      "hint": "Die Landschaft bleibt still, Übergänge und Animationen entfallen."
+      "hint": "Die Landschaft steht still."
     },
     "location": {
       "label": "Richtung nach Standort",
-      "hint": "Kairos zeigt zuerst die Richtung, die an deinem Standort beginnt. Der Standort bleibt auf diesem Gerät.",
+      "hint": "Kairos zeigt zuerst die Richtung ab deinem Standort.",
       "denied": "Kairos hat keinen Zugriff auf den Standort. Erlaube ihn in den Einstellungen des Geräts, auf dem iPhone unter Datenschutz & Sicherheit > Ortungsdienste > Safari-Websites.",
       "unavailable": "Der Standort ist gerade nicht verfügbar. Kairos sucht ihn bei jedem Öffnen wieder und zeigt bis dahin die Richtung nach Uhrzeit."
     },
     "awake": {
       "label": "Bildschirm wach halten",
-      "hint": "Solange die Ansicht «Jetzt» offen ist, schaltet sich der Bildschirm nicht aus.",
+      "hint": "Solange «Jetzt» offen ist.",
       "unsupported": "Dieser Browser kann den Bildschirm nicht wach halten."
-    }
+    },
+    "groups": {
+      "appearance": "Darstellung",
+      "travel": "Unterwegs"
+    },
+    "version": "Version",
+    "source": "Quellcode",
+    "privacy": "Fahrplandaten: opentransportdata.swiss. Routen und Einstellungen bleiben auf diesem Gerät."
   },
   "update": {
     "available": "Eine neue Version von Kairos ist bereit.",

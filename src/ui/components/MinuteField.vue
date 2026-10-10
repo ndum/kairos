@@ -39,7 +39,7 @@ function enter(event: Event): void {
     <div class="flex items-center gap-2">
       <button
         type="button"
-        class="stepper glass"
+        class="stepper"
         :aria-label="t('field.lessMinutes', { label })"
         :disabled="model <= 0"
         @click="step(-1)"
@@ -66,7 +66,7 @@ function enter(event: Event): void {
       </div>
       <button
         type="button"
-        class="stepper glass"
+        class="stepper"
         :aria-label="t('field.moreMinutes', { label })"
         :disabled="model >= max"
         @click="step(1)"
@@ -81,16 +81,23 @@ function enter(event: Event): void {
 <style scoped>
 .stepper {
   display: grid;
-  width: 3rem;
-  height: 3rem;
+  width: 2.75rem;
+  height: 2.75rem;
   flex: none;
   place-items: center;
+  border: 1px solid var(--color-hairline);
   border-radius: var(--radius-inner);
+  background: var(--color-card);
   color: var(--color-ink);
   font-size: 1.25rem;
   transition:
     transform 0.2s,
+    background-color 0.2s,
     opacity 0.2s;
+}
+
+.stepper:not(:disabled):hover {
+  background: var(--color-press);
 }
 
 .stepper:active {

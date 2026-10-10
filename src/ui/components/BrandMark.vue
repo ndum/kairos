@@ -7,19 +7,17 @@
 </template>
 
 <style scoped>
-.brand-mark {
-  filter: drop-shadow(0 6px 14px rgb(20 22 58 / 0.25));
-}
+/* A white tile on the sky, in both appearances. */
 .tile {
-  fill: var(--color-ink);
+  fill: #ffffff;
 }
 .letter {
   fill: none;
-  stroke: var(--color-scene-sky-2);
+  stroke: #3f52d4;
   stroke-width: 3;
   stroke-linecap: round;
 }
 .pivot {
-  fill: var(--color-soon);
+  fill: #e08a2c;
 }
 </style>

@@ -48,7 +48,7 @@ test.describe('at work in the morning', () => {
 
     const hero = page.getByRole('region', { name: /Arbeit nach Zuhause Losgehen/ })
     await expect(hero).toContainText('Keine Verbindung in den nächsten Stunden.')
-    await expect(hero).toContainText('Richtung nach Standort')
+    await expect(page.getByRole('main').getByText('Richtung nach Standort')).toBeVisible()
   })
 })
 
@@ -62,6 +62,6 @@ test('shows the other direction and switches to it', async ({ page }) => {
     'Keine Verbindung in den nächsten Stunden.',
   )
   await expect(page.getByRole('region', { name: /Zuhause nach Arbeit/ })).toContainText(
-    'Losgehen in',
+    'Nächste: losgehen',
   )
 })

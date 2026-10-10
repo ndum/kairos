@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useId } from 'vue'
+import { type Component, useId } from 'vue'
 
-// A checkbox with the switch role, which screen readers announce as on or off.
+// A row of a settings list with a checkbox in the role of a switch, which screen readers
+// announce as on or off. The whole row toggles it.
 
 const props = defineProps<{
   label: string
@@ -9,6 +10,9 @@ const props = defineProps<{
   error?: string
   modelValue: boolean
   disabled?: boolean
+  icon?: Component
+  /** Colour of the icon tile, one per group of settings. */
+  tone?: 1 | 2 | 3
 }>()
 
 const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>()
@@ -27,12 +31,19 @@ function request(event: Event): void {
 </script>
 
 <template>
-  <div class="flex items-start justify-between gap-4">
-    <div class="flex flex-col gap-1">
-      <label :for="id" class="font-semibold">{{ label }}</label>
-      <p v-if="hint" :id="`${id}-hint`" class="text-sm text-pretty text-ink-subtle">{{ hint }}</p>
-      <p v-if="error" :id="`${id}-error`" class="text-sm font-medium text-late">{{ error }}</p>
-    </div>
+  <label class="setting-row" :class="{ disabled }">
+    <span v-if="icon" class="setting-tile" :class="`tone-${tone ?? 1}`" aria-hidden="true">
+      <component :is="icon" />
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+      <span :id="`${id}-label`" class="font-medium">{{ label }}</span>
+      <span v-if="hint" :id="`${id}-hint`" class="text-sm text-pretty text-ink-subtle">
+        {{ hint }}
+      </span>
+      <span v-if="error" :id="`${id}-error`" class="text-sm font-medium text-late">
+        {{ error }}
+      </span>
+    </span>
     <input
       :id
       type="checkbox"
@@ -40,39 +51,39 @@ function request(event: Event): void {
       class="switch"
       :checked="modelValue"
       :disabled
+      :aria-labelledby="`${id}-label`"
       :aria-describedby="
         [hint && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(' ') || undefined
       "
       @change="request"
     />
-  </div>
+  </label>
 </template>
 
 <style scoped>
 .switch {
   position: relative;
-  width: 3.25rem;
-  height: 2rem;
+  width: 3.1875rem;
+  height: 1.9375rem;
   flex: none;
   cursor: pointer;
   appearance: none;
   border-radius: 9999px;
-  background: var(--color-buffer);
-  box-shadow: inset 0 0 0 1px var(--color-hairline);
-  transition: background-color 0.25s;
+  background: var(--color-track);
+  transition: background-color 0.2s;
 }
 
 .switch::before {
   position: absolute;
-  top: 0.25rem;
-  left: 0.25rem;
-  width: 1.5rem;
-  height: 1.5rem;
+  top: 2px;
+  left: 2px;
+  width: 1.6875rem;
+  height: 1.6875rem;
   border-radius: 50%;
   background: #ffffff;
-  box-shadow: 0 2px 6px rgb(0 0 0 / 0.25);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.2);
   content: '';
-  transition: translate 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: translate 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .switch:checked {
@@ -83,13 +94,17 @@ function request(event: Event): void {
   translate: 1.25rem 0;
 }
 
-.switch:disabled {
-  cursor: wait;
-  opacity: 0.6;
+.switch:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
 }
 
-.switch:focus-visible {
-  outline: 2px solid var(--color-train);
-  outline-offset: 3px;
+.disabled {
+  cursor: default;
+}
+
+.disabled .switch {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 </style>

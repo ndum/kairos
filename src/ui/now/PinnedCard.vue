@@ -66,7 +66,7 @@ const countdown = computed(() => (trip.value ? countdownTo(trip.value.leaveAt, p
 </script>
 
 <template>
-  <GlassCard tag="section" :lift="false" :aria-labelledby="headingId" class="pinned-card">
+  <GlassCard tag="section" :aria-labelledby="headingId" class="pinned-card">
     <div class="flex flex-wrap items-center gap-2.5">
       <h2 :id="headingId" class="flex items-center gap-1.5 font-semibold">
         <IconPinned aria-hidden="true" />

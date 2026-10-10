@@ -122,7 +122,7 @@ test('opens the details of the next trip back', async () => {
 
   await screen
     .getByRole('region', { name: /Office nach Home/ })
-    .getByRole('button', { name: 'Details' })
+    .getByRole('button', { name: /Nächste: losgehen/ })
     .click()
 
   const sheet = screen.getByRole('dialog', { name: 'Losgehen um 07:22' })
@@ -158,9 +158,14 @@ test('switches to the other direction', async () => {
   await screen.getByRole('button', { name: 'Richtung wechseln' }).click()
 
   await expect.element(screen.getByRole('region', { name: /Office nach Home/ })).toBeVisible()
+  await expect.element(screen.getByRole('region', { name: /Home nach Office/ })).toBeVisible()
   await expect
-    .element(screen.getByRole('region', { name: /Home nach Office/ }))
-    .toMatchTextContent(/Richtung wechseln/)
+    .element(
+      screen
+        .getByRole('region', { name: /Home nach Office/ })
+        .getByRole('button', { name: 'Richtung wechseln' }),
+    )
+    .toBeVisible()
 })
 
 const atOffice = { latitude: 47.5635, longitude: 7.5996 }
@@ -181,7 +186,7 @@ test('starts with the direction from the place the device is at', async () => {
   // In the morning the board would start at home, but the device is at the office.
   const hero = screen.getByRole('region', { name: /Office nach Home/ })
   await expect.element(hero).toMatchTextContent(/Losgehen/)
-  await expect.element(hero.getByText('Richtung nach Standort')).toBeVisible()
+  await expect.element(screen.getByText('Richtung nach Standort')).toBeVisible()
   await expect.element(screen.getByRole('button', { name: 'Richtung wechseln' })).toBeVisible()
 })
 
@@ -194,9 +199,9 @@ test('tells when the position is missing and the time of day decides', async () 
     location: { kind: 'unavailable' },
   })
 
-  const hero = screen.getByRole('region', { name: /Home nach Office/ })
+  await expect.element(screen.getByRole('region', { name: /Home nach Office/ })).toBeVisible()
   await expect
-    .element(hero.getByText('Standort nicht gefunden, Richtung nach Uhrzeit'))
+    .element(screen.getByText('Standort nicht gefunden, Richtung nach Uhrzeit'))
     .toBeVisible()
 })
 
@@ -205,7 +210,7 @@ test('says nothing about the direction while the location is off', async () => {
 
   const hero = screen.getByRole('region', { name: /Home nach Office/ })
   await expect.element(hero).toMatchTextContent(/Losgehen/)
-  expect(hero.getByText(/Richtung nach/).query()).toBeNull()
+  expect(screen.getByText(/Richtung nach/).query()).toBeNull()
 })
 
 test('offers to try again when the timetable cannot be reached', async () => {
