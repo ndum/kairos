@@ -25,36 +25,41 @@ describe('StopSearch', () => {
     const { search, searchStops } = setup()
     const signal = new AbortController().signal
 
-    expect(await search.find('  Bern   Bahnhof ', signal)).toEqual([stop('Bern Bahnhof Station')])
-    expect(searchStops).toHaveBeenCalledWith('Bern Bahnhof', signal)
+    expect(await search.find('  Basel   Bahnhof ', signal)).toEqual([stop('Basel Bahnhof Station')])
+    expect(searchStops).toHaveBeenCalledWith('Basel Bahnhof', signal)
   })
 
   it('answers repeated searches from memory, regardless of case', async () => {
     const { search, searchStops } = setup()
 
-    await search.find('Thun')
-    expect(await search.find('thun ')).toEqual([stop('Thun Station')])
+    await search.find('Liestal')
+    expect(await search.find('liestal ')).toEqual([stop('Liestal Station')])
     expect(searchStops).toHaveBeenCalledOnce()
   })
 
   it('forgets the oldest searches first', async () => {
     const { search, searchStops } = setup(2)
 
-    await search.find('Bern')
-    await search.find('Thun')
-    await search.find('Bern')
-    await search.find('Spiez')
-    await search.find('Bern')
-    await search.find('Thun')
+    await search.find('Basel')
+    await search.find('Liestal')
+    await search.find('Basel')
+    await search.find('Pratteln')
+    await search.find('Basel')
+    await search.find('Liestal')
 
-    expect(searchStops.mock.calls.map(([text]) => text)).toEqual(['Bern', 'Thun', 'Spiez', 'Thun'])
+    expect(searchStops.mock.calls.map(([text]) => text)).toEqual([
+      'Basel',
+      'Liestal',
+      'Pratteln',
+      'Liestal',
+    ])
   })
 
   it('does not remember failed searches', async () => {
     const { search, searchStops } = setup()
     searchStops.mockRejectedValueOnce(new Error('Offline'))
 
-    await expect(search.find('Bern')).rejects.toThrow('Offline')
-    expect(await search.find('Bern')).toEqual([stop('Bern Station')])
+    await expect(search.find('Basel')).rejects.toThrow('Offline')
+    expect(await search.find('Basel')).toEqual([stop('Basel Station')])
   })
 })
