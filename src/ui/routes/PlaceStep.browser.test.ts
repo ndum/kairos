@@ -15,7 +15,7 @@ const Harness = defineComponent(() => {
   ]
 })
 
-const position = { latitude: 46.802, longitude: 7.503 }
+const position = { latitude: 47.4861, longitude: 7.7302 }
 
 afterEach(() => {
   localStorage.clear()

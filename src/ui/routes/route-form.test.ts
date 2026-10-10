@@ -44,7 +44,7 @@ describe('formOf and draftOf', () => {
   })
 
   it('keep the position of a place', () => {
-    const position = { latitude: 46.8, longitude: 7.5 }
+    const position = { latitude: 47.4845, longitude: 7.7314 }
     const located = route('commute', 'Commute', [{ ...home, coordinates: position }, office])
 
     expect(formOf(located).places[0].coordinates).toEqual(position)

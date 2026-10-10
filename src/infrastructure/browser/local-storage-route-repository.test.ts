@@ -8,7 +8,7 @@ import { LocalStorageRouteRepository } from './local-storage-route-repository'
 
 const commute = route('commute', 'Commute', [home, office], [trainLine('S1'), busLine('20')])
 const training = route('training', 'Training', [
-  { ...home, coordinates: { latitude: 46.8, longitude: 7.5 } },
+  { ...home, coordinates: { latitude: 47.4845, longitude: 7.7314 } },
   gym,
 ])
 

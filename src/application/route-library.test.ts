@@ -149,7 +149,7 @@ describe('RouteLibrary', () => {
   })
 
   it('forgets the position of a place whose stop changes', () => {
-    const position = { latitude: 46.8, longitude: 7.5 }
+    const position = { latitude: 47.4845, longitude: 7.7314 }
     const located = route('training', 'Training', [{ ...home, coordinates: position }, gym])
     const { library } = setup([located])
 
@@ -159,7 +159,7 @@ describe('RouteLibrary', () => {
   })
 
   it('keeps the position of a place whose stop stays the same', () => {
-    const position = { latitude: 46.8, longitude: 7.5 }
+    const position = { latitude: 47.4845, longitude: 7.7314 }
     const located = route('training', 'Training', [{ ...home, coordinates: position }, gym])
     const { library } = setup([located])
 

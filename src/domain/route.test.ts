@@ -38,8 +38,8 @@ describe('oppositeDirection', () => {
 })
 
 describe('positionOf', () => {
-  const stopPosition = { latitude: 46.8, longitude: 7.5 }
-  const placePosition = { latitude: 46.802, longitude: 7.503 }
+  const stopPosition = { latitude: 47.4845, longitude: 7.7314 }
+  const placePosition = { latitude: 47.4861, longitude: 7.7302 }
 
   it('prefers the position of the place', () => {
     const place = {

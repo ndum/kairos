@@ -4,7 +4,7 @@ import { busLine, gym, home, office, route, trainLine } from '@/test/builders'
 
 import { forSharing, planImport } from './route-sharing'
 
-const position = { latitude: 46.8, longitude: 7.5 }
+const position = { latitude: 47.4845, longitude: 7.7314 }
 const commute = route(
   'commute',
   'Commute',
