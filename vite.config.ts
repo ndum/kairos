@@ -11,8 +11,8 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 import { contentSecurityPolicy } from './scripts/vite-plugin-csp.ts'
 
-// KAIROS_BASE is set by the deployment workflows: /kairos/ for GitHub Pages and a
-// sub-path per pull request for previews. Local builds are served from the root.
+// The app is served from the root of its own domain. Only the previews of pull requests
+// set KAIROS_BASE to their sub-path.
 const { version } = JSON.parse(
   readFileSync(new URL('./package.json', import.meta.url), 'utf8'),
 ) as { version: string }

@@ -10,7 +10,7 @@ test('opens the import for a pasted link', async () => {
 
   await userEvent.fill(
     screen.getByRole('textbox', { name: 'Link' }),
-    'https://ndum.github.io/kairos/#/import?r=abc-123',
+    'https://kairos.ndum.ch/#/import?r=abc-123',
   )
   await screen.getByRole('button', { name: 'Weiter' }).click()
 

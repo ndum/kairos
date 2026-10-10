@@ -1,10 +1,10 @@
 # Kairos
 
-Kairos tells you when to leave the house to catch your train, bus or tram. It is a progressive web app for daily commuters in Switzerland: you set up the way between two places once, and from then on the app counts down the minutes until you have to walk out of the door, based on live timetable data, the walk to your stop and a small buffer.
+Kairos tells you when to leave the house to catch your train, bus or tram. It is a progressive web app for daily commuters in Switzerland: you set up the way between two places once, and from then on the app counts down the minutes until you have to walk out of the door, based on live timetable data, the walk to your stop and a small buffer. It runs at [kairos.ndum.ch](https://kairos.ndum.ch/).
 
 [![CI](https://github.com/ndum/kairos/actions/workflows/ci.yml/badge.svg)](https://github.com/ndum/kairos/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/ndum/kairos/actions/workflows/codeql.yml/badge.svg)](https://github.com/ndum/kairos/actions/workflows/codeql.yml)
-[![Coverage](https://img.shields.io/endpoint?url=https%3A%2F%2Fndum.github.io%2Fkairos%2Fbadges%2Fcoverage.json)](https://github.com/ndum/kairos/actions/workflows/pages.yml)
+[![Coverage](https://img.shields.io/endpoint?url=https%3A%2F%2Fkairos.ndum.ch%2Fbadges%2Fcoverage.json)](https://github.com/ndum/kairos/actions/workflows/pages.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ## What it does
@@ -198,7 +198,7 @@ Every pull request runs linting, formatting and type checks, unit tests with at 
 
 ## Deployment
 
-Pushes to `main` are published to [ndum.github.io/kairos](https://ndum.github.io/kairos/), together with the coverage figure behind the badge above. Every pull request gets a preview under `ndum.github.io/kairos/pr-preview/pr-<number>/`, which is removed when the pull request is closed. The build consists of static files only and can be served from any web server.
+Pushes to `main` are published with GitHub Pages to [kairos.ndum.ch](https://kairos.ndum.ch/), together with the coverage figure behind the badge above. Every pull request gets a preview under `kairos.ndum.ch/pr-preview/pr-<number>/`, which is removed when the pull request is closed. The build consists of static files only and can be served from the root of any web server; `public/CNAME` names the domain for GitHub Pages.
 
 ## Contributing
 
