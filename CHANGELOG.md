@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.1.0](https://github.com/ndum/kairos/compare/v1.0.0...v1.1.0) (2026-10-10)
+
+
+### Features
+
+* always suggest the fastest trip ([#16](https://github.com/ndum/kairos/issues/16)) ([fa778fe](https://github.com/ndum/kairos/commit/fa778fe8b13de45aa2f1e7d2b1902b66ea39b6f8))
+* find places by address and suggest the stops nearby ([#18](https://github.com/ndum/kairos/issues/18)) ([e2e9e6f](https://github.com/ndum/kairos/commit/e2e9e6f49fa0024b6600ea054cbdbcd0f42a0507))
+* keep one buffer per route instead of a reserve per place ([fa778fe](https://github.com/ndum/kairos/commit/fa778fe8b13de45aa2f1e7d2b1902b66ea39b6f8))
+* **ui:** credit swisstopo and OpenStreetMap below the place search ([9d1e830](https://github.com/ndum/kairos/commit/9d1e830ccd6e4c3b2fd162f169c217f4a21fbb2c))
+* **ui:** offer variants of the connection and edit routes on one page ([e2e9e6f](https://github.com/ndum/kairos/commit/e2e9e6f49fa0024b6600ea054cbdbcd0f42a0507))
+* **ui:** open the details of every trip on the board ([fa778fe](https://github.com/ndum/kairos/commit/fa778fe8b13de45aa2f1e7d2b1902b66ea39b6f8))
+* **ui:** open the settings and the trip details at the side of large screens ([04af6b9](https://github.com/ndum/kairos/commit/04af6b934f641f822f7997f07ca23d5ad1948798))
+* **ui:** prefer the lines of a trip from its details ([e2e9e6f](https://github.com/ndum/kairos/commit/e2e9e6f49fa0024b6600ea054cbdbcd0f42a0507))
+* **ui:** rework the look after the refined Alpenglühen design ([#20](https://github.com/ndum/kairos/issues/20)) ([04af6b9](https://github.com/ndum/kairos/commit/04af6b934f641f822f7997f07ca23d5ad1948798))
+* **ui:** show the route as a title that unfolds a list of all routes ([04af6b9](https://github.com/ndum/kairos/commit/04af6b934f641f822f7997f07ca23d5ad1948798))
+
+
+### Bug Fixes
+
+* **infrastructure:** drop the zeros in front of train numbers in lines ([fa778fe](https://github.com/ndum/kairos/commit/fa778fe8b13de45aa2f1e7d2b1902b66ea39b6f8))
+* keep the direction by location working in the installed app ([fa778fe](https://github.com/ndum/kairos/commit/fa778fe8b13de45aa2f1e7d2b1902b66ea39b6f8))
+* **ui:** show the route to edit right after the editor for a new route ([e2e9e6f](https://github.com/ndum/kairos/commit/e2e9e6f49fa0024b6600ea054cbdbcd0f42a0507))
+
+
+### Documentation
+
+* describe version 1.1 and add a coverage badge ([#19](https://github.com/ndum/kairos/issues/19)) ([9d1e830](https://github.com/ndum/kairos/commit/9d1e830ccd6e4c3b2fd162f169c217f4a21fbb2c))
+
 ## 1.0.0 (2026-10-10)
 
 
