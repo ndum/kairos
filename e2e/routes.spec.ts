@@ -61,13 +61,15 @@ test('sets up a first route with the assistant', async ({ page }) => {
   await expect(page.getByText('Passt zu 4 von 12 Verbindungen.')).toBeVisible()
   await page.getByRole('button', { name: 'Route speichern' }).click()
 
+  await expect(page.getByRole('heading', { name: '«Zuhause ↔ Arbeit» ist bereit' })).toBeVisible()
+  await page.getByRole('button', { name: 'Zu «Jetzt»' }).click()
+  await expect(page.getByRole('region', { name: /Zuhause nach Arbeit/ })).toBeVisible()
+
+  await page.reload()
+  await page.getByRole('link', { name: 'Routen' }).click()
   const card = page.getByRole('article', { name: 'Zuhause ↔ Arbeit' })
   await expect(card).toBeVisible()
   await expect(card.getByText('Basel, Messeplatz')).toBeVisible()
-  await expect(page.getByText('«Zuhause ↔ Arbeit» gespeichert.')).toBeVisible()
-
-  await page.reload()
-  await expect(card).toBeVisible()
 })
 
 test('finds the stops near an address', async ({ page }) => {

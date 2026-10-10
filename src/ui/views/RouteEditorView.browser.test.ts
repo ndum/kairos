@@ -1,4 +1,4 @@
-import { expect, test } from 'vitest'
+import { afterEach, expect, test } from 'vitest'
 import { userEvent } from 'vitest/browser'
 
 import type { TimetablePort } from '@/application/ports/timetable'
@@ -7,6 +7,10 @@ import { busLine, home, journey, morningCommute, office, ride, route, stop } fro
 import { renderWithApp } from '@/test/render'
 
 import RouteEditorView from './RouteEditorView.vue'
+
+afterEach(() => {
+  localStorage.clear()
+})
 
 const homeward = journey(
   ride('9', 'Market Square', '17:02', 'Riverside', '17:20', { mode: 'tram' }),
@@ -72,7 +76,27 @@ test('creates a route in three steps', async () => {
       ],
     },
   ])
-  await expect.poll(() => screen.router.currentRoute.value.name).toBe('routes')
+  await expect
+    .element(screen.getByRole('heading', { name: '«Zuhause ↔ Arbeit» ist bereit' }))
+    .toHaveFocus()
+  await screen.getByRole('button', { name: 'Zu «Jetzt»' }).click()
+  await expect.poll(() => screen.router.currentRoute.value.name).toBe('now')
+  expect(localStorage.getItem('kairos:route')).toBe('route-1')
+})
+
+test('starts over for another route right after saving one', async () => {
+  const screen = await renderWithApp(RouteEditorView, { path: '/routes/new', timetable })
+
+  await choosePlace(screen, 'Zuhause', 'River', 'Riverside')
+  await screen.getByRole('button', { name: 'Weiter' }).click()
+  await choosePlace(screen, 'Arbeit', 'Market', 'Market Square')
+  await screen.getByRole('button', { name: 'Weiter' }).click()
+  await screen.getByRole('button', { name: 'Route speichern' }).click()
+  await screen.getByRole('button', { name: 'Weitere Route anlegen' }).click()
+
+  await expect.element(screen.getByRole('heading', { name: 'Wo startest du?' })).toHaveFocus()
+  await expect.element(screen.getByRole('textbox', { name: 'Name des Ortes' })).toHaveValue('')
+  expect(screen.repository.routes).toHaveLength(1)
 })
 
 test('lets the user pick own lines one by one', async () => {

@@ -272,6 +272,13 @@
     "buffer": {
       "label": "Buffer when leaving",
       "hint": "Kairos plans this much extra time in both directions. An earlier connection that only works without the buffer appears as a hint."
+    },
+    "created": {
+      "title": "“{name}” is ready",
+      "text": "From now on, “Now” tells you when to leave. For another trip, to the gym for example, just add another route.",
+      "now": "Go to “Now”",
+      "another": "Add another route",
+      "routes": "Go to routes"
     }
   },
   "placeField": {
