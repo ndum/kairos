@@ -1,0 +1,206 @@
+{
+  "_AppDialog-_7-8kIQl.css": {
+    "file": "assets/AppDialog-_7-8kIQl.css",
+    "src": "_AppDialog-_7-8kIQl.css"
+  },
+  "_AppDialog-qdylU3zk.js": {
+    "file": "assets/AppDialog-qdylU3zk.js",
+    "name": "AppDialog",
+    "imports": [
+      "_vendor-BUbyPFoq.js",
+      "index.html"
+    ],
+    "css": [
+      "assets/AppDialog-_7-8kIQl.css"
+    ]
+  },
+  "_TextField-Lfkskai1.js": {
+    "file": "assets/TextField-Lfkskai1.js",
+    "name": "TextField",
+    "imports": [
+      "_vendor-BUbyPFoq.js"
+    ]
+  },
+  "_check-DVddWV6T.js": {
+    "file": "assets/check-DVddWV6T.js",
+    "name": "check",
+    "imports": [
+      "_vendor-BUbyPFoq.js"
+    ]
+  },
+  "_map-pin-SSBtuTYs.js": {
+    "file": "assets/map-pin-SSBtuTYs.js",
+    "name": "map-pin",
+    "imports": [
+      "_vendor-BUbyPFoq.js"
+    ]
+  },
+  "_route-sharing-BGZwgDl_.js": {
+    "file": "assets/route-sharing-BGZwgDl_.js",
+    "name": "route-sharing",
+    "imports": [
+      "index.html"
+    ]
+  },
+  "_vendor-BUbyPFoq.js": {
+    "file": "assets/vendor-BUbyPFoq.js",
+    "name": "vendor"
+  },
+  "index.html": {
+    "file": "assets/index-BOtxSk5g.js",
+    "name": "index",
+    "src": "index.html",
+    "isEntry": true,
+    "imports": [
+      "_vendor-BUbyPFoq.js"
+    ],
+    "dynamicImports": [
+      "src/ui/settings/SettingsDialog.vue",
+      "src/ui/routes/LinkImportDialog.vue",
+      "src/ui/views/RouteEditorView.vue",
+      "src/ui/views/PlanView.vue",
+      "src/ui/views/RoutesView.vue",
+      "src/ui/views/ImportView.vue"
+    ],
+    "css": [
+      "assets/index-w2YVi_3y.css"
+    ],
+    "assets": [
+      "assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2",
+      "assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2",
+      "assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2",
+      "assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2",
+      "assets/geist-latin-wght-normal-BgDaEnEv.woff2"
+    ]
+  },
+  "node_modules/@fontsource-variable/geist/files/geist-cyrillic-ext-wght-normal.woff2": {
+    "file": "assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2",
+    "src": "node_modules/@fontsource-variable/geist/files/geist-cyrillic-ext-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/geist/files/geist-cyrillic-wght-normal.woff2": {
+    "file": "assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2",
+    "src": "node_modules/@fontsource-variable/geist/files/geist-cyrillic-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/geist/files/geist-latin-ext-wght-normal.woff2": {
+    "file": "assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2",
+    "src": "node_modules/@fontsource-variable/geist/files/geist-latin-ext-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2": {
+    "file": "assets/geist-latin-wght-normal-BgDaEnEv.woff2",
+    "src": "node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/geist/files/geist-vietnamese-wght-normal.woff2": {
+    "file": "assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2",
+    "src": "node_modules/@fontsource-variable/geist/files/geist-vietnamese-wght-normal.woff2"
+  },
+  "node_modules/lean-qr/nano.mjs": {
+    "file": "assets/nano-C8_guy7z.js",
+    "name": "nano",
+    "src": "node_modules/lean-qr/nano.mjs",
+    "isDynamicEntry": true
+  },
+  "src/ui/routes/LinkImportDialog.vue": {
+    "file": "assets/LinkImportDialog-L5xpDQz7.js",
+    "name": "LinkImportDialog",
+    "src": "src/ui/routes/LinkImportDialog.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-BUbyPFoq.js",
+      "index.html",
+      "_AppDialog-qdylU3zk.js",
+      "_TextField-Lfkskai1.js"
+    ]
+  },
+  "src/ui/routes/ShareDialog.vue": {
+    "file": "assets/ShareDialog-Cjhl5oyT.js",
+    "name": "ShareDialog",
+    "src": "src/ui/routes/ShareDialog.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-BUbyPFoq.js",
+      "index.html",
+      "_AppDialog-qdylU3zk.js",
+      "_check-DVddWV6T.js",
+      "_route-sharing-BGZwgDl_.js",
+      "src/ui/views/RoutesView.vue"
+    ],
+    "dynamicImports": [
+      "node_modules/lean-qr/nano.mjs"
+    ],
+    "css": [
+      "assets/ShareDialog-kjP24Pte.css"
+    ]
+  },
+  "src/ui/settings/SettingsDialog.vue": {
+    "file": "assets/SettingsDialog-q0cGHv4D.js",
+    "name": "SettingsDialog",
+    "src": "src/ui/settings/SettingsDialog.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-BUbyPFoq.js",
+      "index.html",
+      "_AppDialog-qdylU3zk.js"
+    ],
+    "css": [
+      "assets/SettingsDialog-CQvf2d8M.css"
+    ]
+  },
+  "src/ui/views/ImportView.vue": {
+    "file": "assets/ImportView-Ci3wCPfn.js",
+    "name": "ImportView",
+    "src": "src/ui/views/ImportView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-BUbyPFoq.js",
+      "index.html",
+      "_route-sharing-BGZwgDl_.js"
+    ],
+    "css": [
+      "assets/ImportView-BraybiLa.css"
+    ]
+  },
+  "src/ui/views/PlanView.vue": {
+    "file": "assets/PlanView-1Pg1JixC.js",
+    "name": "PlanView",
+    "src": "src/ui/views/PlanView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-BUbyPFoq.js",
+      "index.html"
+    ]
+  },
+  "src/ui/views/RouteEditorView.vue": {
+    "file": "assets/RouteEditorView-CmYmDnml.js",
+    "name": "RouteEditorView",
+    "src": "src/ui/views/RouteEditorView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-BUbyPFoq.js",
+      "index.html",
+      "_TextField-Lfkskai1.js",
+      "_check-DVddWV6T.js",
+      "_map-pin-SSBtuTYs.js"
+    ],
+    "css": [
+      "assets/RouteEditorView-DwchChzP.css"
+    ]
+  },
+  "src/ui/views/RoutesView.vue": {
+    "file": "assets/RoutesView-og9_oozA.js",
+    "name": "RoutesView",
+    "src": "src/ui/views/RoutesView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-BUbyPFoq.js",
+      "index.html",
+      "_map-pin-SSBtuTYs.js"
+    ],
+    "dynamicImports": [
+      "src/ui/routes/ShareDialog.vue",
+      "src/ui/routes/LinkImportDialog.vue"
+    ],
+    "css": [
+      "assets/RoutesView-OOjSf2jC.css"
+    ]
+  }
+}
