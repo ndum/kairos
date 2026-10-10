@@ -44,6 +44,10 @@ test('explains when the browser refuses the location', async () => {
   await expect.element(screen.getByText(/keinen Zugriff auf den Standort/)).toBeVisible()
   await expect.element(toggle).not.toBeChecked()
   expect(localStorage.getItem('kairos:location')).toBe('false')
+
+  await screen.getByRole('button', { name: /Sprache/ }).click()
+  await screen.getByRole('radio', { name: 'English' }).click()
+  await expect.element(screen.getByText(/no access to your location/)).toBeVisible()
 })
 
 test('keeps the location on when the position cannot be found yet', async () => {

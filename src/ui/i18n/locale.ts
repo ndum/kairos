@@ -1,4 +1,4 @@
-export const LOCALES = ['de', 'en'] as const
+export const LOCALES = ['de', 'en', 'fr', 'it'] as const
 export type Locale = (typeof LOCALES)[number]
 
 export const DEFAULT_LOCALE: Locale = 'de'
@@ -24,5 +24,5 @@ export function detectLocale(preferences: readonly string[]): Locale {
 export const resolveLocale = (preference: string | null, languages: readonly string[]): Locale =>
   isLocale(preference) ? preference : detectLocale(languages)
 
-/** Formats numbers and times with Swiss conventions in both languages. */
+/** Formats numbers and times with Swiss conventions in every language. */
 export const formattingLocale = (locale: string): string => `${locale}-CH`

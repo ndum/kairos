@@ -13,6 +13,8 @@ type LoadedLater = Exclude<Locale, 'de'>
 
 const loaders: Record<LoadedLater, () => Promise<MessageSchema>> = {
   en: () => import('./locales/en.json').then((module) => module.default),
+  fr: () => import('./locales/fr.json').then((module) => module.default),
+  it: () => import('./locales/it.json').then((module) => module.default),
 }
 
 const loadsLater = (locale: Locale): locale is LoadedLater => locale in loaders

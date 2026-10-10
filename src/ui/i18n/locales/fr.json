@@ -1,0 +1,465 @@
+{
+  "app": {
+    "name": "Kairos",
+    "tagline": "Quand partir, à la minute près.",
+    "skip": "Aller au contenu"
+  },
+  "nav": {
+    "label": "Navigation principale",
+    "now": "Maintenant",
+    "plan": "Planifier",
+    "routes": "Trajets"
+  },
+  "now": {
+    "empty": {
+      "title": "Aucun trajet pour l’instant",
+      "text": "Crée un trajet entre deux lieux, par exemple de la maison au travail. Kairos te montre ensuite quand partir.",
+      "action": "Créer un trajet"
+    },
+    "title": "Maintenant",
+    "routeChoice": "Trajet",
+    "to": "vers",
+    "leaveIn": "Partir dans",
+    "leave": "Partir",
+    "leaveAt": "Partir à",
+    "minutesUnit": "min",
+    "now": "maintenant",
+    "urgency": {
+      "relaxed": "Bien le temps",
+      "soon": "Bientôt",
+      "tight": "Juste",
+      "missed": "Manqué"
+    },
+    "from": "depuis {stop}",
+    "departure": "Départ",
+    "arrival": "Arrivée",
+    "delay": "{minutes} min de retard",
+    "delayShort": "+{minutes}",
+    "platform": {
+      "track": "voie {platform}",
+      "bay": "quai {platform}",
+      "instead": "au lieu de {platform}"
+    },
+    "alternative": {
+      "faster": "Plus rapide avec",
+      "details": "partir à {leave}, arrivée {arrival}"
+    },
+    "tight": {
+      "minutes": "Encore possible sans marge : départ {time}, partir dans {minutes} min.",
+      "now": "Encore possible sans marge : départ {time}, pars tout de suite."
+    },
+    "loading": "Chargement des liaisons …",
+    "unavailable": "L’horaire n’est pas joignable pour le moment.",
+    "retry": "Réessayer",
+    "noTrips": "Aucune liaison dans les prochaines heures.",
+    "swap": "Changer de sens",
+    "directionNote": {
+      "location": "Sens selon la position",
+      "time": "Sens selon l’heure",
+      "locating": "Recherche de la position …",
+      "denied": "Pas d’accès à la position, sens selon l’heure",
+      "unavailable": "Position introuvable, sens selon l’heure",
+      "schedule": "Sens selon l’emploi du temps"
+    },
+    "journey": {
+      "title": "Ta liaison",
+      "walkTo": "{minutes} min à pied jusqu’à {stop}",
+      "walkToWithBuffer": "{minutes} min à pied jusqu’à {stop}, {buffer} min de marge",
+      "towards": "direction {headsign}",
+      "from": "depuis {stop}",
+      "until": "jusqu’à {stop}, arrivée {time}",
+      "transfer": "Changement à {stop}",
+      "transferTime": "pas de temps pour changer | 1 min pour changer | {count} min pour changer",
+      "trainNumber": "Train {number}",
+      "stopovers": "aucun arrêt intermédiaire | 1 arrêt intermédiaire | {count} arrêts intermédiaires",
+      "transferWithWalk": "{walk} min à pied, {time}",
+      "walkFrom": "{minutes} min à pied depuis {stop}",
+      "summary": "{minutes} min, {transfers}",
+      "transfers": "sans changement | 1 changement | {count} changements",
+      "allStops": "Tous les arrêts et voies"
+    },
+    "risk": {
+      "tight": "Correspondance serrée",
+      "broken": "Correspondance manquée"
+    },
+    "upcoming": {
+      "title": "Ensuite",
+      "empty": "Pas d’autre liaison.",
+      "times": "départ {departure}, arrivée {arrival}",
+      "details": "Afficher les détails",
+      "leave": "partir",
+      "arrival": "arrivée {time}",
+      "earlier": "Plus tôt"
+    },
+    "live": {
+      "loading": "Chargement",
+      "live": "En direct",
+      "stale": "Hors ligne",
+      "error": "Hors ligne",
+      "updated": "Mis à jour à {time}",
+      "refresh": "Actualiser maintenant"
+    },
+    "pinned": {
+      "label": "Course épinglée",
+      "missed": "Cette course n’est plus atteignable."
+    },
+    "at": "à",
+    "arrivalAt": "Arrivée {place}",
+    "opposite": {
+      "next": "Prochaine : partir à {leave}, arrivée {arrival}"
+    },
+    "tab": {
+      "minutes": "Partir dans {minutes} min",
+      "now": "Partir maintenant",
+      "at": "Partir à {time}"
+    },
+    "schedule": {
+      "inTime": "À temps pour {time}",
+      "late": "Trop tard pour {time}",
+      "returnFrom": "Retour dès {time}"
+    },
+    "weather": {
+      "label": "Météo au départ : {sky}, {temperature} degrés",
+      "sky": {
+        "clear": "dégagé",
+        "cloudy": "nuageux",
+        "fog": "brouillard",
+        "drizzle": "bruine",
+        "rain": "pluie",
+        "snow": "neige",
+        "thunder": "orage"
+      },
+      "wet": {
+        "rain": {
+          "to-stop": "Vers {time}, il pleut sur le chemin jusqu’à l’arrêt.",
+          "from-stop": "Vers {time}, il pleut sur le chemin depuis {stop}."
+        },
+        "snow": {
+          "to-stop": "Vers {time}, il neige sur le chemin jusqu’à l’arrêt.",
+          "from-stop": "Vers {time}, il neige sur le chemin depuis {stop}."
+        }
+      }
+    }
+  },
+  "plan": {
+    "empty": {
+      "title": "Crée d’abord un trajet",
+      "text": "Dès que tu as créé un trajet, tu planifies ici tes courses selon l’heure d’arrivée ou de départ.",
+      "action": "Vers les trajets"
+    },
+    "title": "Planifier",
+    "direction": "Sens",
+    "mode": {
+      "label": "Heure",
+      "depart": "Départ dès",
+      "arrive": "Arrivée avant"
+    },
+    "date": "Date",
+    "time": "Heure",
+    "now": "Maintenant",
+    "results": "Liaisons",
+    "loading": "Recherche des liaisons …",
+    "failed": "Les liaisons n’ont pas pu être chargées.",
+    "retry": "Réessayer",
+    "none": "Aucune liaison ne convient. Essaie une autre heure.",
+    "alternatives": "Avec d’autres lignes",
+    "with": "avec {lines}",
+    "recommended": "Recommandée",
+    "pinned": "Épinglée",
+    "details": "Détails",
+    "pin": "Épingler",
+    "prefer": "Préférer ces lignes",
+    "preferredToast": "« {route} » préfère maintenant {lines}.",
+    "unpin": "Ne plus épingler",
+    "pinnedToast": "Course épinglée. Son compte à rebours apparaît sous « Maintenant ».",
+    "sheet": {
+      "title": "Partir à {time}",
+      "summary": "de {leave} à {arrival}, {minutes} min, {transfers}"
+    },
+    "share": {
+      "action": "Partager",
+      "calendar": "Ajouter au calendrier",
+      "copied": "Course copiée.",
+      "failed": "Le partage n’est pas possible ici.",
+      "leave": "Partir à {time}",
+      "ride": "{time} {line} depuis {stop}",
+      "towards": "direction {headsign}",
+      "arrival": "Arrivée {place} à {time}",
+      "reminder": "Départ pour {place}",
+      "line": {
+        "train": "{name}",
+        "tram": "Tram {name}",
+        "bus": "Bus {name}",
+        "ship": "Bateau {name}",
+        "cableway": "Téléphérique {name}",
+        "other": "{name}"
+      }
+    }
+  },
+  "routes": {
+    "title": "Trajets",
+    "add": "Nouveau trajet",
+    "empty": {
+      "title": "Tes trajets apparaîtront ici",
+      "text": "Un trajet relie deux lieux, chacun avec son arrêt et son chemin à pied.",
+      "action": "Créer un trajet"
+    },
+    "lines": "Lignes",
+    "allLines": "Toutes les lignes",
+    "walk": "{minutes} min à pied",
+    "buffer": "{minutes} min de marge",
+    "edit": "Modifier",
+    "editNamed": "Modifier « {name} »",
+    "remove": "Supprimer",
+    "removeNamed": "Supprimer « {name} »",
+    "moveUp": "Monter « {name} »",
+    "moveDown": "Descendre « {name} »",
+    "removed": "« {name} » supprimé.",
+    "undo": "Annuler",
+    "saved": "« {name} » enregistré.",
+    "notSaved": "Cet appareil ne permet pas à Kairos d’enregistrer des données pour le moment. Tes trajets ne sont conservés que jusqu’à la fermeture de Kairos.",
+    "orStop": "ou {stop}"
+  },
+  "editor": {
+    "newTitle": "Nouveau trajet",
+    "editTitle": "Modifier le trajet",
+    "notFound": {
+      "title": "Trajet introuvable",
+      "text": "Ce trajet n’existe plus. Il a peut-être été supprimé dans une autre fenêtre.",
+      "action": "Vers les trajets"
+    },
+    "steps": "Étapes",
+    "step": "Étape {current} sur {total}",
+    "stepNumber": "Étape {number} :",
+    "missingStops": "Choisis d’abord un arrêt au départ et à la destination.",
+    "cancel": "Annuler",
+    "back": "Retour",
+    "next": "Suivant",
+    "save": "Enregistrer le trajet",
+    "origin": {
+      "label": "Départ",
+      "title": "D’où pars-tu ?",
+      "text": "Par exemple de la maison. Avec l’adresse, Kairos te propose les arrêts à proximité."
+    },
+    "destination": {
+      "label": "Destination",
+      "title": "Où vas-tu ?",
+      "text": "Par exemple au travail ou à l’école. Avec l’adresse ou le nom de l’entreprise, Kairos trouve les arrêts à proximité."
+    },
+    "place": {
+      "name": "Nom du lieu",
+      "suggestions": {
+        "home": "Maison",
+        "work": "Travail",
+        "school": "École"
+      },
+      "stop": "Arrêt",
+      "stopPlaceholder": "Nom de l’arrêt",
+      "walk": {
+        "origin": "Chemin à pied jusqu’à l’arrêt",
+        "destination": "Chemin à pied depuis l’arrêt"
+      },
+      "walkHint": {
+        "origin": "De ce lieu jusqu’à l’arrêt. Au retour, il compte dans l’autre sens.",
+        "destination": "De l’arrêt jusqu’à ce lieu. Au retour, il compte dans l’autre sens."
+      },
+      "where": {
+        "label": "Adresse ou entreprise",
+        "hint": "Kairos te propose les arrêts à proximité. La position reste sur cet appareil. Seule cette recherche l’envoie à l’horaire, arrondie à environ 100 m.",
+        "placeholder": "Messeplatz 1, Basel"
+      },
+      "position": {
+        "set": "Utiliser ma position actuelle",
+        "remove": "Retirer la position",
+        "found": "Position définie.",
+        "denied": "Pas d’accès à ta position.",
+        "unavailable": "Ta position n’est pas disponible pour le moment.",
+        "removed": "Position retirée."
+      },
+      "credit": {
+        "addresses": "Adresses :",
+        "companies": "Entreprises :",
+        "osm": "© contributeurs OpenStreetMap"
+      },
+      "nearby": {
+        "label": "Arrêts à proximité",
+        "detail": "{distance}, environ {minutes} min à pied",
+        "other": "Autre arrêt",
+        "loading": "Kairos cherche les arrêts à proximité …",
+        "failed": "Les arrêts à proximité n’ont pas pu être chargés.",
+        "retry": "Réessayer",
+        "none": "Il n’y a aucun arrêt à proximité. Cherche-le par son nom."
+      },
+      "second": {
+        "add": "Ajouter un deuxième arrêt",
+        "stop": "Deuxième arrêt",
+        "hint": "Par exemple un arrêt de bus à côté de la gare. Kairos prend chaque fois la liaison qui t’amène le plus tôt.",
+        "walk": {
+          "origin": "Chemin à pied jusqu’au deuxième arrêt",
+          "destination": "Chemin à pied depuis le deuxième arrêt"
+        },
+        "remove": "Retirer le deuxième arrêt"
+      }
+    },
+    "errors": {
+      "nameMissing": "Saisis un nom.",
+      "nameTooLong": "{max} caractères au maximum.",
+      "stopMissing": "Choisis un arrêt dans la liste.",
+      "stopSame": "Choisis un autre arrêt qu’au départ.",
+      "returnBeforeArrival": "Le retour commence avant l’arrivée.",
+      "secondStopSame": "Cet arrêt fait déjà partie du trajet."
+    },
+    "lines": {
+      "label": "Liaison",
+      "title": "Quelle liaison prends-tu ?",
+      "text": "Kairos te recommande chaque fois la plus rapide. Si tu préfères en prendre toujours une précise, choisis-la ici.",
+      "choice": "Liaisons",
+      "recommended": "Recommandée",
+      "fastest": {
+        "title": "Toujours la plus rapide",
+        "text": "La liaison qui arrive en premier, toutes lignes confondues."
+      },
+      "variant": "{count} sur {total} liaisons, {minutes} min de trajet",
+      "then": "puis",
+      "own": {
+        "title": "Choisir mes lignes",
+        "text": "Uniquement les liaisons sur ces lignes. Les autres apparaissent comme indication si elles sont plus rapides ou si ta ligne est supprimée."
+      },
+      "loading": "Kairos cherche les prochaines liaisons …",
+      "failed": "Les liaisons n’ont pas pu être chargées. Tu peux quand même enregistrer le trajet.",
+      "retry": "Réessayer",
+      "none": "Aucune liaison ne circule en ce moment. Sans choix, Kairos tient compte de toutes les lignes.",
+      "all": "Sans choix, Kairos tient compte de toutes les lignes.",
+      "coverage": "Correspond à {count} sur {total} liaisons.",
+      "uncovered": "Aucune des prochaines liaisons ne circule uniquement sur ces lignes. Choisis aussi les lignes sur lesquelles tu changes, par exemple le bus après le train.",
+      "journeys": "dans aucune liaison | dans une liaison | dans {count} liaisons",
+      "name": "Nom du trajet"
+    },
+    "buffer": {
+      "label": "Marge au départ",
+      "hint": "Kairos prévoit ce temps en plus, dans les deux sens. Une liaison plus tôt, possible seulement sans marge, apparaît comme indication."
+    },
+    "created": {
+      "title": "« {name} » est prêt",
+      "text": "Sous « Maintenant », tu vois désormais quand partir. Pour un autre chemin, par exemple vers le sport, crée simplement un autre trajet.",
+      "now": "Vers « Maintenant »",
+      "another": "Créer un autre trajet",
+      "routes": "Vers les trajets"
+    },
+    "schedule": {
+      "label": "Emploi du temps",
+      "hint": "Pour des heures fixes, par exemple à l’école. Ces jours-là, Kairos montre la dernière liaison qui t’amène à l’heure et, dès l’heure du retour, les liaisons du retour. Les champs vides laissent le jour comme d’habitude.",
+      "arriveBy": "Arrivée avant",
+      "returnFrom": "Retour dès",
+      "arriveByOn": "{day} : arrivée avant",
+      "returnFromOn": "{day} : retour dès",
+      "copyMonday": "Reprendre lundi pour mardi à vendredi"
+    }
+  },
+  "placeField": {
+    "noResults": "Aucune adresse ni entreprise trouvée.",
+    "failed": "La recherche n’est pas possible pour le moment. Vérifie ta connexion internet.",
+    "found": "Rien trouvé | Un lieu trouvé | {count} lieux trouvés"
+  },
+  "stopField": {
+    "noResults": "Aucun arrêt trouvé.",
+    "failed": "La recherche n’est pas possible pour le moment. Vérifie ta connexion internet.",
+    "found": "Aucun arrêt trouvé | Un arrêt trouvé | {count} arrêts trouvés"
+  },
+  "field": {
+    "inMinutes": "en minutes",
+    "minutesShort": "min",
+    "lessMinutes": "{label} : une minute de moins",
+    "moreMinutes": "{label} : une minute de plus"
+  },
+  "dialog": {
+    "close": "Fermer"
+  },
+  "share": {
+    "action": "Partager",
+    "title": "Partager les trajets",
+    "text": "Le lien ne contient aucun trajet. | Le lien contient ton trajet. | Le lien contient tes {count} trajets.",
+    "qrLabel": "Code QR avec le lien vers tes trajets",
+    "link": "Lien",
+    "copy": "Copier le lien",
+    "copied": "Lien copié",
+    "copyFailed": "La copie n’est pas possible ici. Le lien est sélectionné, tu peux le copier toi-même.",
+    "share": "Partager …",
+    "shareTitle": "Trajets pour Kairos",
+    "hint": "Scanne le code avec l’appareil photo ou ouvre le lien sur l’autre appareil. Pour l’app installée sur l’iPhone, copie le lien et colle-le dans « Trajets ». Toute personne qui a le lien voit tes trajets."
+  },
+  "linkImport": {
+    "action": "Coller un lien",
+    "emptyAction": "Reprendre par lien",
+    "title": "Reprendre des trajets par lien",
+    "text": "Colle le lien que tu as créé avec « Partager » sur un autre appareil.",
+    "field": "Lien",
+    "placeholder": "https://",
+    "submit": "Suivant",
+    "invalid": "Ce n’est pas un lien de Kairos."
+  },
+  "import": {
+    "title": "Reprendre des trajets",
+    "text": "Ces trajets ont été partagés avec toi. Les trajets que tu as déjà repris sont mis à jour.",
+    "status": {
+      "new": "Nouveau",
+      "changed": "Sera mis à jour",
+      "unchanged": "Déjà présent",
+      "invalid": "Non valable"
+    },
+    "accept": "Rien à reprendre | Reprendre le trajet | Reprendre {count} trajets",
+    "cancel": "Annuler",
+    "done": "Aucun trajet repris. | Un trajet repris. | {count} trajets repris.",
+    "invalid": {
+      "title": "Lien non valable",
+      "text": "Ce lien est endommagé ou incomplet. Demande qu’on te le renvoie.",
+      "action": "Vers les trajets"
+    }
+  },
+  "settings": {
+    "open": "Réglages",
+    "title": "Réglages",
+    "theme": {
+      "label": "Apparence",
+      "auto": "Automatique",
+      "light": "Clair",
+      "dark": "Sombre"
+    },
+    "language": {
+      "label": "Langue",
+      "auto": "Automatique"
+    },
+    "motion": {
+      "label": "Réduire les animations",
+      "hint": "Le paysage reste immobile."
+    },
+    "location": {
+      "label": "Sens selon la position",
+      "hint": "Kairos montre d’abord le sens qui part de ta position.",
+      "denied": "Kairos n’a pas accès à ta position. Autorise-la dans les réglages de l’appareil, sur l’iPhone sous Confidentialité et sécurité > Service de localisation > Sites web Safari.",
+      "unavailable": "Ta position n’est pas disponible pour le moment. Kairos la cherche à chaque ouverture et montre d’ici là le sens selon l’heure."
+    },
+    "awake": {
+      "label": "Garder l’écran allumé",
+      "hint": "Tant que « Maintenant » est ouvert.",
+      "unsupported": "Ce navigateur ne peut pas garder l’écran allumé."
+    },
+    "groups": {
+      "appearance": "Affichage",
+      "travel": "En route"
+    },
+    "version": "Version",
+    "source": "Code source",
+    "privacy": "Données horaires : opentransportdata.swiss. Météo : Open-Meteo.com. Les trajets et les réglages restent sur cet appareil.",
+    "weather": {
+      "label": "Météo",
+      "hint": "Température au départ et pluie sur les chemins à pied. Pour cela, Kairos interroge Open-Meteo avec la position approximative des arrêts."
+    }
+  },
+  "update": {
+    "available": "Une nouvelle version de Kairos est prête.",
+    "reload": "Mettre à jour"
+  },
+  "credit": "Données horaires : opentransportdata.swiss",
+  "creditWithWeather": "Données horaires : opentransportdata.swiss. Météo : Open-Meteo.com"
+}
