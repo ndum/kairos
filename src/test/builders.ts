@@ -14,6 +14,10 @@ export interface RideOptions {
   readonly arrivalDelay?: number
   readonly cancelled?: boolean
   readonly platform?: string
+  /** Stops between departure and arrival as pairs of stop name and time. */
+  readonly stopovers?: readonly (readonly [string, string])[]
+  readonly tripNumber?: string
+  readonly operator?: string
 }
 
 const event = (
@@ -44,6 +48,12 @@ export function ride(
     line: { name: lineName, mode: options.mode ?? 'train' },
     departure: event(from, departure, options.delay, options.platform),
     arrival: event(to, arrival, options.arrivalDelay ?? options.delay),
+    stopovers: (options.stopovers ?? []).map(([name, time]) => ({
+      stop: stop(name),
+      scheduledAt: at(time),
+    })),
+    tripNumber: options.tripNumber,
+    operator: options.operator,
     cancelled: options.cancelled ?? false,
   }
 }

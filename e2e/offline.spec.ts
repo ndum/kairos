@@ -1,4 +1,4 @@
-import { expect, fixture, seedRoutes, test, thunToZytglogge } from './support'
+import { expect, fixture, seedRoutes, test, liestalToMesseplatz } from './support'
 
 test.use({ serviceWorkers: 'allow' })
 
@@ -9,15 +9,15 @@ test('starts without a connection and counts down with the last known data', asy
 }) => {
   test.skip(browserName !== 'chromium', 'Playwright controls service workers in Chromium only')
 
-  await page.clock.install({ time: new Date('2026-10-12T06:44:30+02:00') })
+  await page.clock.install({ time: new Date('2026-10-19T06:44:30+02:00') })
   await page.route('https://transport.opendata.ch/v1/connections?*', (route) => {
     const from = new URL(route.request().url()).searchParams.get('from')
-    const body = from === '8507100' ? fixture('connections.json') : '{"connections":[]}'
+    const body = from === '8500023' ? fixture('connections.json') : '{"connections":[]}'
     return route.fulfill({ contentType: 'application/json', body })
   })
-  await seedRoutes(page, [thunToZytglogge])
+  await seedRoutes(page, [liestalToMesseplatz])
   const hero = page.getByRole('region', { name: /Zuhause nach Arbeit/ })
-  await expect(hero).toContainText(/Losgehen in\s*8\s*Min\./)
+  await expect(hero).toContainText(/Losgehen in\s*9\s*Min\./)
 
   // Once the service worker controls the page, it has stored the app.
   await page.evaluate(async () => {
@@ -32,6 +32,6 @@ test('starts without a connection and counts down with the last known data', asy
   await context.setOffline(true)
   await page.reload()
 
-  await expect(hero).toContainText(/Losgehen in\s*8\s*Min\./)
+  await expect(hero).toContainText(/Losgehen in\s*9\s*Min\./)
   await expect(page.getByRole('status').filter({ hasText: /^Offline$/ })).toBeAttached()
 })

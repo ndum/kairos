@@ -28,10 +28,17 @@ const CONNECTION_FIELDS = [
   'connections/sections/arrival/arrivalTimestamp',
   'connections/sections/arrival/platform',
   'connections/sections/arrival/prognosis',
+  'connections/sections/journey/name',
   'connections/sections/journey/category',
   'connections/sections/journey/number',
   'connections/sections/journey/to',
   'connections/sections/journey/operator',
+  'connections/sections/journey/passList/station/id',
+  'connections/sections/journey/passList/station/name',
+  'connections/sections/journey/passList/arrivalTimestamp',
+  'connections/sections/journey/passList/departureTimestamp',
+  'connections/sections/journey/passList/platform',
+  'connections/sections/journey/passList/delay',
   'connections/sections/walk',
 ]
 const LOCATION_FIELDS = ['stations/id', 'stations/name', 'stations/coordinate']

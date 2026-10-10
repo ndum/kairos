@@ -1,10 +1,10 @@
 import type { Page } from '@playwright/test'
 
-import { expect, seedRoutes, test, thunToZytglogge } from './support'
+import { expect, seedRoutes, test, liestalToMesseplatz } from './support'
 
 /** Shares the stored routes and returns the link, then empties the device like a new one. */
 async function shareFromFirstDevice(page: Page): Promise<string> {
-  await seedRoutes(page, [thunToZytglogge])
+  await seedRoutes(page, [liestalToMesseplatz])
   await page.getByRole('link', { name: 'Routen' }).first().click()
 
   await page.getByRole('button', { name: 'Teilen' }).click()
@@ -30,8 +30,8 @@ test('passes routes to another device by opening the link', async ({ page }) => 
 
   await expect(page.getByRole('article', { name: 'Zuhause ↔ Arbeit' })).toBeVisible()
   const routes = await page.evaluate(() => localStorage.getItem('kairos:routes') ?? '')
-  expect(routes).toContain('Bern, Zytglogge')
-  expect(routes).not.toContain('46.7561')
+  expect(routes).toContain('Basel, Messeplatz')
+  expect(routes).not.toContain('47.4861')
 })
 
 test('passes routes to the installed app by pasting the link', async ({ page }) => {

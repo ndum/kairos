@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright'
 import type { Page } from '@playwright/test'
 
-import { expect, fixture, seedRoutes, test, thunToZytglogge } from './support'
+import { expect, fixture, seedRoutes, test, liestalToMesseplatz } from './support'
 
 /** Checks the page against WCAG 2.2 level AA and lists each violation with its elements. */
 async function violations(page: Page): Promise<string[]> {
@@ -14,10 +14,10 @@ async function violations(page: Page): Promise<string[]> {
 }
 
 test.beforeEach(async ({ page }) => {
-  await page.clock.install({ time: new Date('2026-10-12T06:44:30+02:00') })
+  await page.clock.install({ time: new Date('2026-10-19T06:44:30+02:00') })
   await page.route('https://transport.opendata.ch/v1/connections?*', (route) => {
     const from = new URL(route.request().url()).searchParams.get('from')
-    const body = from === '8507100' ? fixture('connections.json') : '{"connections":[]}'
+    const body = from === '8500023' ? fixture('connections.json') : '{"connections":[]}'
     return route.fulfill({ contentType: 'application/json', body })
   })
 })
@@ -34,14 +34,14 @@ for (const colorScheme of ['light', 'dark'] as const) {
     })
 
     test('the board is accessible', async ({ page }) => {
-      await seedRoutes(page, [thunToZytglogge])
+      await seedRoutes(page, [liestalToMesseplatz])
       await expect(page.getByRole('region', { name: 'Deine Verbindung' })).toBeVisible()
 
       expect(await violations(page)).toEqual([])
     })
 
     test('planning and its details are accessible', async ({ page }) => {
-      await seedRoutes(page, [thunToZytglogge])
+      await seedRoutes(page, [liestalToMesseplatz])
       await page.getByRole('link', { name: 'Planen' }).click()
       await expect(page.getByRole('heading', { name: 'Verbindungen' })).toBeVisible()
       expect(await violations(page)).toEqual([])
@@ -52,7 +52,7 @@ for (const colorScheme of ['light', 'dark'] as const) {
     })
 
     test('the routes, the editor and the dialogs are accessible', async ({ page }) => {
-      await seedRoutes(page, [thunToZytglogge])
+      await seedRoutes(page, [liestalToMesseplatz])
       await page.getByRole('link', { name: 'Routen' }).click()
       await expect(page.getByRole('article', { name: 'Zuhause ↔ Arbeit' })).toBeVisible()
       expect(await violations(page)).toEqual([])

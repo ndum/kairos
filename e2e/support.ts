@@ -46,34 +46,34 @@ export const fixture = (name: string): string =>
 
 const minute = 60_000
 
-/** Thun to Bern, Zytglogge: the connections in the fixture run between these stops. */
-export const thunToZytglogge = {
+/** Liestal to Basel, Messeplatz: the connections in the fixture run between these stops. */
+export const liestalToMesseplatz = {
   id: 'k3x9p2m7q4tz',
   name: 'Zuhause ↔ Arbeit',
   places: [
     {
       name: 'Zuhause',
       stop: {
-        id: '8507100',
-        name: 'Thun',
-        coordinates: { latitude: 46.75485, longitude: 7.6296 },
+        id: '8500023',
+        name: 'Liestal',
+        coordinates: { latitude: 47.48446, longitude: 7.73137 },
       },
       walk: 8 * minute,
       reserve: 3 * minute,
-      coordinates: { latitude: 46.7561, longitude: 7.6281 },
+      coordinates: { latitude: 47.4861, longitude: 7.7302 },
     },
     {
       name: 'Arbeit',
       stop: {
-        id: '8507110',
-        name: 'Bern, Zytglogge',
-        coordinates: { latitude: 46.94784, longitude: 7.4475 },
+        id: '8500899',
+        name: 'Basel, Messeplatz',
+        coordinates: { latitude: 47.56345, longitude: 7.59961 },
       },
       walk: 5 * minute,
       reserve: 3 * minute,
     },
   ],
-  preferredLines: [{ name: 'IC 61', mode: 'train' }],
+  preferredLines: [],
 }
 
 /** Stores routes like the app does and reloads, so the app starts with them. */

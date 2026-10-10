@@ -1,14 +1,94 @@
 {
   "stations": [
     {
-      "id": "8507110",
-      "name": "Bern, Zytglogge",
-      "coordinate": { "type": "WGS84", "x": 46.947838, "y": 7.447501 }
+      "id": "8500023",
+      "name": "Liestal",
+      "coordinate": {
+        "type": "WGS84",
+        "x": 47.484461,
+        "y": 7.731368
+      }
     },
     {
-      "id": "8576899",
-      "name": "Wangen a.d.Aare, Zytglogge",
-      "coordinate": { "type": "WGS84", "x": 47.234489, "y": 7.65564 }
+      "id": "8572212",
+      "name": "Liestal, Bahnhof",
+      "coordinate": {
+        "type": "WGS84",
+        "x": 47.484321,
+        "y": 7.731656
+      }
+    },
+    {
+      "id": "8578320",
+      "name": "Liestal, Törli",
+      "coordinate": {
+        "type": "WGS84",
+        "x": 47.482894,
+        "y": 7.735312
+      }
+    },
+    {
+      "id": "8510616",
+      "name": "Liestal, Gräubern",
+      "coordinate": {
+        "type": "WGS84",
+        "x": 47.476659,
+        "y": 7.745104
+      }
+    },
+    {
+      "id": "8500859",
+      "name": "Liestal, Stadion",
+      "coordinate": {
+        "type": "WGS84",
+        "x": 47.478371,
+        "y": 7.743514
+      }
+    },
+    {
+      "id": "8594336",
+      "name": "Liestal, Schildareal",
+      "coordinate": {
+        "type": "WGS84",
+        "x": 47.490057,
+        "y": 7.727281
+      }
+    },
+    {
+      "id": "8578318",
+      "name": "Liestal, Kantonsspital",
+      "coordinate": {
+        "type": "WGS84",
+        "x": 47.487168,
+        "y": 7.730524
+      }
+    },
+    {
+      "id": "8500858",
+      "name": "Liestal, Radacker",
+      "coordinate": {
+        "type": "WGS84",
+        "x": 47.493657,
+        "y": 7.72446
+      }
+    },
+    {
+      "id": "8595445",
+      "name": "Liestal, Ringwald",
+      "coordinate": {
+        "type": "WGS84",
+        "x": 47.498379,
+        "y": 7.722888
+      }
+    },
+    {
+      "id": "8572221",
+      "name": "Liestal, Oris",
+      "coordinate": {
+        "type": "WGS84",
+        "x": 47.481249,
+        "y": 7.730991
+      }
     }
   ]
 }

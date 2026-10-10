@@ -1,37 +1,41 @@
-import { expect, fixture, seedRoutes, test, thunToZytglogge } from './support'
+import { expect, fixture, liestalToMesseplatz, seedRoutes, test } from './support'
 
 test.beforeEach(async ({ page }) => {
-  // The recorded connections run on Monday, 12 October 2026, from 07:00.
-  await page.clock.install({ time: new Date('2026-10-12T06:44:30+02:00') })
+  // The recorded connections run on Monday, 19 October 2026, from 07:00.
+  await page.clock.install({ time: new Date('2026-10-19T06:44:30+02:00') })
   await page.route('https://transport.opendata.ch/v1/connections?*', (route) => {
     const from = new URL(route.request().url()).searchParams.get('from')
-    const body = from === '8507100' ? fixture('connections.json') : '{"connections":[]}'
+    const body = from === '8500023' ? fixture('connections.json') : '{"connections":[]}'
     return route.fulfill({ contentType: 'application/json', body })
   })
-  await seedRoutes(page, [thunToZytglogge])
+  await seedRoutes(page, [liestalToMesseplatz])
 })
 
 test('counts down to leaving for the next train', async ({ page }) => {
   const hero = page.getByRole('region', { name: /Zuhause nach Arbeit/ })
 
-  // The IC 61 leaves Thun at 07:04: 8 minutes on foot and 3 minutes of reserve before.
-  await expect(hero).toContainText(/Losgehen in\s*8\s*Min\./)
+  // The IR 37 leaves Liestal at 07:05: 8 minutes on foot and 3 minutes of reserve before.
+  await expect(hero).toContainText(/Losgehen in\s*9\s*Min\./)
   await expect(hero).toContainText('Genug Zeit')
-  await expect(hero).toContainText('Gleis 3')
+  await expect(hero).toContainText('Gleis 4')
   await expect(page.getByRole('region', { name: 'Deine Verbindung' })).toContainText(
     'Richtung Basel SBB',
   )
-  // With bus 19 instead of the walk at the end, the same train arrives eleven minutes earlier.
-  await expect(hero).toContainText(/Schneller mit\s*IC 61\s*19/)
 
   await page.clock.fastForward('05:00')
 
-  await expect(hero).toContainText(/Losgehen in\s*3\s*Min\./)
+  await expect(hero).toContainText(/Losgehen in\s*4\s*Min\./)
   await expect(hero).toContainText('Bald los')
+
+  // Without the reserve, the IR 37 is still in reach. The S3 at 07:10 becomes the main trip.
+  await page.clock.fastForward('06:00')
+
+  await expect(hero).toContainText(/Losgehen in\s*3\s*Min\./)
+  await expect(hero).toContainText('Ohne Reserve noch erreichbar: Abfahrt 07:05')
 })
 
 test.describe('at work in the morning', () => {
-  test.use({ geolocation: { latitude: 46.9481, longitude: 7.4469 }, permissions: ['geolocation'] })
+  test.use({ geolocation: { latitude: 47.5635, longitude: 7.5998 }, permissions: ['geolocation'] })
 
   test('starts with the way home once the location may choose the direction', async ({ page }) => {
     await expect(page.getByRole('region', { name: /Zuhause nach Arbeit Losgehen/ })).toBeVisible()

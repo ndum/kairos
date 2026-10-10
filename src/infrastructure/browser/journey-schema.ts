@@ -16,12 +16,23 @@ const LineSchema = v.object({
   headsign: v.optional(v.string()),
 })
 
+const StopoverSchema = v.object({
+  stop: StopSchema,
+  scheduledAt: v.number(),
+  expectedAt: v.optional(v.number()),
+  platform: v.optional(v.string()),
+})
+
 const LegSchema = v.variant('kind', [
   v.object({
     kind: v.literal('ride'),
     line: LineSchema,
     departure: StopEventSchema,
     arrival: StopEventSchema,
+    // Journeys stored by version 1.0 have no stopovers.
+    stopovers: v.optional(v.array(StopoverSchema), []),
+    tripNumber: v.optional(v.string()),
+    operator: v.optional(v.string()),
     cancelled: v.boolean(),
   }),
   v.object({
