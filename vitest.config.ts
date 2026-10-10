@@ -8,6 +8,8 @@ export default defineConfig((env) =>
     test: {
       coverage: {
         provider: 'v8',
+        // The summary feeds the coverage badge, see scripts/write-coverage-badge.mjs.
+        reporter: ['text', 'html', 'json-summary'],
         include: ['src/domain/**', 'src/application/**', 'src/infrastructure/**'],
         exclude: ['**/*.test.ts', '**/fixtures/**'],
         thresholds: {

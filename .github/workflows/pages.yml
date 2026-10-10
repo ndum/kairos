@@ -26,6 +26,10 @@ jobs:
       - run: npm run build
         env:
           KAIROS_BASE: /kairos/
+      - name: Coverage badge
+        run: |
+          npm run test:coverage
+          node scripts/write-coverage-badge.mjs
       - uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
