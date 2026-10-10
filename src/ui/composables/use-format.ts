@@ -29,6 +29,9 @@ export function useFormat() {
   return {
     time: (instant: Instant): string => clock.value.format(instant),
     minutes: (duration: Duration): number => Math.round(duration / MINUTE),
+    /** Names joined like in a sentence: S3 und 1. */
+    list: (names: readonly string[]): string =>
+      new Intl.ListFormat(formattingLocale(locale.value), { type: 'conjunction' }).format(names),
     /** Short distances to the ten meters, longer ones in kilometers: 120 m, 1.2 km. */
     distance: (meters: number): string =>
       meters < 1000

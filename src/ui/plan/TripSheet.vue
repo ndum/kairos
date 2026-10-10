@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import IconPinned from '~icons/tabler/pinned'
 import IconPinnedOff from '~icons/tabler/pinned-off'
+import IconStar from '~icons/tabler/star'
 
 import type { Endpoints } from '@/domain/route'
 import { transferRiskOf } from '@/domain/transfer'
@@ -21,9 +22,15 @@ import TripTimeline from '../now/TripTimeline.vue'
 
 const open = defineModel<boolean>('open', { required: true })
 
-const props = defineProps<{ trip: Trip; ends: Endpoints; pinned: boolean }>()
+const props = defineProps<{
+  trip: Trip
+  ends: Endpoints
+  pinned: boolean
+  /** Offers to prefer the lines of the trip, unless the route already does. */
+  canPrefer?: boolean
+}>()
 
-const emit = defineEmits<{ pin: []; unpin: [] }>()
+const emit = defineEmits<{ pin: []; unpin: []; prefer: [] }>()
 
 const { t } = useI18n()
 const format = useFormat()
@@ -43,14 +50,19 @@ const risk = computed(() => transferRiskOf(props.trip.journey))
     </div>
     <ItineraryBar :segments />
     <TripTimeline :trip :ends />
-    <BaseButton
-      :variant="pinned ? 'secondary' : 'primary'"
-      class="self-start"
-      @click="pinned ? emit('unpin') : emit('pin')"
-    >
-      <IconPinnedOff v-if="pinned" aria-hidden="true" />
-      <IconPinned v-else aria-hidden="true" />
-      {{ pinned ? t('plan.unpin') : t('plan.pin') }}
-    </BaseButton>
+    <div class="flex flex-wrap gap-2">
+      <BaseButton
+        :variant="pinned ? 'secondary' : 'primary'"
+        @click="pinned ? emit('unpin') : emit('pin')"
+      >
+        <IconPinnedOff v-if="pinned" aria-hidden="true" />
+        <IconPinned v-else aria-hidden="true" />
+        {{ pinned ? t('plan.unpin') : t('plan.pin') }}
+      </BaseButton>
+      <BaseButton v-if="canPrefer" variant="quiet" @click="emit('prefer')">
+        <IconStar aria-hidden="true" />
+        {{ t('plan.prefer') }}
+      </BaseButton>
+    </div>
   </AppDialog>
 </template>

@@ -90,6 +90,22 @@ test('opens the details of a later trip and pins it', async () => {
   await expect.element(screen.getByRole('region', { name: 'Gemerkte Fahrt' })).toBeVisible()
 })
 
+test('lets the route prefer the lines of a trip from its details', async () => {
+  const open = route('open', 'Commute', [home, office])
+  const screen = await renderWithApp(NowView, { routes: [open], timetable: timetable(morning) })
+
+  await screen
+    .getByRole('region', { name: 'Danach' })
+    .getByRole('button', { name: /07:24/ })
+    .click()
+  await screen.getByRole('button', { name: 'Diese Linien bevorzugen' }).click()
+
+  expect(screen.repository.routes[0]?.preferredLines).toEqual([trainLine('S1'), busLine('20')])
+  await expect
+    .element(screen.getByRole('button', { name: 'Diese Linien bevorzugen' }))
+    .not.toBeInTheDocument()
+})
+
 test('opens the details of the next trip back', async () => {
   // Back on the preferred lines, so the trip counts for the board.
   const back = journey(
