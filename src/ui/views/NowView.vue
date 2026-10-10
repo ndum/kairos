@@ -48,6 +48,8 @@ watchEffect(() => {
 </script>
 
 <template>
+  <h1 tabindex="-1" class="sr-only">{{ t('now.title') }}</h1>
+
   <div v-if="choice.route.value" class="flex flex-col gap-[clamp(0.875rem,1.3vw,2rem)]">
     <NowBoard
       :route="choice.route.value"
@@ -65,7 +67,6 @@ watchEffect(() => {
         />
       </template>
       <template #title>
-        <h1 class="sr-only">{{ t('now.title') }}</h1>
         <RouteSwitcher
           v-if="store.routes.length > 1"
           :routes="store.routes"

@@ -196,6 +196,21 @@
   }
 }
 
+/* A small glass label for text that sits on the panorama, which keeps it readable above
+   the sky and the mountains alike. */
+@utility pill {
+  display: inline-flex;
+  min-height: 2.25rem;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding-inline: 1rem;
+  background: linear-gradient(165deg, var(--color-glass), var(--color-glass-deep));
+  box-shadow: inset 0 0 0 1px var(--color-edge-faint);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
 /* Text inputs. At 16 pixels and more, Safari on the iPhone does not zoom in on focus. */
 @utility field {
   width: 100%;
