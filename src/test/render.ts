@@ -14,7 +14,7 @@ import { TripMonitor } from '@/application/trip-monitor'
 import type { Route } from '@/domain/route'
 import { ICalendarWriter } from '@/infrastructure/calendar/icalendar-writer'
 import { CompressedRouteCodec } from '@/infrastructure/sharing/compressed-route-codec'
-import { createAppI18n } from '@/ui/i18n'
+import { createAppI18n, loadLocale } from '@/ui/i18n'
 import type { Locale } from '@/ui/i18n/locale'
 import { createAppRouter } from '@/ui/router'
 import { type AppServices, servicesKey } from '@/ui/services'
@@ -93,11 +93,13 @@ export async function renderWithApp(component: Component, options: RenderOptions
   const router = createAppRouter(createMemoryHistory())
   await router.push(options.path ?? '/')
   await router.isReady()
+  const i18n = createAppI18n(options.locale ?? 'de')
+  await loadLocale(i18n.global, i18n.global.locale.value)
 
   const screen = await render(component, {
     props: options.props,
     global: {
-      plugins: [router, createPinia(), createAppI18n(options.locale ?? 'de')],
+      plugins: [router, createPinia(), i18n],
       provide: { [servicesKey as symbol]: services },
     },
   })

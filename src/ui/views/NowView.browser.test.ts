@@ -154,6 +154,25 @@ test('opens the details of the next trip back', async () => {
   await expect.element(sheet.getByText('ab Market Square')).toBeVisible()
 })
 
+test('follows the schedule of the day: the latest trip in time and the earlier ones', async () => {
+  const schooldays = {
+    ...commute,
+    schedule: [{ weekday: 1, arriveBy: 8 * 60, returnFrom: 16 * 60 + 30 }],
+  } as const
+  const screen = await renderWithApp(NowView, {
+    routes: [schooldays],
+    timetable: timetable(morning),
+  })
+  const hero = screen.getByRole('region', { name: /Home nach Office/ })
+
+  // The S1 at 07:35 arrives at the office at 07:58, the one at 07:50 would be too late.
+  await expect.element(hero).toMatchTextContent(/Losgehen in\s*24\s*Min\./)
+  await expect.element(hero.getByText('Rechtzeitig für 08:00')).toBeVisible()
+  await expect.element(screen.getByText('Richtung nach Stundenplan')).toBeVisible()
+  const earlier = screen.getByRole('region', { name: 'Früher' })
+  await expect.element(earlier.getByText('07:09')).toBeVisible()
+})
+
 test('warns about an earlier trip that is only reachable without the buffer', async () => {
   const screen = await renderWithApp(NowView, {
     routes: [commute],

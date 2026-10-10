@@ -18,6 +18,42 @@ const viaTram = (departure: string, tramArrival: string) =>
 describe('buildBoard', () => {
   const journeys = [morningCommute('06:59'), morningCommute('07:05'), morningCommute('07:29')]
 
+  describe('with a schedule', () => {
+    const schedule = [...journeys, morningCommute('07:35')]
+
+    it('starts with the latest trip that arrives in time and lists the earlier ones', () => {
+      const target = { kind: 'arrive', by: at('07:55') } as const
+      const board = buildBoard(schedule, endpoints, preferredLines, at('06:40'), target)
+
+      expect(board.main?.departureAt).toBe(at('07:29'))
+      expect(board.upcoming.map((trip) => trip.departureAt)).toEqual([at('07:05'), at('06:59')])
+      expect(board).toMatchObject({ target, late: false })
+    })
+
+    it('shows the next trips once none arrives in time any more', () => {
+      const target = { kind: 'arrive', by: at('07:30') } as const
+      const board = buildBoard(schedule, endpoints, preferredLines, at('07:20'), target)
+
+      expect(board.main?.departureAt).toBe(at('07:35'))
+      expect(board.late).toBe(true)
+    })
+
+    it('cannot tell whether the user is late without journeys', () => {
+      const target = { kind: 'arrive', by: at('07:30') } as const
+
+      expect(buildBoard([], endpoints, preferredLines, at('07:20'), target).late).toBe(false)
+    })
+
+    it('starts the way back with the first trip after the time of the schedule', () => {
+      const target = { kind: 'return', from: at('07:10') } as const
+      const board = buildBoard(schedule, endpoints, preferredLines, at('06:00'), target)
+
+      expect(board.main?.departureAt).toBe(at('07:29'))
+      expect(board.upcoming.map((trip) => trip.departureAt)).toEqual([at('07:35')])
+      expect(board.tight).toBeNull()
+    })
+  })
+
   it('picks the trip that arrives first, even when a slower one leaves earlier', () => {
     const slow = journey(ride('S1', 'Riverside', '07:05', 'Market Square', '07:45'))
     const fast = journey(ride('IR 2', 'Riverside', '07:10', 'Market Square', '07:30'))

@@ -21,12 +21,18 @@ const samePlace = (a: Place, b: Place): boolean =>
 function sameRoute(a: Route, b: Route): boolean {
   const lines = (route: Route): string =>
     route.preferredLines.map((line) => `${lineKey(line.name)}:${line.mode}`).join(',')
+  const schedule = (route: Route): string =>
+    [...(route.schedule ?? [])]
+      .sort((first, second) => first.weekday - second.weekday)
+      .map(({ weekday, arriveBy, returnFrom }) => `${weekday}:${arriveBy}-${returnFrom}`)
+      .join(',')
   return (
     a.name === b.name &&
     a.buffer === b.buffer &&
     samePlace(a.places[0], b.places[0]) &&
     samePlace(a.places[1], b.places[1]) &&
-    lines(a) === lines(b)
+    lines(a) === lines(b) &&
+    schedule(a) === schedule(b)
   )
 }
 

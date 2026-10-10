@@ -58,7 +58,8 @@
       "time": "Richtung nach Uhrzeit",
       "locating": "Standort wird gesucht …",
       "denied": "Kein Zugriff auf den Standort, Richtung nach Uhrzeit",
-      "unavailable": "Standort nicht gefunden, Richtung nach Uhrzeit"
+      "unavailable": "Standort nicht gefunden, Richtung nach Uhrzeit",
+      "schedule": "Richtung nach Stundenplan"
     },
     "journey": {
       "title": "Deine Verbindung",
@@ -87,7 +88,8 @@
       "times": "ab {departure}, an {arrival}",
       "details": "Details anzeigen",
       "leave": "losgehen",
-      "arrival": "an {time}"
+      "arrival": "an {time}",
+      "earlier": "Früher"
     },
     "live": {
       "loading": "Lädt",
@@ -105,6 +107,11 @@
     "arrivalAt": "Ankunft {place}",
     "opposite": {
       "next": "Nächste: losgehen {leave}, an {arrival}"
+    },
+    "schedule": {
+      "inTime": "Rechtzeitig für {time}",
+      "late": "Zu spät für {time}",
+      "returnFrom": "Rückweg ab {time}"
     },
     "tab": {
       "minutes": "Losgehen in {minutes} Min.",
@@ -265,7 +272,8 @@
       "nameMissing": "Gib einen Namen ein.",
       "nameTooLong": "Höchstens {max} Zeichen.",
       "stopMissing": "Wähle eine Haltestelle aus der Liste.",
-      "stopSame": "Wähle eine andere Haltestelle als beim Start."
+      "stopSame": "Wähle eine andere Haltestelle als beim Start.",
+      "returnBeforeArrival": "Der Rückweg beginnt vor der Ankunft."
     },
     "lines": {
       "label": "Verbindung",
@@ -303,6 +311,15 @@
       "now": "Zu «Jetzt»",
       "another": "Weitere Route anlegen",
       "routes": "Zu den Routen"
+    },
+    "schedule": {
+      "label": "Stundenplan",
+      "hint": "Für feste Zeiten, etwa in der Schule. An diesen Tagen zeigt Kairos die letzte Verbindung, mit der du rechtzeitig ankommst, und ab der Zeit für den Rückweg die Verbindungen zurück. Leere Felder lassen den Tag wie gewohnt.",
+      "arriveBy": "Ankunft bis",
+      "returnFrom": "Rückweg ab",
+      "arriveByOn": "{day}: Ankunft bis",
+      "returnFromOn": "{day}: Rückweg ab",
+      "copyMonday": "Montag für Dienstag bis Freitag übernehmen"
     }
   },
   "placeField": {

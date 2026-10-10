@@ -10,6 +10,7 @@ import {
   watchEffect,
 } from 'vue'
 import { useI18n } from 'vue-i18n'
+import IconCalendarTime from '~icons/tabler/calendar-time'
 import IconClock from '~icons/tabler/clock'
 import IconCurrentLocation from '~icons/tabler/current-location'
 
@@ -125,6 +126,7 @@ const canPrefer = computed(() => !!selected.value && !prefers(props.route, selec
           v-if="directionNote === 'location' || directionNote === 'locating'"
           aria-hidden="true"
         />
+        <IconCalendarTime v-else-if="directionNote === 'schedule'" aria-hidden="true" />
         <IconClock v-else aria-hidden="true" />
         {{ t(`now.directionNote.${directionNote}`) }}
       </p>
@@ -153,6 +155,7 @@ const canPrefer = computed(() => !!selected.value && !prefers(props.route, selec
     <div class="side">
       <UpcomingCard
         :trips="primary.board.value.upcoming"
+        :earlier="primary.board.value.target?.kind === 'arrive' && !primary.board.value.late"
         @details="(trip) => showDetails(trip, direction)"
       />
       <OppositeCard
