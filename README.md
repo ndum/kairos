@@ -15,7 +15,7 @@ Everything on the board is live. Delays of two minutes or more move the leave ti
 
 A route connects two places, for example home and work. You find a place by its address, by the name of a company or with your current position, and Kairos suggests the stops nearby with an estimate of the walk to each. In the last step you decide whether Kairos always takes the fastest connection, which is the default, or sticks to one of the usual variants or to lines of your choice. Once saved, a new route goes straight to the board, or you add the next one right away. Routes can be shared with a link or a QR code, which never carry the positions of the places.
 
-With access to the location, Kairos opens the board in the direction that starts where you are, and the board tells you whether the location or the time of day decided. The app installs on the iPhone Home Screen and on the desktop, starts offline with the last data it has, can keep the screen awake and comes in German and English, light and dark, built to WCAG 2.2 AA.
+With access to the location, Kairos opens the board in the direction that starts where you are, and the board tells you whether the location or the time of day decided. On a computer, the title of the tab or window counts down the minutes as well, and so does the icon of the installed app, even while other windows are in front. The app installs on the iPhone Home Screen and on the desktop, starts offline with the last data it has, can keep the screen awake and comes in German and English, light and dark, built to WCAG 2.2 AA.
 
 ## Screenshots
 

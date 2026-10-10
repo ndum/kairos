@@ -38,6 +38,7 @@ import JourneyCard from './JourneyCard.vue'
 import LiveStatus from './LiveStatus.vue'
 import OppositeCard from './OppositeCard.vue'
 import UpcomingCard from './UpcomingCard.vue'
+import { useCountdownTitle } from './use-countdown-title'
 import { useLiveBoard } from './use-live-board'
 
 const props = defineProps<{
@@ -89,6 +90,11 @@ watchEffect(() => {
   })
 })
 onUnmounted(scene.clear)
+
+useCountdownTitle(
+  computed(() => primary.board.value.main?.leaveAt ?? null),
+  now,
+)
 
 // The details of a later trip or of the next trip back, which the user may also pin.
 const pins = usePinStore()
