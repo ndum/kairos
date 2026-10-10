@@ -212,6 +212,10 @@ describe('toLine', () => {
       { name: 'IR', mode: 'train' },
     ],
     [
+      { category: 'ICE', number: '000107' },
+      { name: 'ICE 107', mode: 'train' },
+    ],
+    [
       { category: 'B', number: '80' },
       { name: '80', mode: 'bus' },
     ],

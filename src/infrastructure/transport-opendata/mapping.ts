@@ -47,7 +47,8 @@ const COMPACT_CATEGORIES = new Set(['S', 'SN'])
 
 export function toLine(journey: NonNullable<ApiSection['journey']>): Line {
   const category = journey.category?.trim().toUpperCase() ?? ''
-  const number = journey.number?.trim() ?? ''
+  // Long-distance trains carry their padded train number, for example "000107" of an ICE.
+  const number = journey.number?.trim().replace(/^0+(?=.)/, '') ?? ''
   const mode = MODES[category] ?? 'other'
 
   let name: string
