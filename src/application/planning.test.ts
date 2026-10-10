@@ -90,6 +90,17 @@ describe('planTrips', () => {
     expect(plan.alternatives).toHaveLength(1)
   })
 
+  it('leaves out trips that leave earlier but do not arrive earlier', async () => {
+    const slow = journey(ride('S1', 'Riverside', '07:05', 'Market Square', '07:45'))
+    const fast = journey(ride('IR 2', 'Riverside', '07:10', 'Market Square', '07:30'))
+    const { timetable: source } = timetable([slow, fast])
+
+    const plan = await planTrips(source, ends, [], { mode: 'depart', at: at('06:40') })
+
+    expect(plan.trips.map((trip) => trip.journey)).toEqual([fast])
+    expect(plan.recommended?.journey).toBe(fast)
+  })
+
   it('recommends nothing when no trip fits', async () => {
     const { timetable: source } = timetable([])
 

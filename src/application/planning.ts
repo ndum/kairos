@@ -1,6 +1,6 @@
 import { splitByPreference } from '@/domain/line-preference'
 import type { Endpoints } from '@/domain/route'
-import { distinctByFirstDeparture } from '@/domain/selection'
+import { distinctByFirstDeparture, withoutSlowerTrips } from '@/domain/selection'
 import type { Instant } from '@/domain/time'
 import { type Trip, planTrip } from '@/domain/trip'
 
@@ -56,8 +56,10 @@ export async function planTrips(
   // otherwise replace, for example the same train with a bus instead of a walk at the end.
   const split = splitByPreference(trips, preferredLines)
   const byLeaveTime = (a: Trip, b: Trip): number => a.leaveAt - b.leaveAt
-  const preferred = distinctByFirstDeparture(split.preferred).sort(byLeaveTime)
-  const alternatives = distinctByFirstDeparture(split.alternatives).sort(byLeaveTime)
+  const fastest = (group: readonly Trip[]): Trip[] =>
+    withoutSlowerTrips(distinctByFirstDeparture(group)).sort(byLeaveTime)
+  const preferred = fastest(split.preferred)
+  const alternatives = fastest(split.alternatives)
 
   const recommended = request.mode === 'depart' ? preferred[0] : preferred.at(-1)
   return { trips: preferred, alternatives, recommended: recommended ?? null }

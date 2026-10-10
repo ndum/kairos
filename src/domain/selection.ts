@@ -1,3 +1,4 @@
+import { ridesOf } from './journey'
 import type { Instant } from './time'
 import type { Trip } from './trip'
 import { urgencyOf } from './urgency'
@@ -30,6 +31,37 @@ export function selectTrips(
     tight: earlier.at(-1) ?? null,
     upcoming: main ? reachable.slice(mainIndex + 1, mainIndex + 1 + upcomingCount) : [],
   }
+}
+
+const isCancelled = (trip: Trip): boolean => ridesOf(trip.journey).some((ride) => ride.cancelled)
+const rideCount = (trip: Trip): number => ridesOf(trip.journey).length
+
+/**
+ * Whether a candidate makes a trip redundant: it leaves at the same time or later and
+ * arrives at the same time or earlier. Between equal trips, fewer rides and then the order
+ * of the timetable decide.
+ */
+function replaces(candidate: Trip, trip: Trip, candidateComesFirst: boolean): boolean {
+  if (isCancelled(candidate)) return false
+  if (candidate.leaveAt < trip.leaveAt || candidate.arrivalAt > trip.arrivalAt) return false
+  if (candidate.leaveAt > trip.leaveAt || candidate.arrivalAt < trip.arrivalAt) return true
+  const rides = rideCount(candidate) - rideCount(trip)
+  return rides < 0 || (rides === 0 && candidateComesFirst)
+}
+
+/**
+ * Leaves out trips that are never the better choice, so the fastest way stays: another trip
+ * leaves at the same time or later and arrives at the same time or earlier. A cancelled trip
+ * never replaces another one.
+ */
+export function withoutSlowerTrips(trips: readonly Trip[]): Trip[] {
+  return trips.filter(
+    (trip, index) =>
+      !trips.some(
+        (candidate, candidateIndex) =>
+          candidateIndex !== index && replaces(candidate, trip, candidateIndex < index),
+      ),
+  )
 }
 
 /**

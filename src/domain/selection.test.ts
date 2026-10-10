@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest'
 
+import type { Leg } from '@/domain/journey'
 import { at, home, journey, morningCommute, ride, walk, office } from '@/test/builders'
 
-import { distinctByFirstDeparture, selectTrips } from './selection'
+import { distinctByFirstDeparture, selectTrips, withoutSlowerTrips } from './selection'
 import { type Trip, planTrip } from './trip'
 
 const tripAt = (departure: string): Trip => {
@@ -66,5 +67,53 @@ describe('distinctByFirstDeparture', () => {
       byBus,
       tripAt('07:29'),
     ])
+  })
+})
+
+describe('withoutSlowerTrips', () => {
+  const trip = (...legs: Leg[]): Trip => {
+    const planned = planTrip(journey(...legs), home, office)
+    if (!planned) throw new Error('Expected a trip')
+    return planned
+  }
+
+  it('drops a trip that leaves earlier but does not arrive earlier', () => {
+    const slow = trip(ride('S1', 'Riverside', '07:05', 'Market Square', '07:35'))
+    const fast = trip(ride('IR 1', 'Riverside', '07:10', 'Market Square', '07:30'))
+
+    expect(withoutSlowerTrips([slow, fast])).toEqual([fast])
+  })
+
+  it('keeps a trip that leaves earlier and arrives earlier', () => {
+    const early = trip(ride('S1', 'Riverside', '07:05', 'Market Square', '07:25'))
+    const late = trip(ride('IR 1', 'Riverside', '07:10', 'Market Square', '07:28'))
+
+    expect(withoutSlowerTrips([early, late])).toEqual([early, late])
+  })
+
+  it('keeps the trip with fewer changes when two leave and arrive at the same time', () => {
+    const direct = trip(ride('IR 1', 'Riverside', '07:10', 'Market Square', '07:30'))
+    const withChange = trip(
+      ride('S1', 'Riverside', '07:10', 'Central', '07:18'),
+      ride('5', 'Central', '07:21', 'Market Square', '07:30', { mode: 'bus' }),
+    )
+
+    expect(withoutSlowerTrips([withChange, direct])).toEqual([direct])
+  })
+
+  it('keeps the first of two trips that are equal in every respect', () => {
+    const first = trip(ride('S1', 'Riverside', '07:10', 'Market Square', '07:30'))
+    const second = trip(ride('S2', 'Riverside', '07:10', 'Market Square', '07:30'))
+
+    expect(withoutSlowerTrips([first, second])).toEqual([first])
+  })
+
+  it('never drops a trip in favour of a cancelled one', () => {
+    const slow = trip(ride('S1', 'Riverside', '07:05', 'Market Square', '07:35'))
+    const cancelled = trip(
+      ride('IR 1', 'Riverside', '07:10', 'Market Square', '07:30', { cancelled: true }),
+    )
+
+    expect(withoutSlowerTrips([slow, cancelled])).toEqual([slow, cancelled])
   })
 })
