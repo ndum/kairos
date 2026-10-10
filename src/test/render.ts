@@ -12,6 +12,7 @@ import { RouteLibrary } from '@/application/route-library'
 import { StopSearch } from '@/application/stop-search'
 import { TripMonitor } from '@/application/trip-monitor'
 import type { Route } from '@/domain/route'
+import { ICalendarWriter } from '@/infrastructure/calendar/icalendar-writer'
 import { CompressedRouteCodec } from '@/infrastructure/sharing/compressed-route-codec'
 import { createAppI18n } from '@/ui/i18n'
 import type { Locale } from '@/ui/i18n/locale'
@@ -77,6 +78,7 @@ export function testServices(options: RenderOptions = {}) {
       current: () => Promise.resolve(options.location ?? { kind: 'unavailable' }),
     } satisfies LocationPort,
     pins: new MemoryPinStore(options.pinned ?? null),
+    calendar: new ICalendarWriter(clock),
     createTripMonitor: () => new TripMonitor({ timetable, cache, clock, scheduler }),
   }
   return { services, repository, clock, scheduler }

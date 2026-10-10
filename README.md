@@ -11,7 +11,7 @@ Kairos tells you when to leave the house to catch your train, bus or tram. It is
 
 The board is the heart of the app. It shows the next connection of your route with a large countdown that turns from green to amber five minutes before you have to leave. Kairos always recommends the fastest connection: a trip that leaves earlier but does not arrive earlier is left out. When an earlier train is still within reach if you skip your buffer, a short hint says so. The other direction of the route is right next to it, one tap away.
 
-Everything on the board is live. Delays of two minutes or more move the leave time, changed platforms stand out, and a trip on other lines that arrives earlier shows up as a hint. Every trip opens its details with the stops in between, the platforms, the train number and the operator. From there you can pin the trip, which then gets a countdown of its own, or let the route prefer its lines. The planner finds connections for a given departure or arrival time.
+Everything on the board is live. Delays of two minutes or more move the leave time, changed platforms stand out, and a trip on other lines that arrives earlier shows up as a hint. Every trip opens its details with the stops in between, the platforms, the train number and the operator. From there you can pin the trip, which then gets a countdown of its own, let the route prefer its lines, share the trip as text or add it to your calendar with a reminder at the time to leave. The planner finds connections for a given departure or arrival time.
 
 A route connects two places, for example home and work. You find a place by its address, by the name of a company or with your current position, and Kairos suggests the stops nearby with an estimate of the walk to each. In the last step you decide whether Kairos always takes the fastest connection, which is the default, or sticks to one of the usual variants or to lines of your choice. Once saved, a new route goes straight to the board, or you add the next one right away. Routes can be shared with a link or a QR code, which never carry the positions of the places.
 
@@ -84,7 +84,7 @@ flowchart TB
     ui[UI<br/>Vue components, views, stores and UI-only preferences]
     application[Application<br/>use cases, trip monitor, place finder, ports]
     domain[Domain<br/>leave times, urgency, trip selection, variants, walking estimate]
-    infrastructure[Infrastructure<br/>Transport API and swisstopo adapters, storage, clock, location]
+    infrastructure[Infrastructure<br/>Transport API and swisstopo adapters, storage, clock, location, calendar files]
 
     ui --> application
     ui --> domain
