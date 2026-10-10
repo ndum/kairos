@@ -124,6 +124,8 @@
     "pinned": "Gemerkt",
     "details": "Details",
     "pin": "Merken",
+    "prefer": "Diese Linien bevorzugen",
+    "preferredToast": "«{route}» bevorzugt jetzt {lines}.",
     "unpin": "Nicht mehr merken",
     "pinnedToast": "Fahrt gemerkt. Ihr Countdown erscheint unter «Jetzt».",
     "sheet": {
@@ -163,6 +165,8 @@
     },
     "steps": "Schritte",
     "step": "Schritt {current} von {total}",
+    "stepNumber": "Schritt {number}:",
+    "missingStops": "Wähle zuerst beim Start und beim Ziel eine Haltestelle.",
     "cancel": "Abbrechen",
     "back": "Zurück",
     "next": "Weiter",
@@ -170,12 +174,12 @@
     "origin": {
       "label": "Start",
       "title": "Wo startest du?",
-      "text": "Zum Beispiel zuhause. Wähle die Haltestelle, an der du einsteigst."
+      "text": "Zum Beispiel zuhause. Mit der Adresse schlägt dir Kairos die Haltestellen in der Nähe vor."
     },
     "destination": {
       "label": "Ziel",
       "title": "Wohin fährst du?",
-      "text": "Zum Beispiel zur Arbeit oder in die Schule. Wähle die Haltestelle, an der du aussteigst."
+      "text": "Zum Beispiel zur Arbeit oder in die Schule. Mit der Adresse oder dem Namen der Firma findet Kairos die Haltestellen in der Nähe."
     },
     "place": {
       "name": "Name des Ortes",
@@ -197,7 +201,7 @@
       "where": {
         "label": "Adresse oder Firma",
         "hint": "Kairos schlägt dir die Haltestellen in der Nähe vor. Die Lage des Ortes bleibt auf diesem Gerät.",
-        "placeholder": "Zum Beispiel Messeplatz 1, Basel"
+        "placeholder": "Messeplatz 1, Basel"
       },
       "position": {
         "set": "Aktuellen Standort verwenden",
@@ -224,9 +228,21 @@
       "stopSame": "Wähle eine andere Haltestelle als beim Start."
     },
     "lines": {
-      "label": "Linien",
-      "title": "Welche Linien nimmst du?",
-      "text": "Kairos zeigt zuerst Verbindungen mit diesen Linien. Andere erscheinen nur, wenn sie schneller sind oder deine Linie ausfällt.",
+      "label": "Verbindung",
+      "title": "Welche Verbindung nimmst du?",
+      "text": "Kairos empfiehlt dir jeweils die schnellste. Wenn du lieber immer eine bestimmte nimmst, wähle sie hier.",
+      "choice": "Verbindungen",
+      "recommended": "Empfohlen",
+      "fastest": {
+        "title": "Immer die schnellste",
+        "text": "Die Verbindung, die zuerst ankommt, mit allen Linien."
+      },
+      "variant": "{count} von {total} Verbindungen, {minutes} Min. unterwegs",
+      "then": "dann",
+      "own": {
+        "title": "Eigene Linien wählen",
+        "text": "Nur Verbindungen mit diesen Linien. Andere erscheinen als Hinweis, wenn sie schneller sind oder deine Linie ausfällt."
+      },
       "loading": "Kairos sucht die nächsten Verbindungen …",
       "failed": "Die Verbindungen konnten nicht geladen werden. Du kannst die Route trotzdem speichern.",
       "retry": "Erneut versuchen",

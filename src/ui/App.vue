@@ -37,7 +37,10 @@ watchEffect(() => {
     </button>
     <AppTopBar />
     <main class="flex-1">
-      <RouterView />
+      <!-- A new path gets a new view, so the editor never keeps the form of another route. -->
+      <RouterView v-slot="{ Component, route }">
+        <component :is="Component" :key="route.path" />
+      </RouterView>
     </main>
     <p class="credit">{{ t('credit') }}</p>
   </div>

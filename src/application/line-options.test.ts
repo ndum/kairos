@@ -41,5 +41,15 @@ describe('findLineOptions', () => {
       { name: '20', mode: 'bus', journeys: 2 },
       { name: 'S2', mode: 'train', journeys: 1 },
     ])
+    expect(options.variants).toEqual([
+      {
+        lines: [
+          { name: 'S1', mode: 'train' },
+          { name: '20', mode: 'bus' },
+        ],
+        journeys: 1,
+        duration: 18 * 60_000,
+      },
+    ])
   })
 })

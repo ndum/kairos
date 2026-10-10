@@ -124,6 +124,8 @@
     "pinned": "Pinned",
     "details": "Details",
     "pin": "Pin",
+    "prefer": "Prefer these lines",
+    "preferredToast": "“{route}” now prefers {lines}.",
     "unpin": "Unpin",
     "pinnedToast": "Trip pinned. Its countdown appears under “Now”.",
     "sheet": {
@@ -163,6 +165,8 @@
     },
     "steps": "Steps",
     "step": "Step {current} of {total}",
+    "stepNumber": "Step {number}:",
+    "missingStops": "First choose a stop for the start and the destination.",
     "cancel": "Cancel",
     "back": "Back",
     "next": "Next",
@@ -170,12 +174,12 @@
     "origin": {
       "label": "Start",
       "title": "Where do you start?",
-      "text": "At home, for example. Choose the stop where you get on."
+      "text": "At home, for example. With the address, Kairos suggests the stops nearby."
     },
     "destination": {
       "label": "Destination",
       "title": "Where are you going?",
-      "text": "To work or to school, for example. Choose the stop where you get off."
+      "text": "To work or to school, for example. With the address or the name of the company, Kairos finds the stops nearby."
     },
     "place": {
       "name": "Name of the place",
@@ -197,7 +201,7 @@
       "where": {
         "label": "Address or company",
         "hint": "Kairos suggests the stops nearby. Where the place lies stays on this device.",
-        "placeholder": "For example Messeplatz 1, Basel"
+        "placeholder": "Messeplatz 1, Basel"
       },
       "position": {
         "set": "Use current location",
@@ -224,9 +228,21 @@
       "stopSame": "Choose a stop other than the one at the start."
     },
     "lines": {
-      "label": "Lines",
-      "title": "Which lines do you take?",
-      "text": "Kairos shows connections on these lines first. Others only appear when they are faster or when your line fails.",
+      "label": "Connection",
+      "title": "Which connection do you take?",
+      "text": "Kairos recommends the fastest one each time. If you prefer to always take a certain one, choose it here.",
+      "choice": "Connections",
+      "recommended": "Recommended",
+      "fastest": {
+        "title": "Always the fastest",
+        "text": "The connection that arrives first, on any line."
+      },
+      "variant": "{count} of {total} connections, {minutes} min on the way",
+      "then": "then",
+      "own": {
+        "title": "Choose your own lines",
+        "text": "Only connections on these lines. Others appear as a hint when they are faster or when your line fails."
+      },
       "loading": "Kairos is looking up the next connections …",
       "failed": "The connections could not be loaded. You can still save the route.",
       "retry": "Try again",
