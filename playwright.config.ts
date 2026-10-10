@@ -19,6 +19,8 @@ export default defineConfig({
     // Without animations, actions do not wait for moving elements. The animated scene has
     // its own test in app-shell.spec.ts.
     reducedMotion: 'reduce',
+    // The service worker would serve cached files across tests. offline.spec.ts allows it.
+    serviceWorkers: 'block',
     trace: 'on-first-retry',
   },
   projects: [

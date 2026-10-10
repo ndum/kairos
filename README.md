@@ -75,6 +75,7 @@ The reasoning behind these choices is recorded in the [architecture decision rec
 | Libraries    | Vue Router 5, Vue I18n 11, VueUse 15, Valibot             |
 | Build        | Vite 8                                                    |
 | Styling      | Tailwind CSS 4, Geist, Tabler Icons                       |
+| Offline      | vite-plugin-pwa with Workbox                              |
 | Tests        | Vitest 5 (unit and browser mode), Playwright              |
 | Code quality | ESLint 10, typescript-eslint, eslint-plugin-vue, Prettier |
 | Git hooks    | Lefthook, commitlint                                      |
@@ -125,6 +126,10 @@ src/
 e2e/                 Playwright tests
 docs/adr/            Architecture decision records
 ```
+
+## Privacy and security
+
+Kairos has no account, no tracking and no cookies. Routes and settings stay on the device; a shared link carries routes, but never the positions of places. The position of the device is only used on the device to choose the direction of the board. The page comes with a strict Content Security Policy that allows connections to the timetable only.
 
 ## Quality gates
 

@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { computed, onUnmounted, toRef, watchEffect } from 'vue'
+import { useOnline } from '@vueuse/core'
+import { computed, onUnmounted, toRef, watch, watchEffect } from 'vue'
+
+import type { MonitorSnapshot } from '@/application/trip-monitor'
 
 import { ridesOf } from '@/domain/journey'
 import { type Direction, type Route, oppositeDirection } from '@/domain/route'
@@ -27,6 +30,19 @@ const secondary = useLiveBoard(
   now,
 )
 
+// The device knows first when it goes offline. Back online, both directions catch up at once.
+const online = useOnline()
+watch(online, (isOnline) => {
+  if (!isOnline) return
+  primary.refresh()
+  secondary.refresh()
+})
+const status = computed<MonitorSnapshot>(() => {
+  const snapshot = primary.snapshot.value
+  if (online.value) return snapshot
+  return { ...snapshot, status: snapshot.fetchedAt === null ? 'error' : 'stale' }
+})
+
 // The panorama follows the main trip: its urgency colours the sky and its train arrives.
 const scene = useSceneStore()
 watchEffect(() => {
@@ -45,7 +61,7 @@ onUnmounted(scene.clear)
 <template>
   <div class="flex flex-wrap items-center justify-between gap-3">
     <slot name="title" />
-    <LiveStatus class="ml-auto" :snapshot="primary.snapshot.value" @refresh="primary.refresh" />
+    <LiveStatus class="ml-auto" :snapshot="status" @refresh="primary.refresh" />
   </div>
 
   <slot name="before" />

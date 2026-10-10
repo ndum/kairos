@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs'
 
-import { type Page, test as base } from '@playwright/test'
+import { type Page, test as base, expect as expectBase } from '@playwright/test'
 
 export { expect } from '@playwright/test'
 
@@ -8,7 +8,7 @@ export { expect } from '@playwright/test'
  * Requests to the Transport API get an empty answer unless a test answers them itself, so no
  * test depends on the real timetable. Handlers registered later take precedence.
  */
-export const test = base.extend<{ quietTimetable: undefined }>({
+export const test = base.extend<{ quietTimetable: undefined; policyGuard: undefined }>({
   quietTimetable: [
     async ({ page }, use) => {
       await page.route('https://transport.opendata.ch/**', (route) =>
@@ -18,6 +18,20 @@ export const test = base.extend<{ quietTimetable: undefined }>({
         }),
       )
       await use(undefined)
+    },
+    { auto: true },
+  ],
+  /** Fails a test whenever the Content Security Policy blocks something on the page. */
+  policyGuard: [
+    async ({ page }, use) => {
+      const violations: string[] = []
+      page.on('console', (message) => {
+        if (message.type() === 'error' && message.text().includes('Content Security Policy')) {
+          violations.push(message.text())
+        }
+      })
+      await use(undefined)
+      expectBase(violations).toEqual([])
     },
     { auto: true },
   ],
