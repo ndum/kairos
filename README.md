@@ -6,18 +6,30 @@
 [![CodeQL](https://github.com/ndum/kairos/actions/workflows/codeql.yml/badge.svg)](https://github.com/ndum/kairos/actions/workflows/codeql.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-> [!NOTE]
-> Kairos is under active development towards version 1.0. The features below describe the scope of that release.
-
 ## Features
 
 - **Leave-in countdown** for both directions of a route, with a traffic light that turns amber shortly before you have to leave and red once a connection is only reachable without your reserve.
-- **Live data** for delays, platform changes, cancellations and connections at risk.
+- **Live data** for delays, platform changes and connections at risk, with a hint when a trip on other lines arrives earlier.
 - **Routes** between two places, each with its stop, walking time, reserve and preferred lines. Routes can be shared with a link or a QR code.
 - **Planning** by arrival or departure time, with a pinned trip that gets its own countdown.
-- **Automatic direction** based on your location on the phone and on the time of day elsewhere.
+- **Automatic direction** based on your location if you allow it, and on the time of day otherwise.
 - **Offline start** with the last known data, installable on the iPhone Home Screen and on the desktop.
+- **Settings** to keep the screen on while the countdown runs and to reduce motion.
 - German and English, light and dark appearance, built to WCAG 2.2 AA.
+
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/now-phone-light.jpg" alt="The board on an iPhone, counting down six minutes until leaving for the IC 61" width="260" />
+  &nbsp;
+  <img src="docs/screenshots/now-phone-dark.jpg" alt="The same board at night, in the dark appearance" width="260" />
+</p>
+
+![The board on a desktop screen, with the connection step by step, the trips after it and the other direction](docs/screenshots/now-desktop-light.jpg)
+
+![Planning by departure time on a desktop screen at night](docs/screenshots/plan-desktop-dark.jpg)
+
+The screenshots use recorded timetable data and are captured from the production build with `npm run docs:screenshots`.
 
 ## How it works
 
@@ -99,20 +111,21 @@ npm run dev:lan
 
 ## Scripts
 
-| Script                  | Purpose                                                  |
-| ----------------------- | -------------------------------------------------------- |
-| `npm run dev`           | Development server                                       |
-| `npm run dev:lan`       | Development server over HTTPS in the local network       |
-| `npm run build`         | Type check and production build                          |
-| `npm run preview`       | Serve the production build                               |
-| `npm run lint`          | ESLint, including the architecture rules                 |
-| `npm run format`        | Format all files with Prettier                           |
-| `npm run typecheck`     | Type check with vue-tsc                                  |
-| `npm test`              | Unit and component tests in watch mode                   |
-| `npm run test:coverage` | Unit tests with coverage                                 |
-| `npm run test:browser`  | Component tests in Chromium and WebKit                   |
-| `npm run test:e2e`      | End-to-end tests on an iPhone profile and desktop Chrome |
-| `npm run check:size`    | Check the JavaScript budget of the production build      |
+| Script                     | Purpose                                                  |
+| -------------------------- | -------------------------------------------------------- |
+| `npm run dev`              | Development server                                       |
+| `npm run dev:lan`          | Development server over HTTPS in the local network       |
+| `npm run build`            | Type check and production build                          |
+| `npm run preview`          | Serve the production build                               |
+| `npm run lint`             | ESLint, including the architecture rules                 |
+| `npm run format`           | Format all files with Prettier                           |
+| `npm run typecheck`        | Type check with vue-tsc                                  |
+| `npm test`                 | Unit and component tests in watch mode                   |
+| `npm run test:coverage`    | Unit tests with coverage                                 |
+| `npm run test:browser`     | Component tests in Chromium and WebKit                   |
+| `npm run test:e2e`         | End-to-end tests on an iPhone profile and desktop Chrome |
+| `npm run check:size`       | Check the JavaScript budget of the production build      |
+| `npm run docs:screenshots` | Capture the screenshots of this README                   |
 
 ## Project structure
 
@@ -123,8 +136,10 @@ src/
 ├── infrastructure/  Adapters for the timetable API, storage, clock and location
 ├── ui/              Vue components, views and styles
 └── main.ts          Composition root
-e2e/                 Playwright tests
+e2e/                 Playwright tests, including the accessibility checks
+scripts/             Build plugins, the bundle budget and the screenshot capture
 docs/adr/            Architecture decision records
+docs/screenshots/    Screenshots of this README
 ```
 
 ## Privacy and security

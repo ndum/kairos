@@ -17,6 +17,7 @@
     "vite.config.ts",
     "vitest.config.ts",
     "playwright.config.ts",
+    "playwright.screenshots.config.ts",
     "eslint.config.ts",
     "pwa-assets.config.ts",
     "scripts/**/*.ts",
