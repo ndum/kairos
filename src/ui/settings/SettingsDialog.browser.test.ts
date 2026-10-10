@@ -21,7 +21,7 @@ test('switches the language right away', async () => {
 test('chooses the direction by location once the browser allows it', async () => {
   const screen = await renderWithApp(SettingsDialog, {
     props: { open: true },
-    location: { kind: 'found', coordinates: { latitude: 46.8, longitude: 7.5 } },
+    location: { kind: 'found', coordinates: { latitude: 47.56, longitude: 7.6 } },
   })
   const toggle = screen.getByRole('switch', { name: 'Richtung nach Standort' })
 
@@ -43,6 +43,20 @@ test('explains when the browser refuses the location', async () => {
   await expect.element(screen.getByText(/keinen Zugriff auf den Standort/)).toBeVisible()
   await expect.element(toggle).not.toBeChecked()
   expect(localStorage.getItem('kairos:location')).toBe('false')
+})
+
+test('keeps the location on when the position cannot be found yet', async () => {
+  const screen = await renderWithApp(SettingsDialog, {
+    props: { open: true },
+    location: { kind: 'unavailable' },
+  })
+  const toggle = screen.getByRole('switch', { name: 'Richtung nach Standort' })
+
+  await toggle.click()
+
+  await expect.element(screen.getByText(/Kairos sucht ihn bei jedem Öffnen wieder/)).toBeVisible()
+  await expect.element(toggle).toBeChecked()
+  expect(localStorage.getItem('kairos:location')).toBe('true')
 })
 
 test('reduces motion in the whole app', async () => {

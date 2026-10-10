@@ -53,6 +53,13 @@
     "retry": "Erneut versuchen",
     "noTrips": "Keine Verbindung in den nächsten Stunden.",
     "swap": "Richtung wechseln",
+    "directionNote": {
+      "location": "Richtung nach Standort",
+      "time": "Richtung nach Uhrzeit",
+      "locating": "Standort wird gesucht …",
+      "denied": "Kein Zugriff auf den Standort, Richtung nach Uhrzeit",
+      "unavailable": "Standort nicht gefunden, Richtung nach Uhrzeit"
+    },
     "journey": {
       "title": "Deine Verbindung",
       "walkTo": "{minutes} Min. Fussweg bis {stop}",
@@ -296,8 +303,8 @@
     "location": {
       "label": "Richtung nach Standort",
       "hint": "Kairos zeigt zuerst die Richtung, die an deinem Standort beginnt. Der Standort bleibt auf diesem Gerät.",
-      "denied": "Der Browser erlaubt Kairos keinen Zugriff auf den Standort. Du kannst ihn in den Einstellungen des Browsers freigeben.",
-      "unavailable": "Der Standort ist gerade nicht verfügbar. Versuche es später nochmals."
+      "denied": "Kairos hat keinen Zugriff auf den Standort. Erlaube ihn in den Einstellungen des Geräts, auf dem iPhone unter Datenschutz & Sicherheit > Ortungsdienste > Safari-Websites.",
+      "unavailable": "Der Standort ist gerade nicht verfügbar. Kairos sucht ihn bei jedem Öffnen wieder und zeigt bis dahin die Richtung nach Uhrzeit."
     },
     "awake": {
       "label": "Bildschirm wach halten",

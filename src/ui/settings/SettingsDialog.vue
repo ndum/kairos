@@ -20,21 +20,23 @@ const { location } = useServices()
 const useLocation = useLocationPreference()
 const keepAwake = useAwakePreference()
 const canKeepAwake = 'wakeLock' in navigator
-const locating = ref(false)
 const locationError = ref<string>()
+let locationRequest = 0
 
-/** Asks for the position right away, so the browser asks for permission in context. */
+/**
+ * Asks for the position right away, so the browser asks for permission in context. Only a
+ * refusal switches the setting off again: a position not found now may well be found later.
+ */
 async function setLocation(enabled: boolean): Promise<void> {
+  const request = ++locationRequest
   locationError.value = undefined
-  if (!enabled) {
-    useLocation.value = false
-    return
-  }
-  locating.value = true
+  useLocation.value = enabled
+  if (!enabled) return
   const result = await location.current()
-  locating.value = false
-  useLocation.value = result.kind === 'found'
-  if (result.kind !== 'found') locationError.value = t(`settings.location.${result.kind}`)
+  // The user may have switched again while the browser was still looking.
+  if (request !== locationRequest || result.kind === 'found') return
+  if (result.kind === 'denied') useLocation.value = false
+  locationError.value = t(`settings.location.${result.kind}`)
 }
 
 const themes = computed(
@@ -70,7 +72,6 @@ const languages = computed(
       :label="t('settings.location.label')"
       :hint="t('settings.location.hint')"
       :error="locationError"
-      :disabled="locating"
       @update:model-value="setLocation"
     />
     <SettingSwitch

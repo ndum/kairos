@@ -52,6 +52,13 @@
     "unavailable": "The timetable cannot be reached right now.",
     "retry": "Try again",
     "noTrips": "No connection in the next hours.",
+    "directionNote": {
+      "location": "Direction by location",
+      "time": "Direction by time of day",
+      "locating": "Finding your location …",
+      "denied": "No access to the location, direction by time of day",
+      "unavailable": "Location not found, direction by time of day"
+    },
     "swap": "Switch direction",
     "journey": {
       "title": "Your connection",
@@ -296,8 +303,8 @@
     "location": {
       "label": "Direction by location",
       "hint": "Kairos first shows the direction that starts where you are. Your location stays on this device.",
-      "denied": "The browser does not allow Kairos to access your location. You can allow it in the browser settings.",
-      "unavailable": "Your location is not available right now. Try again later."
+      "denied": "Kairos has no access to your location. Allow it in the settings of your device, on an iPhone under Privacy & Security > Location Services > Safari Websites.",
+      "unavailable": "Your location is not available right now. Kairos looks for it each time you open the app and shows the direction by time of day until then."
     },
     "awake": {
       "label": "Keep the screen on",

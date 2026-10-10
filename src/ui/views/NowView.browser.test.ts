@@ -109,12 +109,13 @@ test('switches to the other direction', async () => {
     .toMatchTextContent(/Richtung wechseln/)
 })
 
+const atOffice = { latitude: 47.5635, longitude: 7.5996 }
+const located = route('located', 'Commute', [
+  { ...home, stop: { ...home.stop, coordinates: { latitude: 47.4845, longitude: 7.7314 } } },
+  { ...office, stop: { ...office.stop, coordinates: atOffice } },
+])
+
 test('starts with the direction from the place the device is at', async () => {
-  const atOffice = { latitude: 46.95, longitude: 7.45 }
-  const located = route('located', 'Commute', [
-    { ...home, stop: { ...home.stop, coordinates: { latitude: 46.8, longitude: 7.5 } } },
-    { ...office, stop: { ...office.stop, coordinates: atOffice } },
-  ])
   localStorage.setItem('kairos:location', 'true')
 
   const screen = await renderWithApp(NowView, {
@@ -124,10 +125,33 @@ test('starts with the direction from the place the device is at', async () => {
   })
 
   // In the morning the board would start at home, but the device is at the office.
-  await expect
-    .element(screen.getByRole('region', { name: /Office nach Home/ }))
-    .toMatchTextContent(/Losgehen/)
+  const hero = screen.getByRole('region', { name: /Office nach Home/ })
+  await expect.element(hero).toMatchTextContent(/Losgehen/)
+  await expect.element(hero.getByText('Richtung nach Standort')).toBeVisible()
   await expect.element(screen.getByRole('button', { name: 'Richtung wechseln' })).toBeVisible()
+})
+
+test('tells when the position is missing and the time of day decides', async () => {
+  localStorage.setItem('kairos:location', 'true')
+
+  const screen = await renderWithApp(NowView, {
+    routes: [located],
+    timetable: timetable(morning),
+    location: { kind: 'unavailable' },
+  })
+
+  const hero = screen.getByRole('region', { name: /Home nach Office/ })
+  await expect
+    .element(hero.getByText('Standort nicht gefunden, Richtung nach Uhrzeit'))
+    .toBeVisible()
+})
+
+test('says nothing about the direction while the location is off', async () => {
+  const screen = await renderWithApp(NowView, { routes: [located], timetable: timetable(morning) })
+
+  const hero = screen.getByRole('region', { name: /Home nach Office/ })
+  await expect.element(hero).toMatchTextContent(/Losgehen/)
+  expect(hero.getByText(/Richtung nach/).query()).toBeNull()
 })
 
 test('offers to try again when the timetable cannot be reached', async () => {

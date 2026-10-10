@@ -1,7 +1,7 @@
 import { useStorage } from '@vueuse/core'
 import { type Ref, computed, ref } from 'vue'
 
-import { chooseDirection } from '@/domain/direction'
+import { type DirectionChoice, chooseDirection } from '@/domain/direction'
 import type { Coordinates } from '@/domain/geo'
 import { toLocal } from '@/domain/local-time'
 import { type Direction, type Route, oppositeDirection } from '@/domain/route'
@@ -9,6 +9,9 @@ import type { Instant } from '@/domain/time'
 
 /** The route shown last is kept per device, it is not part of shared links. */
 export const SELECTED_ROUTE_KEY = 'kairos:route'
+
+/** What decided the direction on the board: the position, the time of day or the user. */
+export type DirectionBasis = DirectionChoice['basis'] | 'swapped'
 
 /**
  * The route on the board and its direction. The direction follows the position of the device
@@ -27,16 +30,20 @@ export function useRouteChoice(
     () => routes.value.find(({ id }) => id === selectedId.value) ?? routes.value[0] ?? null,
   )
 
-  const direction = computed<Direction>(() => {
+  const choice = computed<{ direction: Direction; basis: DirectionBasis }>(() => {
     const current = route.value
-    if (!current) return 'outbound'
-    if (swapped.value?.routeId === current.id) return swapped.value.direction
+    if (!current) return { direction: 'outbound', basis: 'time' }
+    if (swapped.value?.routeId === current.id) {
+      return { direction: swapped.value.direction, basis: 'swapped' }
+    }
     const { minuteOfDay } = toLocal(now.value)
     return chooseDirection(current, {
       minuteOfDay,
       ...(location.value && { location: location.value }),
     })
   })
+  const direction = computed(() => choice.value.direction)
+  const basis = computed(() => choice.value.basis)
 
   function select(id: string): void {
     selectedId.value = id
@@ -49,5 +56,5 @@ export function useRouteChoice(
     swapped.value = { routeId: current.id, direction: oppositeDirection(direction.value) }
   }
 
-  return { route, direction, select, swap }
+  return { route, direction, basis, select, swap }
 }

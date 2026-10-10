@@ -41,15 +41,14 @@ test.describe('at work in the morning', () => {
     await expect(page.getByRole('region', { name: /Zuhause nach Arbeit Losgehen/ })).toBeVisible()
 
     await page.getByRole('button', { name: 'Einstellungen' }).click()
-    // The switch only turns on once the browser has given the position.
     const location = page.getByRole('switch', { name: 'Richtung nach Standort' })
     await location.click()
     await expect(location).toBeChecked()
     await page.getByRole('button', { name: 'Schliessen' }).click()
 
-    await expect(page.getByRole('region', { name: /Arbeit nach Zuhause Losgehen/ })).toContainText(
-      'Keine Verbindung in den nächsten Stunden.',
-    )
+    const hero = page.getByRole('region', { name: /Arbeit nach Zuhause Losgehen/ })
+    await expect(hero).toContainText('Keine Verbindung in den nächsten Stunden.')
+    await expect(hero).toContainText('Richtung nach Standort')
   })
 })
 

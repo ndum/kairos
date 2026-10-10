@@ -10,6 +10,7 @@ import type { Instant } from '@/domain/time'
 import { urgencyOf } from '@/domain/urgency'
 
 import { useSceneStore } from '../stores/scene'
+import type { DirectionNote } from './direction-note'
 import HeroCard from './HeroCard.vue'
 import JourneyCard from './JourneyCard.vue'
 import LiveStatus from './LiveStatus.vue'
@@ -17,7 +18,12 @@ import OppositeCard from './OppositeCard.vue'
 import UpcomingCard from './UpcomingCard.vue'
 import { useLiveBoard } from './use-live-board'
 
-const props = defineProps<{ route: Route; direction: Direction; now: Instant }>()
+const props = defineProps<{
+  route: Route
+  direction: Direction
+  now: Instant
+  directionNote?: DirectionNote | null
+}>()
 
 const emit = defineEmits<{ swap: [] }>()
 
@@ -73,6 +79,7 @@ onUnmounted(scene.clear)
       :ends="primary.endpoints.value"
       :now
       :status="primary.snapshot.value.status"
+      :direction-note
       @retry="primary.refresh"
     />
     <JourneyCard
