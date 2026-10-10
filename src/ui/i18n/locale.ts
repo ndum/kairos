@@ -25,4 +25,4 @@ export const resolveLocale = (preference: string | null, languages: readonly str
   isLocale(preference) ? preference : detectLocale(languages)
 
 /** Formats numbers and times with Swiss conventions in both languages. */
-export const formattingLocale = (locale: Locale): string => `${locale}-CH`
+export const formattingLocale = (locale: string): string => `${locale}-CH`

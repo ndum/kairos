@@ -6,6 +6,7 @@ import { render } from 'vitest-browser-vue'
 import type { TimetablePort } from '@/application/ports/timetable'
 import { RouteLibrary } from '@/application/route-library'
 import { StopSearch } from '@/application/stop-search'
+import { TripMonitor } from '@/application/trip-monitor'
 import type { Route } from '@/domain/route'
 import { CompressedRouteCodec } from '@/infrastructure/sharing/compressed-route-codec'
 import { createAppI18n } from '@/ui/i18n'
@@ -14,7 +15,7 @@ import { createAppRouter } from '@/ui/router'
 import { type AppServices, servicesKey } from '@/ui/services'
 
 import { at } from './builders'
-import { FakeClock, MemoryRouteRepository } from './fakes'
+import { FakeClock, FakeScheduler, MemoryJourneyCache, MemoryRouteRepository } from './fakes'
 
 export interface RenderOptions {
   readonly path?: string
@@ -23,6 +24,8 @@ export interface RenderOptions {
   /** Routes stored before the app starts. */
   readonly routes?: Route[]
   readonly timetable?: Partial<TimetablePort>
+  /** Time of the app clock, 07:00 on Monday, 12 October 2026 by default. */
+  readonly now?: number
 }
 
 const emptyTimetable: TimetablePort = {
@@ -30,19 +33,23 @@ const emptyTimetable: TimetablePort = {
   searchStops: () => Promise.resolve([]),
 }
 
-/** Services with in-memory adapters, at 07:00 on Monday, 12 October 2026. */
+/** Services with in-memory adapters and a clock that only moves when a test moves it. */
 export function testServices(options: RenderOptions = {}) {
   const timetable: TimetablePort = { ...emptyTimetable, ...options.timetable }
   const repository = new MemoryRouteRepository(options.routes)
+  const clock = new FakeClock(options.now ?? at('07:00'))
+  const scheduler = new FakeScheduler(clock)
+  const cache = new MemoryJourneyCache()
   let nextId = 1
   const services: AppServices = {
-    clock: new FakeClock(at('07:00')),
+    clock,
     timetable,
     routes: new RouteLibrary({ repository, createId: () => `route-${nextId++}` }),
     stops: new StopSearch(timetable),
     codec: new CompressedRouteCodec(),
+    createTripMonitor: () => new TripMonitor({ timetable, cache, clock, scheduler }),
   }
-  return { services, repository }
+  return { services, repository, clock, scheduler }
 }
 
 /**
@@ -50,7 +57,7 @@ export function testServices(options: RenderOptions = {}) {
  * on top of in-memory services.
  */
 export async function renderWithApp(component: Component, options: RenderOptions = {}) {
-  const { services, repository } = testServices(options)
+  const { services, repository, clock, scheduler } = testServices(options)
   const router = createAppRouter(createMemoryHistory())
   await router.push(options.path ?? '/')
   await router.isReady()
@@ -62,5 +69,5 @@ export async function renderWithApp(component: Component, options: RenderOptions
       provide: { [servicesKey as symbol]: services },
     },
   })
-  return { ...screen, router, services, repository }
+  return { ...screen, router, services, repository, clock, scheduler }
 }

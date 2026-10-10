@@ -1,45 +1,11 @@
-import { type Page, expect, test } from '@playwright/test'
+import type { Page } from '@playwright/test'
 
-const minute = 60_000
-
-const stored = JSON.stringify({
-  version: 1,
-  routes: [
-    {
-      id: 'k3x9p2m7q4tz',
-      name: 'Zuhause ↔ Arbeit',
-      places: [
-        {
-          name: 'Zuhause',
-          stop: {
-            id: '8507100',
-            name: 'Thun',
-            coordinates: { latitude: 46.75485, longitude: 7.6296 },
-          },
-          walk: 8 * minute,
-          reserve: 3 * minute,
-          coordinates: { latitude: 46.7561, longitude: 7.6281 },
-        },
-        {
-          name: 'Arbeit',
-          stop: { id: '8507110', name: 'Bern, Zytglogge' },
-          walk: 5 * minute,
-          reserve: 3 * minute,
-        },
-      ],
-      preferredLines: [{ name: 'IC 61', mode: 'train' }],
-    },
-  ],
-})
+import { expect, seedRoutes, test, thunToZytglogge } from './support'
 
 /** Shares the stored routes and returns the link, then empties the device like a new one. */
 async function shareFromFirstDevice(page: Page): Promise<string> {
-  await page.goto('/')
-  await page.evaluate((routes) => {
-    localStorage.setItem('kairos:routes', routes)
-  }, stored)
-  await page.goto('/#/routes')
-  await page.reload()
+  await seedRoutes(page, [thunToZytglogge])
+  await page.getByRole('link', { name: 'Routen' }).first().click()
 
   await page.getByRole('button', { name: 'Teilen' }).click()
   const field = page.getByRole('dialog').getByRole('textbox', { name: 'Link' })

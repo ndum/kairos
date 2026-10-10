@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { expect, test } from './support'
 
 test('opens on the leave-in view with an invitation to add a route', async ({ page }) => {
   await page.goto('/')

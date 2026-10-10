@@ -14,6 +14,72 @@
       "title": "Noch keine Route",
       "text": "Lege eine Route zwischen zwei Orten an, zum Beispiel von zuhause zur Arbeit. Kairos zeigt dir dann, wann du losgehen musst.",
       "action": "Route anlegen"
+    },
+    "title": "Jetzt",
+    "routeChoice": "Route",
+    "to": "nach",
+    "leaveIn": "Losgehen in",
+    "leave": "Losgehen",
+    "leaveAt": "Losgehen um",
+    "minutesUnit": "Min.",
+    "now": "jetzt",
+    "urgency": {
+      "relaxed": "Genug Zeit",
+      "soon": "Bald los",
+      "tight": "Knapp",
+      "missed": "Verpasst"
+    },
+    "from": "ab {stop}",
+    "departure": "Abfahrt",
+    "arrival": "Ankunft",
+    "delay": "{minutes} Min. später",
+    "delayShort": "+{minutes}",
+    "platform": {
+      "track": "Gleis {platform}",
+      "bay": "Kante {platform}",
+      "instead": "statt {platform}"
+    },
+    "alternative": {
+      "faster": "Schneller mit",
+      "details": "losgehen {leave}, Ankunft {arrival}"
+    },
+    "tight": {
+      "minutes": "Ohne Reserve noch erreichbar: Abfahrt {time}, losgehen in {minutes} Min.",
+      "now": "Ohne Reserve noch erreichbar: Abfahrt {time}, sofort losgehen."
+    },
+    "loading": "Verbindungen werden geladen …",
+    "unavailable": "Der Fahrplan ist gerade nicht erreichbar.",
+    "retry": "Erneut versuchen",
+    "noTrips": "Keine Verbindung in den nächsten Stunden.",
+    "swap": "Richtung wechseln",
+    "journey": {
+      "title": "Deine Verbindung",
+      "walkTo": "{minutes} Min. Fussweg bis {stop}",
+      "walkToWithReserve": "{minutes} Min. Fussweg bis {stop}, {reserve} Min. Reserve",
+      "towards": "Richtung {headsign}",
+      "from": "ab {stop}",
+      "until": "bis {stop}, an {time}",
+      "transfer": "Umsteigen in {stop}",
+      "transferTime": "keine Zeit zum Umsteigen | 1 Min. zum Umsteigen | {count} Min. zum Umsteigen",
+      "transferWithWalk": "{walk} Min. Fussweg, {time}",
+      "walkFrom": "{minutes} Min. Fussweg ab {stop}"
+    },
+    "risk": {
+      "tight": "Anschluss knapp",
+      "broken": "Anschluss verpasst"
+    },
+    "upcoming": {
+      "title": "Danach",
+      "empty": "Keine weiteren Verbindungen.",
+      "times": "ab {departure}, an {arrival}"
+    },
+    "live": {
+      "loading": "Lädt",
+      "live": "Live",
+      "stale": "Offline",
+      "error": "Offline",
+      "updated": "Stand {time}",
+      "refresh": "Jetzt aktualisieren"
     }
   },
   "plan": {

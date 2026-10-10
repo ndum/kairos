@@ -3,6 +3,13 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Angle of the light that runs around the main card. Registered, so it can be animated. */
+@property --spin {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0turn;
+}
+
 /*
  * Design tokens of the "Alpenglühen" look: a dawn sky over the Bernese Alps in the light
  * theme and a night sky in the dark theme. Colour carries meaning only for urgency

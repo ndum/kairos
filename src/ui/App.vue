@@ -7,9 +7,11 @@ import { useAppearance } from './composables/use-appearance'
 import AppTabBar from './layout/AppTabBar.vue'
 import AppTopBar from './layout/AppTopBar.vue'
 import AppScene from './scene/AppScene.vue'
+import { useSceneStore } from './stores/scene'
 
 const { t, locale } = useI18n()
 const { still } = useAppearance()
+const scene = useSceneStore()
 
 // Screen readers and hyphenation follow the language of the page.
 watchEffect(() => {
@@ -18,7 +20,12 @@ watchEffect(() => {
 </script>
 
 <template>
-  <AppScene :still="still" />
+  <AppScene
+    :still
+    :urgency="scene.urgency"
+    :station-name="scene.stationName"
+    :departure-at="scene.departureAt"
+  />
 
   <div class="shell relative z-10 mx-auto flex min-h-dvh max-w-[3840px] flex-col">
     <AppTopBar />
