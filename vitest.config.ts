@@ -9,7 +9,7 @@ export default defineConfig((env) =>
       coverage: {
         provider: 'v8',
         include: ['src/domain/**', 'src/application/**', 'src/infrastructure/**'],
-        exclude: ['**/*.test.ts'],
+        exclude: ['**/*.test.ts', '**/fixtures/**'],
         thresholds: {
           statements: 90,
           branches: 90,
@@ -24,7 +24,16 @@ export default defineConfig((env) =>
             name: 'unit',
             environment: 'node',
             include: ['src/**/*.test.ts'],
-            exclude: ['src/**/*.browser.test.ts'],
+            exclude: ['src/**/*.browser.test.ts', 'src/**/*.contract.test.ts'],
+          },
+        },
+        {
+          extends: true,
+          test: {
+            name: 'contract',
+            environment: 'node',
+            include: ['src/**/*.contract.test.ts'],
+            testTimeout: 30_000,
           },
         },
         {

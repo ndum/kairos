@@ -1,0 +1,440 @@
+{
+  "connections": [
+    {
+      "sections": [
+        {
+          "journey": { "category": "IC", "number": "61", "operator": "SBB", "to": "Basel SBB" },
+          "walk": null,
+          "departure": {
+            "station": {
+              "id": "8507100",
+              "name": "Thun",
+              "score": null,
+              "coordinate": { "type": "WGS84", "x": 46.754852, "y": 7.629607 },
+              "distance": null
+            },
+            "departureTimestamp": 1791781440,
+            "delay": null,
+            "platform": "3",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          },
+          "arrival": {
+            "station": {
+              "id": "8507000",
+              "name": "Bern",
+              "score": null,
+              "coordinate": { "type": "WGS84", "x": 46.948831, "y": 7.439129 },
+              "distance": null
+            },
+            "arrivalTimestamp": 1791782700,
+            "platform": "5",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          }
+        },
+        {
+          "journey": null,
+          "walk": { "duration": 1020 },
+          "departure": {
+            "station": {
+              "id": "8507000",
+              "name": "Bern",
+              "score": null,
+              "coordinate": { "type": "WGS84", "x": 46.948831, "y": 7.439129 },
+              "distance": null
+            },
+            "departureTimestamp": 1791782700,
+            "delay": null,
+            "platform": "5",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          },
+          "arrival": {
+            "station": {
+              "id": "8507110",
+              "name": "Bern, Zytglogge",
+              "score": null,
+              "coordinate": { "type": "WGS84", "x": 46.947838, "y": 7.447501 },
+              "distance": null
+            },
+            "arrivalTimestamp": 1791783720,
+            "platform": null,
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "sections": [
+        {
+          "journey": { "category": "IC", "number": "61", "operator": "SBB", "to": "Basel SBB" },
+          "walk": null,
+          "departure": {
+            "station": {
+              "id": "8507100",
+              "name": "Thun",
+              "score": null,
+              "coordinate": { "type": "WGS84", "x": 46.754852, "y": 7.629607 },
+              "distance": null
+            },
+            "departureTimestamp": 1791781440,
+            "delay": null,
+            "platform": "3",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          },
+          "arrival": {
+            "station": {
+              "id": "8507000",
+              "name": "Bern",
+              "score": null,
+              "coordinate": { "type": "WGS84", "x": 46.948831, "y": 7.439129 },
+              "distance": null
+            },
+            "arrivalTimestamp": 1791782700,
+            "platform": "5",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          }
+        },
+        {
+          "journey": null,
+          "walk": { "duration": 240 },
+          "departure": {
+            "station": {
+              "id": "8507000",
+              "name": "Bern",
+              "score": null,
+              "coordinate": { "type": "WGS84", "x": 46.948831, "y": 7.439129 },
+              "distance": null
+            },
+            "departureTimestamp": 1791782700,
+            "delay": null,
+            "platform": "5",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          },
+          "arrival": {
+            "station": {
+              "id": "8576646",
+              "name": "Bern, Bahnhof",
+              "score": null,
+              "coordinate": { "type": "WGS84", "x": 46.948107, "y": 7.440207 },
+              "distance": null
+            },
+            "arrivalTimestamp": 1791782940,
+            "platform": "M",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          }
+        },
+        {
+          "journey": {
+            "category": "B",
+            "number": "19",
+            "operator": "SVB Auto",
+            "to": "Bern, Elfenau"
+          },
+          "walk": null,
+          "departure": {
+            "station": {
+              "id": "8576646",
+              "name": "Bern, Bahnhof",
+              "score": null,
+              "coordinate": { "type": "WGS84", "x": 46.948107, "y": 7.440207 },
+              "distance": null
+            },
+            "departureTimestamp": 1791782940,
+            "delay": null,
+            "platform": "M",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          },
+          "arrival": {
+            "station": {
+              "id": "8507110",
+              "name": "Bern, Zytglogge",
+              "score": null,
+              "coordinate": { "type": "WGS84", "x": 46.947838, "y": 7.447501 },
+              "distance": null
+            },
+            "arrivalTimestamp": 1791783060,
+            "platform": "G",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "sections": [
+        {
+          "journey": { "category": "S", "number": "11", "operator": "BLS-bls", "to": "Bern" },
+          "walk": null,
+          "departure": {
+            "station": {
+              "id": "8507100",
+              "name": "Thun",
+              "score": null,
+              "coordinate": { "type": "WGS84", "x": 46.754852, "y": 7.629607 },
+              "distance": null
+            },
+            "departureTimestamp": 1791781680,
+            "delay": null,
+            "platform": "4",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          },
+          "arrival": {
+            "station": {
+              "id": "8507000",
+              "name": "Bern",
+              "score": null,
+              "coordinate": { "type": "WGS84", "x": 46.948831, "y": 7.439129 },
+              "distance": null
+            },
+            "arrivalTimestamp": 1791783360,
+            "platform": "1E-H",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          }
+        },
+        {
+          "journey": null,
+          "walk": { "duration": 900 },
+          "departure": {
+            "station": {
+              "id": "8507000",
+              "name": "Bern",
+              "score": null,
+              "coordinate": { "type": "WGS84", "x": 46.948831, "y": 7.439129 },
+              "distance": null
+            },
+            "departureTimestamp": 1791783360,
+            "delay": null,
+            "platform": "1E-H",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          },
+          "arrival": {
+            "station": {
+              "id": "8507110",
+              "name": "Bern, Zytglogge",
+              "score": null,
+              "coordinate": { "type": "WGS84", "x": 46.947838, "y": 7.447501 },
+              "distance": null
+            },
+            "arrivalTimestamp": 1791784260,
+            "platform": null,
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "sections": [
+        {
+          "journey": { "category": "S", "number": "11", "operator": "BLS-bls", "to": "Bern" },
+          "walk": null,
+          "departure": {
+            "station": {
+              "id": "8507100",
+              "name": "Thun",
+              "score": null,
+              "coordinate": { "type": "WGS84", "x": 46.754852, "y": 7.629607 },
+              "distance": null
+            },
+            "departureTimestamp": 1791781680,
+            "delay": null,
+            "platform": "4",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          },
+          "arrival": {
+            "station": {
+              "id": "8507002",
+              "name": "Ostermundigen",
+              "score": null,
+              "coordinate": { "type": "WGS84", "x": 46.956803, "y": 7.481502 },
+              "distance": null
+            },
+            "arrivalTimestamp": 1791782880,
+            "platform": "1",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          }
+        },
+        {
+          "journey": null,
+          "walk": { "duration": 240 },
+          "departure": {
+            "station": {
+              "id": "8507002",
+              "name": "Ostermundigen",
+              "score": null,
+              "coordinate": { "type": "WGS84", "x": 46.956803, "y": 7.481502 },
+              "distance": null
+            },
+            "departureTimestamp": 1791782880,
+            "delay": null,
+            "platform": "1",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          },
+          "arrival": {
+            "station": {
+              "id": "8577003",
+              "name": "Ostermundigen, Bahnhof",
+              "score": null,
+              "coordinate": { "type": "WGS84", "x": 46.955852, "y": 7.482014 },
+              "distance": null
+            },
+            "arrivalTimestamp": 1791783120,
+            "platform": "A",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          }
+        },
+        {
+          "journey": {
+            "category": "B",
+            "number": "10",
+            "operator": "SVB Auto",
+            "to": "Schliern, Bus-Endstation"
+          },
+          "walk": null,
+          "departure": {
+            "station": {
+              "id": "8577003",
+              "name": "Ostermundigen, Bahnhof",
+              "score": null,
+              "coordinate": { "type": "WGS84", "x": 46.955852, "y": 7.482014 },
+              "distance": null
+            },
+            "departureTimestamp": 1791783180,
+            "delay": null,
+            "platform": "A",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          },
+          "arrival": {
+            "station": {
+              "id": "8507110",
+              "name": "Bern, Zytglogge",
+              "score": null,
+              "coordinate": { "type": "WGS84", "x": 46.947838, "y": 7.447501 },
+              "distance": null
+            },
+            "arrivalTimestamp": 1791783840,
+            "platform": "A",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
