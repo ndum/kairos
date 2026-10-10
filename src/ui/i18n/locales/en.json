@@ -211,13 +211,13 @@
       },
       "where": {
         "label": "Address or company",
-        "hint": "Kairos suggests the stops nearby. The position stays on this device, only this search sends it to the timetable, rounded to about 100 m.",
+        "hint": "Kairos suggests the stops nearby. The position stays on this device. Only this search sends it to the timetable, rounded to about 100 m.",
         "placeholder": "Messeplatz 1, Basel"
       },
       "position": {
         "set": "Use current location",
         "remove": "Remove the position",
-        "found": "Location taken over.",
+        "found": "Location set.",
         "denied": "No access to your location.",
         "unavailable": "Your location is not available right now.",
         "removed": "Position removed."
@@ -253,7 +253,7 @@
         "title": "Always the fastest",
         "text": "The connection that arrives first, on any line."
       },
-      "variant": "{count} of {total} connections, {minutes} min on the way",
+      "variant": "{count} of {total} connections, {minutes} min journey",
       "then": "then",
       "own": {
         "title": "Choose your own lines",
@@ -371,7 +371,7 @@
     },
     "groups": {
       "appearance": "Display",
-      "travel": "On the way"
+      "travel": "On the go"
     },
     "version": "Version",
     "source": "Source code",

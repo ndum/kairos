@@ -9,7 +9,21 @@ interface Shot {
   readonly colorScheme: 'light' | 'dark'
 }
 
-const route = liestalToMesseplatz
+/** Recorded connections by the stop they leave from, on the way there and back. */
+const CONNECTIONS: Readonly<Record<string, string>> = {
+  '8500023': 'connections.json',
+  '8500899': 'connections-return.json',
+}
+
+/** The example route as someone using the app in English would name it. */
+const route = {
+  ...liestalToMesseplatz,
+  name: 'Home ↔ Work',
+  places: liestalToMesseplatz.places.map((place, index) => ({
+    ...place,
+    name: index === 0 ? 'Home' : 'Work',
+  })),
+}
 
 const SHOTS: readonly Shot[] = [
   { name: 'now-phone-light', path: '/', phone: true, colorScheme: 'light' },
@@ -26,7 +40,7 @@ async function device(browser: Browser, shot: Shot) {
     isMobile: shot.phone,
     hasTouch: shot.phone,
     colorScheme: shot.colorScheme,
-    locale: 'de-CH',
+    locale: 'en-CH',
     timezoneId: 'Europe/Zurich',
     reducedMotion: 'reduce',
     serviceWorkers: 'block',
@@ -34,8 +48,9 @@ async function device(browser: Browser, shot: Shot) {
   const page = await context.newPage()
   await page.clock.install({ time: new Date('2026-10-19T06:46:30+02:00') })
   await page.route('https://transport.opendata.ch/v1/connections?*', (route) => {
-    const from = new URL(route.request().url()).searchParams.get('from')
-    const body = from === '8500023' ? fixture('connections.json') : '{"connections":[]}'
+    const from = new URL(route.request().url()).searchParams.get('from') ?? ''
+    const name = CONNECTIONS[from]
+    const body = name ? fixture(name) : '{"connections":[]}'
     return route.fulfill({ contentType: 'application/json', body })
   })
   await page.goto('/')
