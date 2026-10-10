@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
+import type { Route } from '@/domain/route'
 import { busLine, gym, home, office, route, trainLine } from '@/test/builders'
 
 import { forSharing, planImport } from './route-sharing'
@@ -39,6 +40,16 @@ describe('planImport', () => {
     const broken = route('broken', '', [home, office])
 
     expect(planImport([], [broken])).toEqual([{ route: broken, status: 'invalid' }])
+  })
+
+  it('counts another schedule as a change', () => {
+    const schooldays: Route = {
+      ...training,
+      schedule: [{ weekday: 1, arriveBy: 480, returnFrom: null }],
+    }
+
+    expect(planImport([training], [schooldays])[0]?.status).toBe('changed')
+    expect(planImport([schooldays], [schooldays])[0]?.status).toBe('unchanged')
   })
 
   it('counts other walking times, buffers, stops and lines as changes', () => {

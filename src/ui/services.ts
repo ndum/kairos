@@ -1,6 +1,7 @@
 import { type InjectionKey, inject } from 'vue'
 
 import type { PlaceFinder } from '@/application/place-finder'
+import type { CalendarWriter } from '@/application/ports/calendar'
 import type { Clock } from '@/application/ports/clock'
 import type { LocationPort } from '@/application/ports/location'
 import type { PinStore } from '@/application/ports/pin-store'
@@ -21,6 +22,7 @@ export interface AppServices {
   readonly codec: RouteCodec
   readonly location: LocationPort
   readonly pins: PinStore
+  readonly calendar: CalendarWriter
   readonly weather: WeatherForecasts
   /** Each board watches its connection with a monitor of its own. */
   readonly createTripMonitor: () => TripMonitor

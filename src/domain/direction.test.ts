@@ -56,6 +56,22 @@ describe('chooseDirection', () => {
     expect(chooseDirection(route, { minuteOfDay: 12 * 60 }).direction).toBe('return')
   })
 
+  it('follows the schedule of the day when the location does not decide', () => {
+    const schedule = { weekday: 1, arriveBy: 9 * 60, returnFrom: 15 * 60 } as const
+
+    expect(chooseDirection(route, { minuteOfDay: 9 * 60 + 30, schedule })).toEqual({
+      direction: 'outbound',
+      basis: 'schedule',
+    })
+    expect(chooseDirection(route, { minuteOfDay: 11 * 60, schedule })).toEqual({
+      direction: 'return',
+      basis: 'schedule',
+    })
+    expect(chooseDirection(route, { location: riverside, minuteOfDay: 11 * 60, schedule })).toEqual(
+      { direction: 'outbound', basis: 'location' },
+    )
+  })
+
   it('respects a custom switch time', () => {
     expect(chooseDirection(route, { minuteOfDay: afternoon, returnFrom: 17 * 60 }).direction).toBe(
       'outbound',

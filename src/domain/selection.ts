@@ -8,7 +8,7 @@ export interface TripSelection {
   readonly main: Trip | null
   /** An earlier trip that is only reachable without the buffer. */
   readonly tight: Trip | null
-  /** Trips after the main one, in order of their leave time. */
+  /** Trips after the main one in order of their leave time, or before it when arriving in time. */
   readonly upcoming: readonly Trip[]
 }
 
@@ -30,6 +30,30 @@ export function selectTrips(
     main,
     tight: earlier.at(-1) ?? null,
     upcoming: main ? reachable.slice(mainIndex + 1, mainIndex + 1 + upcomingCount) : [],
+  }
+}
+
+/**
+ * For a trip that has to arrive by a time: the latest one that still does, so the user leaves as
+ * late as possible, and the earlier ones in reach, nearest first. When even the latest on-time
+ * trip needs the buffer, it becomes the tight one.
+ */
+export function selectInTime(
+  trips: readonly Trip[],
+  now: Instant,
+  arriveBy: Instant,
+  earlierCount = UPCOMING_COUNT,
+): TripSelection {
+  const onTime = trips
+    .filter((trip) => trip.arrivalAt <= arriveBy && urgencyOf(trip, now) !== 'missed')
+    .sort(byLeaveTime)
+  const withBuffer = onTime.filter((trip) => now <= trip.leaveAt)
+  const main = withBuffer.at(-1) ?? null
+
+  return {
+    main,
+    tight: main ? null : (onTime.at(-1) ?? null),
+    upcoming: withBuffer.slice(0, -1).reverse().slice(0, earlierCount),
   }
 }
 

@@ -3,14 +3,19 @@ import * as v from 'valibot'
 import { InvalidShareCodeError, type RouteCodec } from '@/application/ports/route-codec'
 import type { TransportMode } from '@/domain/journey'
 import type { Place, PreferredLine, Route } from '@/domain/route'
+import { MINUTES_PER_DAY, WEEKDAYS } from '@/domain/schedule'
 import { MINUTE } from '@/domain/time'
 
 // A share code is deflated JSON in base64url. The JSON uses arrays instead of objects to keep
 // links and QR codes small:
 //
 //   [version, route, ...]
-//   route = [id, name, place, place, [[line, mode], ...], buffer minutes]
+//   route = [id, name, place, place, [[line, mode], ...], buffer minutes, schedule]
 //   place = [name, stop id, stop name, walk minutes, latitude, longitude]
+//   schedule = [[weekday, arrive by, return from], ...], in minutes since midnight or null
+//
+// The schedule was added later and is left out when a route has none, so older codes stay
+// valid and older versions of the app ignore it.
 //
 // Codes of version 1 have no buffer on the route but a reserve in every place, after the walk
 // minutes. They are still read, and the larger reserve becomes the buffer.
@@ -33,7 +38,20 @@ const LineSchema = v.tuple([
   Text,
   v.pipe(v.number(), v.integer(), v.minValue(0), v.maxValue(MODES.length - 1)),
 ])
-const RouteSchema = v.tuple([Text, Text, PlaceSchema, PlaceSchema, v.array(LineSchema), Minutes])
+const MinuteOfDay = v.nullable(v.pipe(Minutes, v.maxValue(MINUTES_PER_DAY - 1)))
+const ScheduleSchema = v.pipe(
+  v.array(v.tuple([v.picklist(WEEKDAYS), MinuteOfDay, MinuteOfDay])),
+  v.maxLength(WEEKDAYS.length),
+)
+const RouteSchema = v.tuple([
+  Text,
+  Text,
+  PlaceSchema,
+  PlaceSchema,
+  v.array(LineSchema),
+  Minutes,
+  v.optional(ScheduleSchema),
+])
 const ShareSchema = v.pipe(
   v.tupleWithRest([v.literal(VERSION)], RouteSchema),
   v.maxLength(MAX_ROUTES + 1),
@@ -73,14 +91,19 @@ function compact(route: Route): CompactRoute {
     compactPlace(route.places[1]),
     route.preferredLines.map(({ name, mode }) => [name, MODES.indexOf(mode)]),
     Math.round(route.buffer / MINUTE),
-  ]
+    // JSON would write a missing schedule as null, so the item is left out instead.
+    ...(route.schedule?.length
+      ? [route.schedule.map(({ weekday, arriveBy, returnFrom }) => [weekday, arriveBy, returnFrom])]
+      : []),
+  ] as CompactRoute
 }
 
 const placeFromV1 = ([name, id, stopName, walk, , latitude, longitude]: CompactPlaceV1) =>
   [name, id, stopName, walk, latitude, longitude] satisfies CompactPlace
 
 function fromV1([id, name, first, second, lines]: CompactRouteV1): CompactRoute {
-  return [id, name, placeFromV1(first), placeFromV1(second), lines, Math.max(first[4], second[4])]
+  const buffer = Math.max(first[4], second[4])
+  return [id, name, placeFromV1(first), placeFromV1(second), lines, buffer, undefined]
 }
 
 function expandPlace([name, id, stopName, walk, latitude, longitude]: CompactPlace): Place {
@@ -92,7 +115,7 @@ function expandPlace([name, id, stopName, walk, latitude, longitude]: CompactPla
   }
 }
 
-function expand([id, name, first, second, lines, buffer]: CompactRoute): Route {
+function expand([id, name, first, second, lines, buffer, schedule]: CompactRoute): Route {
   return {
     id,
     name,
@@ -102,6 +125,13 @@ function expand([id, name, first, second, lines, buffer]: CompactRoute): Route {
       name: line,
       mode: MODES[mode] ?? 'other',
     })),
+    ...(schedule?.length && {
+      schedule: schedule.map(([weekday, arriveBy, returnFrom]) => ({
+        weekday,
+        arriveBy,
+        returnFrom,
+      })),
+    }),
   }
 }
 

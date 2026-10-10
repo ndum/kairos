@@ -14,6 +14,7 @@ import { TripMonitor } from '@/application/trip-monitor'
 import { WeatherForecasts } from '@/application/weather-forecasts'
 import type { WeatherPort } from '@/application/ports/weather'
 import type { Route } from '@/domain/route'
+import { ICalendarWriter } from '@/infrastructure/calendar/icalendar-writer'
 import { CompressedRouteCodec } from '@/infrastructure/sharing/compressed-route-codec'
 import { createAppI18n, loadLocale } from '@/ui/i18n'
 import type { Locale } from '@/ui/i18n/locale'
@@ -82,6 +83,7 @@ export function testServices(options: RenderOptions = {}) {
       current: () => Promise.resolve(options.location ?? { kind: 'unavailable' }),
     } satisfies LocationPort,
     pins: new MemoryPinStore(options.pinned ?? null),
+    calendar: new ICalendarWriter(clock),
     weather: new WeatherForecasts({ weather: options.weather ?? noWeather, clock }),
     createTripMonitor: () => new TripMonitor({ timetable, cache, clock, scheduler }),
   }

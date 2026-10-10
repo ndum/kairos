@@ -2,6 +2,7 @@
 import { computed, useId } from 'vue'
 import { useI18n } from 'vue-i18n'
 import IconBolt from '~icons/tabler/bolt'
+import IconCalendarTime from '~icons/tabler/calendar-time'
 import IconChevronRight from '~icons/tabler/chevron-right'
 import IconLoader from '~icons/tabler/loader-2'
 import IconUmbrella from '~icons/tabler/umbrella'
@@ -56,6 +57,16 @@ const label = computed(() => {
 const tightMinutes = computed(() => {
   const tight = props.board.tight
   return tight ? Math.max(0, format.minutes(tight.latestLeaveAt - props.now)) : 0
+})
+
+/** The time today's schedule sets for this direction, and whether the main trip keeps it. */
+const scheduleNote = computed(() => {
+  const target = props.board.target
+  if (!target) return null
+  if (target.kind === 'return')
+    return t('now.schedule.returnFrom', { time: format.time(target.from) })
+  const time = format.time(target.by)
+  return props.board.late ? t('now.schedule.late', { time }) : t('now.schedule.inTime', { time })
 })
 
 /** Rain or snow on a walk, for example: Gegen 07:15 regnet es auf dem Fussweg zur Haltestelle. */
@@ -130,6 +141,11 @@ const alternative = computed(() => {
         </span>
       </p>
 
+      <p v-if="scheduleNote" class="schedule" :class="{ late: board.late }">
+        <IconCalendarTime aria-hidden="true" class="flex-none" />
+        {{ scheduleNote }}
+      </p>
+
       <dl class="kv">
         <div>
           <dt>{{ t('now.departure') }}</dt>
@@ -202,6 +218,19 @@ const alternative = computed(() => {
 <style scoped>
 .hero {
   --state-color: transparent;
+}
+
+.schedule {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: var(--color-ink-muted);
+  font-size: 0.875rem;
+}
+
+.schedule.late {
+  color: var(--color-late);
+  font-weight: 600;
 }
 
 .hero[data-urgency='soon'] {

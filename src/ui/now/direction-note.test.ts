@@ -19,6 +19,11 @@ describe('directionNoteOf', () => {
     expect(directionNoteOf('time', { kind: 'unavailable' })).toBe('unavailable')
   })
 
+  it('says when the schedule chose the direction, also without the location', () => {
+    expect(directionNoteOf('schedule', found)).toBe('schedule')
+    expect(directionNoteOf('schedule', { kind: 'off' })).toBe('schedule')
+  })
+
   it('stays silent when the user chose the direction or keeps the location off', () => {
     expect(directionNoteOf('swapped', found)).toBeNull()
     expect(directionNoteOf('time', { kind: 'off' })).toBeNull()

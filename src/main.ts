@@ -13,6 +13,7 @@ import { LocalStorageRouteRepository } from './infrastructure/browser/local-stor
 import { randomId } from './infrastructure/browser/random-id'
 import { systemClock } from './infrastructure/browser/system-clock'
 import { timerScheduler } from './infrastructure/browser/timer-scheduler'
+import { ICalendarWriter } from './infrastructure/calendar/icalendar-writer'
 import { OpenMeteoWeather } from './infrastructure/open-meteo/open-meteo-weather'
 import { CompressedRouteCodec } from './infrastructure/sharing/compressed-route-codec'
 import { SwisstopoAddressSearch } from './infrastructure/swisstopo/swisstopo-address-search'
@@ -39,6 +40,7 @@ const services: AppServices = {
   codec: new CompressedRouteCodec(),
   location: new BrowserLocation(),
   pins: new LocalStoragePinStore(),
+  calendar: new ICalendarWriter(systemClock),
   weather: new WeatherForecasts({ weather: new OpenMeteoWeather(), clock: systemClock }),
   createTripMonitor: () =>
     new TripMonitor({ timetable, cache, clock: systemClock, scheduler: timerScheduler }),

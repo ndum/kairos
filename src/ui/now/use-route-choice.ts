@@ -5,6 +5,7 @@ import { type DirectionChoice, chooseDirection } from '@/domain/direction'
 import type { Coordinates } from '@/domain/geo'
 import { toLocal } from '@/domain/local-time'
 import { type Direction, type Route, oppositeDirection } from '@/domain/route'
+import { scheduleDayAt } from '@/domain/schedule'
 import type { Instant } from '@/domain/time'
 
 /** The route shown last is kept per device, it is not part of shared links. */
@@ -15,8 +16,8 @@ export type DirectionBasis = DirectionChoice['basis'] | 'swapped'
 
 /**
  * The route on the board and its direction. The direction follows the position of the device
- * if allowed, or else the time of day, until the user swaps it. A swap holds for that route
- * until another one is chosen.
+ * if allowed, or else the schedule of the route and the time of day, until the user swaps it.
+ * A swap holds for that route until another one is chosen.
  */
 export function useRouteChoice(
   routes: Ref<readonly Route[]>,
@@ -39,6 +40,7 @@ export function useRouteChoice(
     const { minuteOfDay } = toLocal(now.value)
     return chooseDirection(current, {
       minuteOfDay,
+      schedule: scheduleDayAt(current.schedule, now.value),
       ...(location.value && { location: location.value }),
     })
   })
