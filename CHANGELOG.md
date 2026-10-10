@@ -1,5 +1,35 @@
 # Changelog
 
+## [1.2.0](https://github.com/ndum/kairos/compare/v1.1.1...v1.2.0) (2026-10-10)
+
+
+### Features
+
+* allow a second stop per place ([#31](https://github.com/ndum/kairos/issues/31)) ([1a20032](https://github.com/ndum/kairos/commit/1a2003295774ab8da283fbea102fca8fce8ef184))
+* **i18n:** add French and Italian ([#32](https://github.com/ndum/kairos/issues/32)) ([20eae54](https://github.com/ndum/kairos/commit/20eae54497059590e70fa6977c33f4f42a8d9f4f))
+* plan around a weekly schedule per route ([#29](https://github.com/ndum/kairos/issues/29)) ([31e3aea](https://github.com/ndum/kairos/commit/31e3aeaa145ee7331de63b5951ae72ed60d61a61))
+* show the weather at the stops ([#30](https://github.com/ndum/kairos/issues/30)) ([a4e6b52](https://github.com/ndum/kairos/commit/a4e6b52df27e7bf163f373aeaaeb4770f60ca662))
+* **ui:** ask what comes next after a new route ([#23](https://github.com/ndum/kairos/issues/23)) ([79d5385](https://github.com/ndum/kairos/commit/79d5385391240f179f22f2bfb80273ee8cebfc7c))
+* **ui:** count down in the page title and on the app icon ([#27](https://github.com/ndum/kairos/issues/27)) ([69d414f](https://github.com/ndum/kairos/commit/69d414f35414c1922cbedecf5f4e0c23d9590821))
+* **ui:** share a trip or add it to the calendar ([#28](https://github.com/ndum/kairos/issues/28)) ([48a9fdc](https://github.com/ndum/kairos/commit/48a9fdcedfb35f6ea6215ecbb4e7a2158210ff3c))
+
+
+### Bug Fixes
+
+* serve the app from its own domain ([#26](https://github.com/ndum/kairos/issues/26)) ([3abe776](https://github.com/ndum/kairos/commit/3abe7762a40d5344264eca411d0bfe7a460104aa))
+* **ui:** smooth a few English texts ([9610539](https://github.com/ndum/kairos/commit/96105394d70afbace0569fcab6e0b21b5b31016a))
+* **ui:** translate the location hint after a change of language ([20eae54](https://github.com/ndum/kairos/commit/20eae54497059590e70fa6977c33f4f42a8d9f4f))
+
+
+### Performance
+
+* **i18n:** load only the language in use ([31e3aea](https://github.com/ndum/kairos/commit/31e3aeaa145ee7331de63b5951ae72ed60d61a61))
+
+
+### Documentation
+
+* show the English interface in the README screenshots ([#25](https://github.com/ndum/kairos/issues/25)) ([9610539](https://github.com/ndum/kairos/commit/96105394d70afbace0569fcab6e0b21b5b31016a))
+
 ## [1.1.1](https://github.com/ndum/kairos/compare/v1.1.0...v1.1.1) (2026-10-10)
 
 
