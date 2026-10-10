@@ -52,7 +52,7 @@ export default defineConfig(({ mode }) => ({
       workbox: {
         // The plugin adds the manifest itself. Listing it twice would stop the whole precache.
         globPatterns: ['**/*.{js,css,html,svg,png,woff2,txt}'],
-        // German and English only need the Latin subsets of the font.
+        // German, English, French and Italian only need the Latin subsets of the font.
         globIgnores: ['**/*-cyrillic*', '**/*-vietnamese*'],
         navigateFallback: 'index.html',
         // Pull request previews live below the production app and bring their own worker.

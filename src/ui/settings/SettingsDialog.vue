@@ -70,6 +70,8 @@ const languages = computed(
       { value: 'auto', label: t('settings.language.auto') },
       { value: 'de', label: 'Deutsch' },
       { value: 'en', label: 'English' },
+      { value: 'fr', label: 'Français' },
+      { value: 'it', label: 'Italiano' },
     ] as const,
 )
 </script>

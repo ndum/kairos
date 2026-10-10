@@ -15,8 +15,15 @@ test('links to the three areas and marks the current one', async () => {
     .toHaveAttribute('aria-current', 'page')
 })
 
-test('speaks English when asked to', async () => {
-  const screen = await renderWithApp(AppTabBar, { locale: 'en' })
+test('speaks English, French and Italian when asked to', async () => {
+  const english = await renderWithApp(AppTabBar, { locale: 'en' })
+  await expect.element(english.getByRole('link', { name: 'Routes' })).toBeVisible()
+  await english.unmount()
 
-  await expect.element(screen.getByRole('link', { name: 'Routes' })).toBeVisible()
+  const french = await renderWithApp(AppTabBar, { locale: 'fr' })
+  await expect.element(french.getByRole('link', { name: 'Trajets' })).toBeVisible()
+  await french.unmount()
+
+  const italian = await renderWithApp(AppTabBar, { locale: 'it' })
+  await expect.element(italian.getByRole('link', { name: 'Percorsi' })).toBeVisible()
 })
