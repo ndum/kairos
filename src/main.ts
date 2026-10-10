@@ -16,7 +16,7 @@ import { CompressedRouteCodec } from './infrastructure/sharing/compressed-route-
 import { SwisstopoAddressSearch } from './infrastructure/swisstopo/swisstopo-address-search'
 import { TransportOpendataTimetable } from './infrastructure/transport-opendata/transport-opendata-timetable'
 import App from './ui/App.vue'
-import { createAppI18n } from './ui/i18n'
+import { createAppI18n, loadLocale } from './ui/i18n'
 import { createAppRouter } from './ui/router'
 import { type AppServices, servicesKey } from './ui/services'
 import './ui/styles/main.css'
@@ -41,9 +41,13 @@ const services: AppServices = {
     new TripMonitor({ timetable, cache, clock: systemClock, scheduler: timerScheduler }),
 }
 
+// The language of the device may have to load first, so the app starts in it right away.
+const i18n = createAppI18n()
+await loadLocale(i18n.global, i18n.global.locale.value)
+
 createApp(App)
   .provide(servicesKey, services)
   .use(createPinia())
   .use(createAppRouter())
-  .use(createAppI18n())
+  .use(i18n)
   .mount('#app')
