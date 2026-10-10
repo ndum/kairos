@@ -1,7 +1,8 @@
-import { afterEach, expect, test } from 'vitest'
+import { afterEach, describe, expect, test, vi } from 'vitest'
 
 import { pinTrip } from '@/application/pinned-trip'
 import type { TimetablePort } from '@/application/ports/timetable'
+import type { WeatherPort } from '@/application/ports/weather'
 import type { Journey } from '@/domain/journey'
 import { endpoints } from '@/domain/route'
 import { planTrip } from '@/domain/trip'
@@ -127,6 +128,62 @@ test('opens the details of the next trip back', async () => {
 
   const sheet = screen.getByRole('dialog', { name: 'Losgehen um 07:22' })
   await expect.element(sheet.getByText('ab Market Square')).toBeVisible()
+})
+
+describe('weather', () => {
+  // The stops get positions, because the forecast is asked for at the stops.
+  const located = route(
+    'commute',
+    'Commute',
+    [
+      { ...home, stop: { ...home.stop, coordinates: { latitude: 47.48, longitude: 7.73 } } },
+      { ...office, stop: { ...office.stop, coordinates: { latitude: 47.56, longitude: 7.6 } } },
+    ],
+    [trainLine('S1'), busLine('20')],
+  )
+  const quarter = (time: string, precipitation: number, sky: 'cloudy' | 'rain') => ({
+    at: at(time),
+    temperature: 8.4,
+    precipitation,
+    sky,
+    isDay: true,
+  })
+  const weather: WeatherPort = {
+    forecast: () => Promise.resolve([quarter('07:00', 0, 'cloudy'), quarter('07:15', 0.5, 'rain')]),
+  }
+
+  test('shows the weather when leaving and warns about rain on the walk', async () => {
+    const screen = await renderWithApp(NowView, {
+      routes: [located],
+      timetable: timetable(morning),
+      weather,
+    })
+    const hero = screen.getByRole('region', { name: /Home nach Office/ })
+
+    // Leaving at 07:09 for the S1 at 07:20, the rain starts at 07:15.
+    await expect
+      .element(hero.getByRole('img', { name: 'Wetter beim Losgehen: bewölkt, 8 Grad' }))
+      .toBeVisible()
+    await expect
+      .element(hero.getByText('Gegen 07:15 regnet es auf dem Fussweg zur Haltestelle.'))
+      .toBeVisible()
+  })
+
+  test('asks for no weather once the user switched it off', async () => {
+    localStorage.setItem('kairos:weather', 'false')
+    const forecast = vi.fn<WeatherPort['forecast']>(() => Promise.resolve([]))
+    const screen = await renderWithApp(NowView, {
+      routes: [located],
+      timetable: timetable(morning),
+      weather: { forecast },
+    })
+
+    await expect
+      .element(screen.getByRole('region', { name: /Home nach Office/ }))
+      .toMatchTextContent(/Losgehen in/)
+    expect(forecast).not.toHaveBeenCalled()
+    expect(screen.getByRole('img', { name: /Wetter beim Losgehen/ }).elements()).toHaveLength(0)
+  })
 })
 
 test('warns about an earlier trip that is only reachable without the buffer', async () => {

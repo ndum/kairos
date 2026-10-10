@@ -11,6 +11,8 @@ import type { TimetablePort } from '@/application/ports/timetable'
 import { RouteLibrary } from '@/application/route-library'
 import { StopSearch } from '@/application/stop-search'
 import { TripMonitor } from '@/application/trip-monitor'
+import { WeatherForecasts } from '@/application/weather-forecasts'
+import type { WeatherPort } from '@/application/ports/weather'
 import type { Route } from '@/domain/route'
 import { CompressedRouteCodec } from '@/infrastructure/sharing/compressed-route-codec'
 import { createAppI18n, loadLocale } from '@/ui/i18n'
@@ -44,9 +46,12 @@ export interface RenderOptions {
   readonly location?: LocationResult
   /** A trip pinned before the app starts. */
   readonly pinned?: PinnedTrip
+  /** Forecasts of the weather service, none by default. */
+  readonly weather?: WeatherPort
 }
 
 const nothingFound: PlaceSearchPort = { searchPlaces: () => Promise.resolve([]) }
+const noWeather: WeatherPort = { forecast: () => Promise.resolve([]) }
 
 const emptyTimetable: TimetablePort = {
   findJourneys: () => Promise.resolve([]),
@@ -77,6 +82,7 @@ export function testServices(options: RenderOptions = {}) {
       current: () => Promise.resolve(options.location ?? { kind: 'unavailable' }),
     } satisfies LocationPort,
     pins: new MemoryPinStore(options.pinned ?? null),
+    weather: new WeatherForecasts({ weather: options.weather ?? noWeather, clock }),
     createTripMonitor: () => new TripMonitor({ timetable, cache, clock, scheduler }),
   }
   return { services, repository, clock, scheduler }

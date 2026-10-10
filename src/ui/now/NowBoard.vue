@@ -39,6 +39,7 @@ import LiveStatus from './LiveStatus.vue'
 import OppositeCard from './OppositeCard.vue'
 import UpcomingCard from './UpcomingCard.vue'
 import { useLiveBoard } from './use-live-board'
+import { useTripWeather } from './use-trip-weather'
 
 const props = defineProps<{
   route: Route
@@ -90,6 +91,11 @@ watchEffect(() => {
 })
 onUnmounted(scene.clear)
 
+const weather = useTripWeather(
+  computed(() => primary.board.value.main),
+  primary.endpoints,
+)
+
 // The details of a later trip or of the next trip back, which the user may also pin.
 const pins = usePinStore()
 const toasts = useToastStore()
@@ -135,6 +141,7 @@ const canPrefer = computed(() => !!selected.value && !prefers(props.route, selec
       :ends="primary.endpoints.value"
       :now
       :status="primary.snapshot.value.status"
+      :weather
       @retry="primary.refresh"
     />
     <JourneyCard

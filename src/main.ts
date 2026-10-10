@@ -5,6 +5,7 @@ import { PlaceFinder } from './application/place-finder'
 import { RouteLibrary } from './application/route-library'
 import { StopSearch } from './application/stop-search'
 import { TripMonitor } from './application/trip-monitor'
+import { WeatherForecasts } from './application/weather-forecasts'
 import { BrowserLocation } from './infrastructure/browser/browser-location'
 import { LocalStorageJourneyCache } from './infrastructure/browser/local-storage-journey-cache'
 import { LocalStoragePinStore } from './infrastructure/browser/local-storage-pin-store'
@@ -12,6 +13,7 @@ import { LocalStorageRouteRepository } from './infrastructure/browser/local-stor
 import { randomId } from './infrastructure/browser/random-id'
 import { systemClock } from './infrastructure/browser/system-clock'
 import { timerScheduler } from './infrastructure/browser/timer-scheduler'
+import { OpenMeteoWeather } from './infrastructure/open-meteo/open-meteo-weather'
 import { CompressedRouteCodec } from './infrastructure/sharing/compressed-route-codec'
 import { SwisstopoAddressSearch } from './infrastructure/swisstopo/swisstopo-address-search'
 import { TransportOpendataTimetable } from './infrastructure/transport-opendata/transport-opendata-timetable'
@@ -37,6 +39,7 @@ const services: AppServices = {
   codec: new CompressedRouteCodec(),
   location: new BrowserLocation(),
   pins: new LocalStoragePinStore(),
+  weather: new WeatherForecasts({ weather: new OpenMeteoWeather(), clock: systemClock }),
   createTripMonitor: () =>
     new TripMonitor({ timetable, cache, clock: systemClock, scheduler: timerScheduler }),
 }

@@ -2,6 +2,7 @@
 import { computed, ref, useId } from 'vue'
 import { useI18n } from 'vue-i18n'
 import IconChevronRight from '~icons/tabler/chevron-right'
+import IconCloud from '~icons/tabler/cloud'
 import IconCode from '~icons/tabler/code'
 import IconContrast from '~icons/tabler/contrast'
 import IconDeviceMobile from '~icons/tabler/device-mobile'
@@ -17,6 +18,7 @@ import { useAppearance } from '../composables/use-appearance'
 import { useAwakePreference } from '../composables/use-keep-awake'
 import { useLanguage } from '../composables/use-language'
 import { useLocationPreference } from '../composables/use-location-preference'
+import { useWeatherPreference } from '../composables/use-weather-preference'
 import { useServices } from '../services'
 
 const open = defineModel<boolean>('open', { required: true })
@@ -27,6 +29,7 @@ const language = useLanguage()
 const { location } = useServices()
 const useLocation = useLocationPreference()
 const keepAwake = useAwakePreference()
+const showWeather = useWeatherPreference()
 const canKeepAwake = 'wakeLock' in navigator
 const locationError = ref<string>()
 let locationRequest = 0
@@ -108,6 +111,13 @@ const languages = computed(
           :icon="IconMapPin"
           :tone="2"
           @update:model-value="setLocation"
+        />
+        <SettingSwitch
+          v-model="showWeather"
+          :label="t('settings.weather.label')"
+          :hint="t('settings.weather.hint')"
+          :icon="IconCloud"
+          :tone="2"
         />
         <SettingSwitch
           v-model="keepAwake"

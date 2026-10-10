@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import IconBolt from '~icons/tabler/bolt'
 import IconChevronRight from '~icons/tabler/chevron-right'
 import IconLoader from '~icons/tabler/loader-2'
+import IconUmbrella from '~icons/tabler/umbrella'
 
 import type { Board } from '@/application/board'
 import type { MonitorStatus } from '@/application/trip-monitor'
@@ -19,12 +20,16 @@ import { useFormat } from '../composables/use-format'
 import { countdownTo, urgencyProgress } from './countdown'
 import DirectionTag from './DirectionTag.vue'
 import PlatformText from './PlatformText.vue'
+import type { TripWeather } from './use-trip-weather'
+import WeatherChip from './WeatherChip.vue'
 
 const props = defineProps<{
   board: Board
   ends: Endpoints
   now: Instant
   status: MonitorStatus
+  /** The weather when leaving and on the walks, unless the user switched it off. */
+  weather?: TripWeather | null
 }>()
 
 const emit = defineEmits<{ retry: [] }>()
@@ -53,6 +58,17 @@ const tightMinutes = computed(() => {
   return tight ? Math.max(0, format.minutes(tight.latestLeaveAt - props.now)) : 0
 })
 
+/** Rain or snow on a walk, for example: Gegen 07:15 regnet es auf dem Fussweg zur Haltestelle. */
+const wetNote = computed(() => {
+  const wet = props.weather?.wet
+  if (!wet) return null
+  const kind = wet.step.sky === 'snow' ? 'snow' : 'rain'
+  return t(`now.weather.wet.${kind}.${wet.walk}`, {
+    time: format.time(wet.step.at),
+    stop: wet.stop,
+  })
+})
+
 const alternative = computed(() => {
   const trip = props.board.alternative
   return trip ? { trip, rides: ridesOf(trip.journey) } : null
@@ -69,7 +85,10 @@ const alternative = computed(() => {
     <i class="halo" aria-hidden="true" />
     <div class="flex flex-wrap items-center justify-between gap-2">
       <DirectionTag :id="directionId" :ends />
-      <span v-if="urgency" class="chip" :class="urgency">{{ t(`now.urgency.${urgency}`) }}</span>
+      <span class="flex items-center gap-2">
+        <WeatherChip v-if="main && weather?.leaving" :step="weather.leaving" />
+        <span v-if="urgency" class="chip" :class="urgency">{{ t(`now.urgency.${urgency}`) }}</span>
+      </span>
     </div>
 
     <div class="flex items-end justify-between gap-3">
@@ -126,6 +145,11 @@ const alternative = computed(() => {
           <dd>{{ format.time(main.arrivalAt) }}</dd>
         </div>
       </dl>
+
+      <p v-if="wetNote" class="note">
+        <IconUmbrella aria-hidden="true" class="mt-0.5 flex-none text-train" />
+        <span>{{ wetNote }}</span>
+      </p>
 
       <p v-if="alternative" class="note">
         <IconBolt aria-hidden="true" class="mt-0.5 flex-none text-train" />
