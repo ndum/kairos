@@ -50,12 +50,12 @@ const name = useId()
 }
 
 .segment:has(input:checked) {
-  background: var(--color-ink);
-  color: var(--color-on-ink);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
 }
 
 .segment:has(input:focus-visible) {
-  outline: 2px solid var(--color-train);
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 </style>

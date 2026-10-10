@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import { fileURLToPath, URL } from 'node:url'
 
 import VueI18n from '@intlify/unplugin-vue-i18n/vite'
@@ -12,8 +13,15 @@ import { contentSecurityPolicy } from './scripts/vite-plugin-csp.ts'
 
 // KAIROS_BASE is set by the deployment workflows: /kairos/ for GitHub Pages and a
 // sub-path per pull request for previews. Local builds are served from the root.
+const { version } = JSON.parse(
+  readFileSync(new URL('./package.json', import.meta.url), 'utf8'),
+) as { version: string }
+
 export default defineConfig(({ mode }) => ({
   base: process.env.KAIROS_BASE ?? '/',
+  define: {
+    __APP_VERSION__: JSON.stringify(version),
+  },
   plugins: [
     vue(),
     tailwindcss(),

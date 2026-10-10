@@ -34,7 +34,7 @@ const MASTS = Array.from({ length: 11 }, (_, index) => 40 + index * 230)
 const starLayers = Array.from({ length: 3 }, () =>
   Array.from({ length: 36 }, () => {
     const x = (Math.random() * 100).toFixed(2)
-    const y = (Math.random() * 58).toFixed(2)
+    const y = (Math.random() * 30).toFixed(2)
     const size = (Math.random() * 0.8).toFixed(2)
     return `${x}vw ${y}vh 0 ${size}px var(--color-scene-star)`
   }).join(', '),
@@ -200,22 +200,35 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+/* A band of sky at the top of the page. The content scrolls over it. */
 .scene {
   position: fixed;
-  inset: 0;
+  inset: 0 0 auto;
   z-index: 0;
+  height: var(--sky-height);
   overflow: hidden;
   pointer-events: none;
 }
 
+/* The mountains fade into the ground of the page. */
+.scene::after {
+  position: absolute;
+  inset: auto 0 0;
+  height: 3rem;
+  background: linear-gradient(transparent, var(--color-ground));
+  content: '';
+}
+
+/* The deep blue reaches far down, so the white header on the sky stays easy to read. */
 .sky {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     180deg,
     var(--color-scene-sky-1) 0%,
-    var(--color-scene-sky-2) 38%,
-    var(--color-scene-sky-3) 70%,
+    var(--color-scene-sky-1) 18%,
+    var(--color-scene-sky-2) 60%,
+    var(--color-scene-sky-3) 84%,
     var(--color-scene-sky-4) 100%
   );
 }
@@ -347,7 +360,7 @@ onBeforeUnmount(() => {
   left: 0;
   bottom: 0;
   width: 100%;
-  height: clamp(190px, 38vh, 640px);
+  height: 54%;
 }
 
 .snow {

@@ -20,7 +20,7 @@ With access to the location, Kairos opens the board in the direction that starts
 ## Screenshots
 
 <p align="center">
-  <img src="docs/screenshots/now-phone-light.jpg" alt="The board on an iPhone, counting down six minutes until leaving for the IC 61" width="260" />
+  <img src="docs/screenshots/now-phone-light.jpg" alt="The board on an iPhone, counting down seven minutes until leaving for the IR 37" width="260" />
   &nbsp;
   <img src="docs/screenshots/now-phone-dark.jpg" alt="The same board at night, in the dark appearance" width="260" />
 </p>

@@ -22,36 +22,37 @@ const offline = computed(
 </script>
 
 <template>
-  <div
-    class="live glass flex h-10 items-center gap-2 rounded-full pr-1 pl-4 text-sm"
-    :class="snapshot.status"
-  >
+  <div class="live pill" :class="[snapshot.status, { 'pr-1': offline }]">
     <i class="dot" aria-hidden="true" />
-    <b class="font-bold" aria-hidden="true">{{ state }}</b>
-    <span v-if="snapshot.fetchedAt" class="text-ink-muted">
+    <b class="font-semibold" aria-hidden="true">{{ state }}</b>
+    <span v-if="snapshot.fetchedAt" class="opacity-85">
       {{ t('now.live.updated', { time: format.time(snapshot.fetchedAt) }) }}
     </span>
     <IconButton
       v-if="offline"
-      class="-my-1"
+      class="refresh -my-1"
       :label="t('now.live.refresh')"
       @click="emit('refresh')"
     >
       <IconRefresh aria-hidden="true" />
     </IconButton>
-    <span v-else class="w-3" />
     <!-- Only changes of the state are read out, not every refresh. -->
     <span class="sr-only" role="status">{{ state }}</span>
   </div>
 </template>
 
 <style scoped>
+/* White text on the sky, so the dot uses the bright green of the night in both looks. */
 .dot {
   position: relative;
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
-  background: var(--color-go);
+  background: #62df99;
+}
+
+.refresh {
+  color: inherit;
 }
 
 /* A ring that spreads from the dot while the data is live. */
@@ -65,12 +66,12 @@ const offline = computed(
 }
 
 .loading .dot {
-  background: var(--color-ink-subtle);
+  background: rgb(255 255 255 / 0.6);
 }
 
 .stale .dot,
 .error .dot {
-  background: var(--color-soon);
+  background: #ffc447;
 }
 
 .loading .dot::after,

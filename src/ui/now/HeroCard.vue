@@ -2,8 +2,7 @@
 import { computed, useId } from 'vue'
 import { useI18n } from 'vue-i18n'
 import IconBolt from '~icons/tabler/bolt'
-import IconClock from '~icons/tabler/clock'
-import IconCurrentLocation from '~icons/tabler/current-location'
+import IconChevronRight from '~icons/tabler/chevron-right'
 import IconLoader from '~icons/tabler/loader-2'
 
 import type { Board } from '@/application/board'
@@ -18,7 +17,6 @@ import GlassCard from '../components/GlassCard.vue'
 import LineBadge from '../components/LineBadge.vue'
 import { useFormat } from '../composables/use-format'
 import { countdownTo, urgencyProgress } from './countdown'
-import type { DirectionNote } from './direction-note'
 import DirectionTag from './DirectionTag.vue'
 import PlatformText from './PlatformText.vue'
 
@@ -27,8 +25,6 @@ const props = defineProps<{
   ends: Endpoints
   now: Instant
   status: MonitorStatus
-  /** Why the board shows this direction, if the location may choose it. */
-  directionNote?: DirectionNote | null
 }>()
 
 const emit = defineEmits<{ retry: [] }>()
@@ -39,7 +35,8 @@ const headingId = useId()
 const directionId = useId()
 
 const main = computed(() => props.board.main)
-const firstRide = computed(() => (main.value ? ridesOf(main.value.journey)[0] : undefined))
+const rides = computed(() => (main.value ? ridesOf(main.value.journey) : []))
+const firstRide = computed(() => rides.value[0])
 const urgency = computed(() => (main.value ? urgencyOf(main.value, props.now) : null))
 const countdown = computed(() => (main.value ? countdownTo(main.value.leaveAt, props.now) : null))
 const progress = computed(() => (main.value ? urgencyProgress(main.value.leaveAt, props.now) : 0))
@@ -65,44 +62,54 @@ const alternative = computed(() => {
 <template>
   <GlassCard
     tag="section"
-    :lift="false"
-    class="hero flex flex-col gap-[clamp(0.75rem,1vw,1.5rem)]"
+    class="hero flex flex-col gap-4"
     :data-urgency="urgency ?? undefined"
     :aria-labelledby="`${directionId} ${headingId}`"
   >
     <i class="halo" aria-hidden="true" />
-    <div class="flex flex-wrap items-center gap-2.5">
+    <div class="flex flex-wrap items-center justify-between gap-2">
       <DirectionTag :id="directionId" :ends />
-      <h2 :id="headingId" class="label font-semibold text-ink-subtle">{{ label }}</h2>
-      <p v-if="directionNote" class="flex w-full items-center gap-1.5 text-sm text-ink-subtle">
-        <IconCurrentLocation
-          v-if="directionNote === 'location' || directionNote === 'locating'"
-          aria-hidden="true"
-        />
-        <IconClock v-else aria-hidden="true" />
-        {{ t(`now.directionNote.${directionNote}`) }}
+      <span v-if="urgency" class="chip" :class="urgency">{{ t(`now.urgency.${urgency}`) }}</span>
+    </div>
+
+    <div class="flex items-end justify-between gap-3">
+      <div class="flex min-w-0 flex-col gap-1">
+        <h2 :id="headingId" class="text-sm text-ink-subtle min-[900px]:text-base">{{ label }}</h2>
+        <p v-if="countdown" class="count" aria-live="off">
+          <template v-if="countdown.kind === 'minutes'">
+            {{ countdown.minutes }}<span class="unit">{{ t('now.minutesUnit') }}</span>
+          </template>
+          <template v-else-if="countdown.kind === 'now'">{{ t('now.now') }}</template>
+          <template v-else>{{ format.time(countdown.at) }}</template>
+        </p>
+      </div>
+      <p v-if="main && countdown && countdown.kind !== 'at'" class="at">
+        <span class="text-sm text-ink-subtle">{{ t('now.at') }}</span>
+        {{ format.time(main.leaveAt) }}
       </p>
     </div>
 
-    <template v-if="main && countdown && firstRide">
-      <p class="count" aria-live="off">
-        <template v-if="countdown.kind === 'minutes'">
-          {{ countdown.minutes }}<span class="unit">{{ t('now.minutesUnit') }}</span>
-        </template>
-        <template v-else-if="countdown.kind === 'now'">{{ t('now.now') }}</template>
-        <template v-else>{{ format.time(countdown.at) }}</template>
-      </p>
+    <template v-if="main && firstRide">
       <div class="meter" aria-hidden="true">
         <i :style="{ transform: `scaleX(${progress.toFixed(3)})` }" />
       </div>
 
-      <div class="flex flex-wrap items-center gap-x-4 gap-y-2 font-semibold">
-        <span class="chip" :class="urgency">{{ t(`now.urgency.${urgency}`) }}</span>
-        <span class="flex items-center gap-2">
-          <LineBadge :name="firstRide.line.name" :mode="firstRide.line.mode" />
-          {{ t('now.from', { stop: firstRide.departure.stop.name }) }}
+      <p class="flex flex-wrap items-center gap-x-2 gap-y-1.5">
+        <template
+          v-for="(ride, index) in rides"
+          :key="`${ride.line.name}@${ride.departure.scheduledAt}`"
+        >
+          <IconChevronRight v-if="index > 0" aria-hidden="true" class="text-ink-subtle" />
+          <LineBadge :name="ride.line.name" :mode="ride.line.mode" />
+        </template>
+        <span class="text-ink-muted">
+          {{ t('now.from', { stop: firstRide.departure.stop.name })
+          }}<template v-if="firstRide.departure.platform || firstRide.departure.expectedPlatform"
+            >,
+            <PlatformText :event="firstRide.departure" :mode="firstRide.line.mode" />
+          </template>
         </span>
-      </div>
+      </p>
 
       <dl class="kv">
         <div>
@@ -113,20 +120,16 @@ const alternative = computed(() => {
               {{ t('now.delay', { minutes: format.minutes(main.delay) }) }}
             </span>
           </dd>
-          <dd class="detail">
-            <PlatformText :event="firstRide.departure" :mode="firstRide.line.mode" />
-          </dd>
         </div>
         <div>
-          <dt>{{ t('now.arrival') }}</dt>
+          <dt>{{ t('now.arrivalAt', { place: ends.destination.name }) }}</dt>
           <dd>{{ format.time(main.arrivalAt) }}</dd>
-          <dd class="detail">{{ ends.destination.name }}</dd>
         </div>
       </dl>
 
-      <p v-if="alternative" class="hint">
-        <IconBolt aria-hidden="true" class="flex-none text-train" />
-        <span>
+      <p v-if="alternative" class="note">
+        <IconBolt aria-hidden="true" class="mt-0.5 flex-none text-train" />
+        <span class="flex flex-wrap items-center gap-1.5">
           {{ t('now.alternative.faster') }}
           <LineBadge
             v-for="ride in alternative.rides"
@@ -144,7 +147,7 @@ const alternative = computed(() => {
       </p>
     </template>
 
-    <div v-else class="flex flex-col items-start gap-3 py-4">
+    <div v-else class="flex flex-col items-start gap-3 py-2">
       <p v-if="status === 'loading'" class="flex items-center gap-2 text-ink-muted">
         <IconLoader aria-hidden="true" class="animate-spin" />
         {{ t('now.loading') }}
@@ -156,15 +159,18 @@ const alternative = computed(() => {
       <p v-else class="text-ink-muted">{{ t('now.noTrips') }}</p>
     </div>
 
-    <p v-if="board.tight" class="tight" role="status">
-      {{
-        tightMinutes > 0
-          ? t('now.tight.minutes', {
-              time: format.time(board.tight.departureAt),
-              minutes: tightMinutes,
-            })
-          : t('now.tight.now', { time: format.time(board.tight.departureAt) })
-      }}
+    <p v-if="board.tight" class="note tight" role="status">
+      <IconBolt aria-hidden="true" class="mt-0.5 flex-none" />
+      <span>
+        {{
+          tightMinutes > 0
+            ? t('now.tight.minutes', {
+                time: format.time(board.tight.departureAt),
+                minutes: tightMinutes,
+              })
+            : t('now.tight.now', { time: format.time(board.tight.departureAt) })
+        }}
+      </span>
     </p>
   </GlassCard>
 </template>
@@ -213,30 +219,35 @@ const alternative = computed(() => {
   animation: spin 4.5s linear infinite;
 }
 
-.label {
-  font-size: clamp(0.875rem, min(0.9vw, 1.7vh), 1.3rem);
-}
-
 .count {
   display: flex;
   align-items: baseline;
-  gap: 0.1em;
-  font-size: clamp(5.5rem, min(9vw, 17vh), 20rem);
-  font-weight: 220;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.06em;
-  line-height: 0.92;
+  gap: 0.5rem;
+  font-size: 6rem;
+  font-weight: 300;
+  letter-spacing: -0.045em;
+  line-height: 0.88;
 }
 
 .count .unit {
   color: var(--color-ink-muted);
-  font-size: 0.17em;
-  font-weight: 600;
+  font-size: 1.25rem;
+  font-weight: 500;
   letter-spacing: 0;
 }
 
+.at {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-bottom: 0.25rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
 .meter {
-  height: 0.5rem;
+  height: 0.375rem;
   overflow: hidden;
   border-radius: 9999px;
   background: var(--color-buffer);
@@ -259,23 +270,23 @@ const alternative = computed(() => {
 
 .chip {
   display: inline-flex;
-  height: 2em;
+  height: 1.75rem;
   align-items: center;
-  gap: 0.5em;
+  gap: 0.45rem;
   border-radius: 9999px;
-  padding-inline: 0.85em;
+  padding-inline: 0.7rem;
   background: var(--chip-soft);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--chip) 24%, transparent);
-  color: var(--color-ink);
-  font-size: 0.875rem;
+  color: var(--chip);
+  font-size: 0.8125rem;
+  font-weight: 650;
   white-space: nowrap;
 }
 
 .chip::before {
-  width: 0.55em;
-  height: 0.55em;
+  width: 0.5rem;
+  height: 0.5rem;
   border-radius: 50%;
-  background: var(--chip);
+  background: currentColor;
   content: '';
 }
 
@@ -298,67 +309,66 @@ const alternative = computed(() => {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.75rem;
   border-top: 1px solid var(--color-hairline);
-  padding-top: clamp(0.75rem, 0.9vw, 1.25rem);
+  padding-top: 0.875rem;
 }
 
 .kv dt {
   color: var(--color-ink-subtle);
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.8125rem;
 }
 
 .kv dd {
-  font-size: 1.125rem;
-  font-variant-numeric: tabular-nums;
-  font-weight: 650;
-}
-
-.kv dd.detail {
-  color: var(--color-ink-muted);
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
 .delay {
   color: var(--color-late);
+  font-size: 0.875rem;
 }
 
-.hint,
-.tight {
+.note {
   display: flex;
-  align-items: center;
-  gap: 0.6em;
-  border-radius: var(--radius-inner);
-  padding: 0.7em 1em;
-  font-weight: 600;
+  gap: 0.625rem;
+  border-radius: 1rem;
+  padding: 0.75rem 0.875rem;
+  background: var(--color-accent-soft);
+  font-size: 0.875rem;
+  line-height: 1.45;
 }
 
-.hint {
-  background: var(--color-glass-soft);
-  box-shadow: inset 0 0 0 1px var(--color-hairline);
+.note.tight {
+  background: var(--color-soon-soft);
+  color: var(--color-soon);
+  font-weight: 550;
 }
 
-.hint > span {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4em;
-}
+@media (min-width: 900px) {
+  .hero {
+    gap: 1.25rem;
+  }
 
-.tight {
-  background: var(--color-late-soft);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-late) 25%, transparent);
-  color: var(--color-ink);
-}
+  .count {
+    gap: 0.625rem;
+    font-size: 8.25rem;
+    letter-spacing: -0.05em;
+  }
 
-.tight::before {
-  flex: none;
-  width: 0.55em;
-  height: 0.55em;
-  border-radius: 50%;
-  background: var(--color-late);
-  animation: pulse 1s ease-in-out infinite;
-  content: '';
+  .count .unit {
+    font-size: 1.625rem;
+  }
+
+  .at {
+    font-size: 1.625rem;
+  }
+
+  .kv dd {
+    font-size: 1.625rem;
+  }
+
+  .note {
+    font-size: 0.9375rem;
+  }
 }
 
 @keyframes spin {
@@ -369,7 +379,7 @@ const alternative = computed(() => {
 
 @keyframes pulse {
   50% {
-    opacity: 0.3;
+    opacity: 0.35;
   }
 }
 </style>

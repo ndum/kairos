@@ -72,7 +72,10 @@
       "trainNumber": "Train {number}",
       "stopovers": "no stops in between | 1 stop in between | {count} stops in between",
       "transferWithWalk": "{walk} min walk, {time}",
-      "walkFrom": "{minutes} min walk from {stop}"
+      "walkFrom": "{minutes} min walk from {stop}",
+      "summary": "{minutes} min, {transfers}",
+      "transfers": "no change | 1 change | {count} changes",
+      "allStops": "All stops and platforms"
     },
     "risk": {
       "tight": "Tight connection",
@@ -82,7 +85,9 @@
       "title": "Later",
       "empty": "No further connections.",
       "details": "Show details",
-      "times": "departs {departure}, arrives {arrival}"
+      "times": "departs {departure}, arrives {arrival}",
+      "leave": "leave",
+      "arrival": "arrives {time}"
     },
     "live": {
       "loading": "Loading",
@@ -95,6 +100,11 @@
     "pinned": {
       "label": "Pinned trip",
       "missed": "This trip can no longer be reached."
+    },
+    "at": "at",
+    "arrivalAt": "Arrival at {place}",
+    "opposite": {
+      "next": "Next: leave at {leave}, arrives {arrival}"
     }
   },
   "plan": {
@@ -129,7 +139,8 @@
     "unpin": "Unpin",
     "pinnedToast": "Trip pinned. Its countdown appears under “Now”.",
     "sheet": {
-      "title": "Leave at {time}"
+      "title": "Leave at {time}",
+      "summary": "{leave} to {arrival}, {minutes} min, {transfers}"
     }
   },
   "routes": {
@@ -338,19 +349,26 @@
     },
     "motion": {
       "label": "Reduce motion",
-      "hint": "The landscape stands still, without transitions and animations."
+      "hint": "The landscape stands still."
     },
     "location": {
       "label": "Direction by location",
-      "hint": "Kairos first shows the direction that starts where you are. Your location stays on this device.",
+      "hint": "Kairos first shows the direction that starts where you are.",
       "denied": "Kairos has no access to your location. Allow it in the settings of your device, on an iPhone under Privacy & Security > Location Services > Safari Websites.",
       "unavailable": "Your location is not available right now. Kairos looks for it each time you open the app and shows the direction by time of day until then."
     },
     "awake": {
       "label": "Keep the screen on",
-      "hint": "While the “Now” view is open, the screen does not turn off.",
+      "hint": "While “Now” is open.",
       "unsupported": "This browser cannot keep the screen on."
-    }
+    },
+    "groups": {
+      "appearance": "Display",
+      "travel": "On the way"
+    },
+    "version": "Version",
+    "source": "Source code",
+    "privacy": "Timetable data: opentransportdata.swiss. Routes and settings stay on this device."
   },
   "update": {
     "available": "A new version of Kairos is ready.",

@@ -31,7 +31,7 @@ watchEffect(() => {
     :departure-at="scene.departureAt"
   />
 
-  <div class="shell relative z-10 mx-auto flex min-h-dvh max-w-[3840px] flex-col">
+  <div class="shell relative z-10 mx-auto flex min-h-dvh w-full max-w-[80rem] flex-col">
     <button type="button" class="skip-link glass" @click="focusMainHeading">
       {{ t('app.skip') }}
     </button>
@@ -51,10 +51,10 @@ watchEffect(() => {
 
 <style scoped>
 .shell {
-  gap: clamp(0.875rem, 1.3vw, 2rem);
-  padding-inline: clamp(1rem, 2.4vw, 5rem);
-  padding-top: max(0.875rem, env(safe-area-inset-top, 0px));
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 7rem);
+  gap: 0.875rem;
+  padding-inline: 1rem;
+  padding-top: max(0.5rem, env(safe-area-inset-top, 0px));
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 6rem);
 }
 
 /* Hidden until a keyboard user reaches it as the first stop on the page. */
@@ -75,32 +75,21 @@ watchEffect(() => {
 }
 
 .credit {
-  align-self: flex-start;
-  border-radius: 1rem;
-  padding: 0.5rem 0.875rem;
-  background: linear-gradient(165deg, var(--color-glass), var(--color-glass-deep));
-  box-shadow: inset 0 0 0 1px var(--color-edge-faint);
-  color: var(--color-ink-muted);
-  font-size: 0.78rem;
-  -webkit-backdrop-filter: blur(16px);
-  backdrop-filter: blur(16px);
+  color: var(--color-ink-subtle);
+  font-size: 0.8125rem;
+  text-align: center;
 }
 
 @media (min-width: 900px) {
   .shell {
-    padding-bottom: 28vh;
+    gap: 1.375rem;
+    padding-inline: 2rem;
+    padding-top: 1.25rem;
+    padding-bottom: 2.5rem;
   }
 
   .credit {
-    position: fixed;
-    right: clamp(1rem, 2.4vw, 5rem);
-    bottom: 0.625rem;
-    padding: 0;
-    background: none;
-    box-shadow: none;
-    color: rgb(255 255 255 / 0.8);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
+    text-align: right;
   }
 }
 </style>

@@ -27,7 +27,7 @@ const risk = computed(() => transferRiskOf(props.trip.journey))
 </script>
 
 <template>
-  <GlassCard tag="article" :lift="false" :aria-labelledby="headingId" class="flex flex-col gap-3">
+  <GlassCard tag="article" :aria-labelledby="headingId" class="flex flex-col gap-3">
     <div class="flex flex-wrap items-start justify-between gap-3">
       <h3 :id="headingId" class="flex flex-col">
         <span class="text-sm font-semibold text-ink-subtle">{{ t('now.leaveAt') }}</span>

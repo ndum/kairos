@@ -12,7 +12,8 @@ afterEach(() => {
 test('switches the language right away', async () => {
   const screen = await renderWithApp(SettingsDialog, { props: { open: true } })
 
-  await screen.getByText('English').click()
+  await screen.getByRole('button', { name: /Sprache/ }).click()
+  await screen.getByRole('radio', { name: 'English' }).click()
 
   await expect.element(screen.getByRole('heading', { name: 'Settings' })).toBeVisible()
   expect(localStorage.getItem('kairos:locale')).toBe('en')
@@ -71,7 +72,8 @@ test('reduces motion in the whole app', async () => {
 test('switches to the dark appearance', async () => {
   const screen = await renderWithApp(SettingsDialog, { props: { open: true } })
 
-  await screen.getByText('Dunkel').click()
+  await screen.getByRole('button', { name: /Erscheinungsbild/ }).click()
+  await screen.getByRole('radio', { name: 'Dunkel' }).click()
 
   await expect.poll(() => document.documentElement.classList.contains('dark')).toBe(true)
   expect(localStorage.getItem('kairos:theme')).toBe('dark')

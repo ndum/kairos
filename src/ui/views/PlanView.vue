@@ -121,7 +121,7 @@ const canPrefer = computed(() => {
 
 <template>
   <div class="flex flex-col gap-5">
-    <h1 tabindex="-1" class="text-3xl font-bold tracking-tight outline-none">
+    <h1 tabindex="-1" class="text-3xl font-bold tracking-tight sky-text outline-none">
       {{ t('plan.title') }}
     </h1>
 
@@ -134,7 +134,7 @@ const canPrefer = computed(() => {
     />
 
     <div v-else class="layout">
-      <GlassCard tag="form" :lift="false" class="panel flex flex-col gap-5" @submit.prevent="retry">
+      <GlassCard tag="form" class="panel flex flex-col gap-5" @submit.prevent="retry">
         <RouteSwitcher
           v-if="store.routes.length > 1"
           :routes="store.routes"
@@ -164,7 +164,7 @@ const canPrefer = computed(() => {
         :aria-labelledby="resultsId"
         :aria-busy="status === 'loading'"
       >
-        <h2 :id="resultsId" class="pill self-start text-lg font-semibold tracking-tight">
+        <h2 :id="resultsId" class="self-start heading-chip text-lg font-semibold tracking-tight">
           {{ t('plan.results') }}
         </h2>
 
@@ -195,7 +195,7 @@ const canPrefer = computed(() => {
             </li>
           </ol>
           <template v-if="plan.alternatives.length > 0">
-            <h3 class="mt-2 pill self-start font-semibold">{{ t('plan.alternatives') }}</h3>
+            <h3 class="mt-2 self-start heading-chip font-semibold">{{ t('plan.alternatives') }}</h3>
             <ol class="results">
               <li v-for="trip in plan.alternatives" :key="trip.leaveAt">
                 <PlanResult

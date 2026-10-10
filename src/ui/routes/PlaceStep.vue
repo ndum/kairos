@@ -283,7 +283,6 @@ function chooseStop(stop: StopRef | null): void {
 <style scoped>
 .suggestion {
   border: 1px solid var(--color-hairline);
-  background: var(--color-glass-soft);
   color: var(--color-ink-muted);
   transition:
     background-color 0.2s,
@@ -292,7 +291,7 @@ function chooseStop(stop: StopRef | null): void {
 
 @media (hover: hover) {
   .suggestion:hover {
-    background: var(--color-glass);
+    background: var(--color-press);
     color: var(--color-ink);
   }
 }
@@ -305,28 +304,29 @@ function chooseStop(stop: StopRef | null): void {
 /* A row per stop, which reacts as a whole like the radio button it holds. */
 .choice {
   display: flex;
-  min-height: 3.25rem;
+  min-height: 3.75rem;
   align-items: center;
-  gap: 0.875rem;
+  gap: 0.75rem;
   border: 1px solid var(--color-hairline);
   border-radius: 1rem;
-  padding: 0.6rem 1rem;
-  background: var(--color-glass-soft);
+  padding: 0.5rem 0.75rem;
   cursor: pointer;
   transition:
     background-color 0.2s,
-    border-color 0.2s,
-    box-shadow 0.2s;
+    border-color 0.2s;
+}
+
+.choice:hover {
+  background: var(--color-press);
 }
 
 .choice:has(input:checked) {
-  border-color: var(--color-ink);
-  background: var(--color-glass);
-  box-shadow: inset 0 0 0 1px var(--color-ink);
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
 }
 
 .choice:has(input:focus-visible) {
-  outline: 2px solid var(--color-train);
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
@@ -334,6 +334,6 @@ function chooseStop(stop: StopRef | null): void {
   width: 1.25rem;
   height: 1.25rem;
   flex: none;
-  accent-color: var(--color-ink);
+  accent-color: var(--color-accent);
 }
 </style>

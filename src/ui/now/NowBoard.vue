@@ -10,6 +10,8 @@ import {
   watchEffect,
 } from 'vue'
 import { useI18n } from 'vue-i18n'
+import IconClock from '~icons/tabler/clock'
+import IconCurrentLocation from '~icons/tabler/current-location'
 
 import type { MonitorSnapshot } from '@/application/trip-monitor'
 
@@ -109,21 +111,30 @@ const canPrefer = computed(() => !!selected.value && !prefers(props.route, selec
 </script>
 
 <template>
-  <div class="flex flex-wrap items-center justify-between gap-3">
-    <slot name="title" />
-    <LiveStatus class="ml-auto" :snapshot="status" @refresh="primary.refresh" />
+  <div class="head flex flex-wrap items-end justify-between gap-x-4 gap-y-2.5 sky-text">
+    <div class="flex min-w-0 flex-col items-start gap-2">
+      <slot name="title" />
+      <p v-if="directionNote" class="pill">
+        <IconCurrentLocation
+          v-if="directionNote === 'location' || directionNote === 'locating'"
+          aria-hidden="true"
+        />
+        <IconClock v-else aria-hidden="true" />
+        {{ t(`now.directionNote.${directionNote}`) }}
+      </p>
+    </div>
+    <LiveStatus :snapshot="status" @refresh="primary.refresh" />
   </div>
 
   <slot name="before" />
 
-  <div class="bento">
+  <div class="board">
     <HeroCard
       class="hero"
       :board="primary.board.value"
       :ends="primary.endpoints.value"
       :now
       :status="primary.snapshot.value.status"
-      :direction-note
       @retry="primary.refresh"
     />
     <JourneyCard
@@ -131,6 +142,7 @@ const canPrefer = computed(() => !!selected.value && !prefers(props.route, selec
       class="journey"
       :trip="primary.board.value.main"
       :ends="primary.endpoints.value"
+      @details="showDetails(primary.board.value.main, direction)"
     />
     <div class="side">
       <UpcomingCard
@@ -140,7 +152,6 @@ const canPrefer = computed(() => !!selected.value && !prefers(props.route, selec
       <OppositeCard
         :board="secondary.board.value"
         :ends="secondary.endpoints.value"
-        :now
         :status="secondary.snapshot.value.status"
         @swap="emit('swap')"
         @details="(trip) => showDetails(trip, oppositeDirection(direction))"
@@ -162,48 +173,47 @@ const canPrefer = computed(() => !!selected.value && !prefers(props.route, selec
 </template>
 
 <style scoped>
-.bento {
+/* The title, the hint on the direction and the live state sit on the sky. */
+.head {
+  color: var(--color-on-sky);
+}
+
+.board {
   display: grid;
-  grid-template-areas: 'hero' 'journey' 'side';
   grid-template-columns: minmax(0, 1fr);
   align-items: start;
-  gap: clamp(0.875rem, 1.3vw, 2rem);
-}
-
-.hero {
-  grid-area: hero;
-}
-
-.journey {
-  grid-area: journey;
+  gap: 0.875rem;
 }
 
 .side {
   display: grid;
-  grid-area: side;
   align-content: start;
   gap: inherit;
 }
 
 @media (min-width: 900px) {
-  .bento {
-    grid-template-areas: 'hero journey' 'side side';
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr);
+  .head {
+    padding-top: 0.5rem;
+  }
+
+  .board {
+    grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
+    grid-template-areas:
+      'hero side'
+      'journey side';
+    gap: 1.375rem;
+  }
+
+  .hero {
+    grid-area: hero;
+  }
+
+  .journey {
+    grid-area: journey;
   }
 
   .side {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1500px) {
-  .bento {
-    grid-template-areas: 'hero journey side';
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr) minmax(0, 1fr);
-  }
-
-  .side {
-    grid-template-columns: minmax(0, 1fr);
+    grid-area: side;
   }
 }
 </style>

@@ -62,11 +62,11 @@ function accept(): void {
   </template>
 
   <div v-else-if="state === 'ready'" class="mx-auto flex w-full max-w-2xl flex-col gap-5">
-    <h1 tabindex="-1" class="text-3xl font-bold tracking-tight outline-none">
+    <h1 tabindex="-1" class="text-3xl font-bold tracking-tight sky-text outline-none">
       {{ t('import.title') }}
     </h1>
 
-    <GlassCard :lift="false" class="flex flex-col gap-6">
+    <GlassCard class="flex flex-col gap-6">
       <p class="text-pretty text-ink-muted">{{ t('import.text') }}</p>
 
       <ul class="flex flex-col gap-3">

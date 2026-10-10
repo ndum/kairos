@@ -129,17 +129,16 @@ function submitPage(): void {
 
   <div v-else ref="editor" class="mx-auto flex w-full max-w-2xl flex-col gap-5">
     <div class="flex flex-wrap items-center justify-between gap-4">
-      <h1 tabindex="-1" class="text-3xl font-bold tracking-tight outline-none">
+      <h1 tabindex="-1" class="text-3xl font-bold tracking-tight sky-text outline-none">
         {{ existing ? t('editor.editTitle') : t('editor.newTitle') }}
       </h1>
-      <BaseButton variant="quiet" :to="{ name: 'routes' }">{{ t('editor.cancel') }}</BaseButton>
+      <BaseButton variant="sky" :to="{ name: 'routes' }">{{ t('editor.cancel') }}</BaseButton>
     </div>
 
     <form v-if="existing" novalidate class="flex flex-col gap-5" @submit.prevent="submitPage">
       <GlassCard
         v-for="name in STEPS"
         :key="name"
-        :lift="false"
         :aria-labelledby="`section-${name}`"
         class="flex flex-col gap-6"
       >
@@ -199,13 +198,7 @@ function submitPage(): void {
         </ol>
       </nav>
 
-      <GlassCard
-        tag="form"
-        :lift="false"
-        novalidate
-        class="flex flex-col gap-7"
-        @submit.prevent="submitStep"
-      >
+      <GlassCard tag="form" novalidate class="flex flex-col gap-7" @submit.prevent="submitStep">
         <header class="flex flex-col gap-1.5">
           <p class="text-sm font-semibold text-ink-subtle">
             {{ t('editor.step', { current: step + 1, total: STEPS.length }) }}
@@ -270,87 +263,78 @@ function submitPage(): void {
 }
 
 /*
- * A numbered button per step, which looks clickable as long as the step can be reached. On
- * phones the number sits above the name, so all three fit side by side.
+ * A numbered button per step on the sky, which looks clickable as long as the step can be
+ * reached. On phones the number sits above the name, so all three fit side by side.
  */
 .step-tab {
   display: flex;
   width: 100%;
-  min-height: 3rem;
+  min-height: 2.75rem;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.375rem;
-  border: 1px solid var(--color-hairline);
-  border-radius: 1rem;
-  padding: 0.5rem 0.25rem;
-  background: var(--color-glass-soft);
-  color: var(--color-ink-muted);
+  gap: 0.25rem;
+  border: 1px solid rgb(255 255 255 / 0.45);
+  border-radius: 0.875rem;
+  padding: 0.375rem 0.25rem;
+  background: rgb(255 255 255 / 0.16);
+  color: var(--color-on-sky);
   cursor: pointer;
   font-size: 0.875rem;
-  font-weight: 650;
+  font-weight: 600;
   text-align: center;
   transition:
     background-color 0.2s,
-    border-color 0.2s,
     color 0.2s;
+}
+
+.step-tab:not(:disabled):hover {
+  background: rgb(255 255 255 / 0.26);
+}
+
+.step-tab:focus-visible {
+  outline-color: var(--color-on-sky);
+}
+
+.step-tab[aria-current='step'] {
+  border-color: #ffffff;
+  background: #ffffff;
+  color: #14163a;
+}
+
+.step-tab:disabled {
+  cursor: default;
+  opacity: 0.75;
+}
+
+.number {
+  display: grid;
+  width: 1.375rem;
+  height: 1.375rem;
+  flex: none;
+  place-items: center;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.25);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.step-tab[aria-current='step'] .number {
+  background: #3f52d4;
+  color: #ffffff;
+}
+
+.step-tab.done .number {
+  background: #62df99;
+  color: #0b0c2b;
 }
 
 @media (min-width: 640px) {
   .step-tab {
     flex-direction: row;
-    justify-content: flex-start;
-    gap: 0.625rem;
-    border-radius: 9999px;
-    padding: 0.375rem 0.875rem 0.375rem 0.375rem;
+    gap: 0.5rem;
     font-size: 0.9375rem;
-    text-align: left;
   }
-}
-
-.step-tab:not(:disabled):hover {
-  border-color: var(--color-ink-subtle);
-  background: var(--color-glass);
-  color: var(--color-ink);
-}
-
-.step-tab:focus-visible {
-  outline: 2px solid var(--color-train);
-  outline-offset: 2px;
-}
-
-.step-tab[aria-current='step'] {
-  border-color: var(--color-ink);
-  background: var(--color-glass);
-  color: var(--color-ink);
-}
-
-.step-tab:disabled {
-  cursor: default;
-  opacity: 0.55;
-}
-
-.number {
-  display: grid;
-  width: 2.125rem;
-  height: 2.125rem;
-  flex: none;
-  place-items: center;
-  border-radius: 50%;
-  box-shadow: inset 0 0 0 1.5px currentColor;
-  font-variant-numeric: tabular-nums;
-}
-
-.step-tab[aria-current='step'] .number {
-  background: var(--color-ink);
-  box-shadow: none;
-  color: var(--color-on-ink);
-}
-
-.step-tab.done .number {
-  background: var(--color-go);
-  box-shadow: none;
-  color: var(--color-on-vehicle);
 }
 
 .step-forward-enter-active,

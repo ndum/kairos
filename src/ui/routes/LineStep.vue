@@ -258,28 +258,29 @@ const nameErrorText = computed(() => {
 /* A row per choice, which reacts as a whole like the radio button it holds. */
 .choice {
   display: flex;
-  min-height: 3.25rem;
+  min-height: 3.75rem;
   align-items: center;
-  gap: 0.875rem;
+  gap: 0.75rem;
   border: 1px solid var(--color-hairline);
   border-radius: 1rem;
-  padding: 0.6rem 1rem;
-  background: var(--color-glass-soft);
+  padding: 0.5rem 0.75rem;
   cursor: pointer;
   transition:
     background-color 0.2s,
-    border-color 0.2s,
-    box-shadow 0.2s;
+    border-color 0.2s;
+}
+
+.choice:hover {
+  background: var(--color-press);
 }
 
 .choice:has(input:checked) {
-  border-color: var(--color-ink);
-  background: var(--color-glass);
-  box-shadow: inset 0 0 0 1px var(--color-ink);
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
 }
 
 .choice:has(input:focus-visible) {
-  outline: 2px solid var(--color-train);
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
@@ -287,16 +288,16 @@ const nameErrorText = computed(() => {
   width: 1.25rem;
   height: 1.25rem;
   flex: none;
-  accent-color: var(--color-ink);
+  accent-color: var(--color-accent);
 }
 
 .tag {
-  border-radius: 9999px;
-  padding: 0.1rem 0.6rem;
+  border-radius: 0.5rem;
+  padding: 0.2rem 0.5rem;
   background: var(--color-go);
   color: var(--color-on-vehicle);
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 650;
 }
 
 .chip {
@@ -307,22 +308,23 @@ const nameErrorText = computed(() => {
   border: 1px solid var(--color-hairline);
   border-radius: 9999px;
   padding: 0.375rem 0.875rem 0.375rem 0.5rem;
-  background: var(--color-glass-soft);
   transition:
     background-color 0.2s,
-    border-color 0.2s,
-    box-shadow 0.2s;
+    border-color 0.2s;
+}
+
+.chip:hover {
+  background: var(--color-press);
 }
 
 .chip[aria-pressed='true'] {
-  border-color: var(--color-ink);
-  background: var(--color-glass);
-  box-shadow: inset 0 0 0 1px var(--color-ink);
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
 }
 
 .check {
   display: none;
-  color: var(--color-ink);
+  color: var(--color-accent);
 }
 
 .chip[aria-pressed='true'] .check {

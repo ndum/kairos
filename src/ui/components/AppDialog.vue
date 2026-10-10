@@ -6,11 +6,14 @@ import IconX from '~icons/tabler/x'
 import IconButton from './IconButton.vue'
 
 // A modal dialog on top of the native <dialog> element, which traps the focus, closes with
-// Escape and makes the rest of the page inert. It opens as a sheet from the bottom on phones.
+// Escape and makes the rest of the page inert. It opens as a sheet from the bottom on phones,
+// and in the middle of larger screens or, for longer content, at their right edge.
 
 const open = defineModel<boolean>('open', { required: true })
 
-defineProps<{ title: string }>()
+withDefaults(defineProps<{ title: string; placement?: 'center' | 'side' }>(), {
+  placement: 'center',
+})
 
 const { t } = useI18n()
 const titleId = useId()
@@ -45,7 +48,8 @@ function closeOnBackdrop(event: MouseEvent): void {
 <template>
   <dialog
     ref="dialog"
-    class="app-dialog glass"
+    class="app-dialog"
+    :class="placement"
     :aria-labelledby="titleId"
     @close="open = false"
     @click="closeOnBackdrop"
@@ -64,17 +68,20 @@ function closeOnBackdrop(event: MouseEvent): void {
 
 <style scoped>
 .app-dialog {
-  /* Overrides the relative position of the glass surface, which would detach the dialog. */
   position: fixed;
   width: 100%;
   max-width: 34rem;
-  max-height: calc(100dvh - 2rem);
+  max-height: calc(100dvh - 3.25rem);
   margin: auto auto 0;
   overflow-y: auto;
   border: none;
-  border-radius: var(--radius-card) var(--radius-card) 0 0;
-  padding: 1.5rem 1.5rem calc(env(safe-area-inset-bottom, 0px) + 1.5rem);
+  border-radius: 1.75rem 1.75rem 0 0;
+  padding: 1.25rem 1rem calc(env(safe-area-inset-bottom, 0px) + 2rem);
+  background: var(--color-sheet);
+  box-shadow: var(--shadow-sheet);
   color: var(--color-ink);
+  /* A dialog opened from the header on the sky must not take over its text shadow. */
+  text-shadow: none;
   overscroll-behavior: contain;
   opacity: 0;
   translate: 0 2rem;
@@ -88,7 +95,7 @@ function closeOnBackdrop(event: MouseEvent): void {
 .app-dialog[open] {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
   opacity: 1;
   translate: 0 0;
 }
@@ -127,7 +134,31 @@ function closeOnBackdrop(event: MouseEvent): void {
   .app-dialog {
     margin: auto;
     border-radius: var(--radius-card);
-    padding: 2rem;
+    padding: 1.75rem;
+  }
+}
+
+/* At the right edge of large screens, the page stays in view next to the dialog. */
+@media (min-width: 900px) {
+  .app-dialog.side {
+    width: 27.5rem;
+    height: 100dvh;
+    max-height: 100dvh;
+    margin: 0 0 0 auto;
+    border-radius: 0;
+    padding: 1.5rem 1.375rem 2rem;
+    box-shadow: -18px 0 50px rgb(10 11 30 / 0.25);
+    translate: 2rem 0;
+  }
+
+  .app-dialog.side[open] {
+    translate: 0 0;
+  }
+
+  @starting-style {
+    .app-dialog.side[open] {
+      translate: 2rem 0;
+    }
   }
 }
 </style>
