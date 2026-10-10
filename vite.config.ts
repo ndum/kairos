@@ -24,7 +24,7 @@ export default defineConfig(({ mode }) => ({
     }),
     Icons({ compiler: 'vue3' }),
     VitePWA({
-      // The app asks before it reloads with a new version, see AppUpdate.vue.
+      // The app asks before it reloads with a new version, see use-app-update.ts.
       registerType: 'prompt',
       injectRegister: false,
       pwaAssets: { config: true, overrideManifestIcons: true, injectThemeColor: false },
@@ -59,6 +59,10 @@ export default defineConfig(({ mode }) => ({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
+  },
+  server: {
+    // Test reports land next to the sources and must not reload the running app.
+    watch: { ignored: ['**/coverage/**', '**/playwright-report/**', '**/test-results/**'] },
   },
   build: {
     manifest: true,
