@@ -29,5 +29,20 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     manifest: true,
+    rolldownOptions: {
+      output: {
+        // Libraries change less often than the app, so their own chunk stays cached across
+        // releases. Only those needed at the start go there, the QR code generator stays apart.
+        codeSplitting: {
+          groups: [
+            {
+              name: 'vendor',
+              test: /\/node_modules\/|plugin-vue:export-helper/,
+              tags: ['$initial'],
+            },
+          ],
+        },
+      },
+    },
   },
 }))

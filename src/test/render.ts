@@ -7,6 +7,7 @@ import type { TimetablePort } from '@/application/ports/timetable'
 import { RouteLibrary } from '@/application/route-library'
 import { StopSearch } from '@/application/stop-search'
 import type { Route } from '@/domain/route'
+import { CompressedRouteCodec } from '@/infrastructure/sharing/compressed-route-codec'
 import { createAppI18n } from '@/ui/i18n'
 import type { Locale } from '@/ui/i18n/locale'
 import { createAppRouter } from '@/ui/router'
@@ -39,6 +40,7 @@ export function testServices(options: RenderOptions = {}) {
     timetable,
     routes: new RouteLibrary({ repository, createId: () => `route-${nextId++}` }),
     stops: new StopSearch(timetable),
+    codec: new CompressedRouteCodec(),
   }
   return { services, repository }
 }

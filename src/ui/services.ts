@@ -1,6 +1,7 @@
 import { type InjectionKey, inject } from 'vue'
 
 import type { Clock } from '@/application/ports/clock'
+import type { RouteCodec } from '@/application/ports/route-codec'
 import type { TimetablePort } from '@/application/ports/timetable'
 import type { RouteLibrary } from '@/application/route-library'
 import type { StopSearch } from '@/application/stop-search'
@@ -11,6 +12,7 @@ export interface AppServices {
   readonly timetable: TimetablePort
   readonly routes: RouteLibrary
   readonly stops: StopSearch
+  readonly codec: RouteCodec
 }
 
 export const servicesKey: InjectionKey<AppServices> = Symbol('services')

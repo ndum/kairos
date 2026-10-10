@@ -1,12 +1,21 @@
 <script setup lang="ts">
+import { defineAsyncComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
+import IconSettings from '~icons/tabler/settings'
 
 import BrandMark from '../components/BrandMark.vue'
+import IconButton from '../components/IconButton.vue'
+import { useDialog } from '../composables/use-dialog'
 import { NAVIGATION } from './navigation'
+
+// Loaded on first use, which keeps the start of the app lean.
+const SettingsDialog = defineAsyncComponent(() => import('../settings/SettingsDialog.vue'))
 
 const { t } = useI18n()
 const route = useRoute()
+
+const settings = useDialog()
 </script>
 
 <template>
@@ -35,7 +44,10 @@ const route = useRoute()
       </RouterLink>
     </nav>
 
-    <slot />
+    <IconButton :label="t('settings.open')" class="glass" @click="settings.show">
+      <IconSettings aria-hidden="true" />
+    </IconButton>
+    <SettingsDialog v-if="settings.used.value" v-model:open="settings.open.value" />
   </header>
 </template>
 

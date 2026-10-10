@@ -116,5 +116,63 @@
     "lessMinutes": "{label}: eine Minute weniger",
     "moreMinutes": "{label}: eine Minute mehr"
   },
+  "dialog": {
+    "close": "Schliessen"
+  },
+  "share": {
+    "action": "Teilen",
+    "title": "Routen teilen",
+    "text": "Der Link enthält keine Route. | Der Link enthält deine Route. | Der Link enthält deine {count} Routen.",
+    "qrLabel": "QR-Code mit dem Link zu deinen Routen",
+    "link": "Link",
+    "copy": "Link kopieren",
+    "copied": "Link kopiert",
+    "copyFailed": "Kopieren ist hier nicht möglich. Der Link ist markiert, du kannst ihn selbst kopieren.",
+    "share": "Teilen …",
+    "shareTitle": "Routen für Kairos",
+    "hint": "Scanne den Code mit der Kamera oder öffne den Link auf dem anderen Gerät. Für die installierte App auf dem iPhone kopierst du den Link und fügst ihn dort unter «Routen» ein. Wer den Link hat, sieht deine Routen."
+  },
+  "linkImport": {
+    "action": "Link einfügen",
+    "emptyAction": "Per Link übernehmen",
+    "title": "Routen per Link übernehmen",
+    "text": "Füge den Link ein, den du auf einem anderen Gerät mit «Teilen» erstellt hast.",
+    "field": "Link",
+    "placeholder": "https://",
+    "submit": "Weiter",
+    "invalid": "Das ist kein Link von Kairos."
+  },
+  "import": {
+    "title": "Routen übernehmen",
+    "text": "Diese Routen wurden mit dir geteilt. Routen, die du schon einmal übernommen hast, werden aktualisiert.",
+    "status": {
+      "new": "Neu",
+      "changed": "Wird aktualisiert",
+      "unchanged": "Schon vorhanden",
+      "invalid": "Ungültig"
+    },
+    "accept": "Nichts zu übernehmen | Route übernehmen | {count} Routen übernehmen",
+    "cancel": "Abbrechen",
+    "done": "Keine Route übernommen. | Eine Route übernommen. | {count} Routen übernommen.",
+    "invalid": {
+      "title": "Link ungültig",
+      "text": "Dieser Link ist beschädigt oder unvollständig. Lass ihn dir nochmals schicken.",
+      "action": "Zu den Routen"
+    }
+  },
+  "settings": {
+    "open": "Einstellungen",
+    "title": "Einstellungen",
+    "theme": {
+      "label": "Darstellung",
+      "auto": "Automatisch",
+      "light": "Hell",
+      "dark": "Dunkel"
+    },
+    "language": {
+      "label": "Sprache",
+      "auto": "Automatisch"
+    }
+  },
   "credit": "Fahrplandaten: opentransportdata.swiss"
 }

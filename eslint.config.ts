@@ -32,6 +32,8 @@ export default defineConfigWithVueTs(
     name: 'kairos/rules',
     rules: {
       '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true }],
+      // Leaving out a property with a rest pattern is the idiomatic way to copy without it.
+      '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
     },
   },
 
@@ -54,6 +56,8 @@ export default defineConfigWithVueTs(
   {
     name: 'kairos/architecture/ui',
     files: ['src/ui/**'],
+    // Tests assemble their subject like main.ts does and may use real adapters.
+    ignores: ['src/ui/**/*.test.ts'],
     rules: layerRule(
       ['@/infrastructure/**'],
       'The UI receives adapters through the application services provided in main.ts.',

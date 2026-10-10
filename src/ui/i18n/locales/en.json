@@ -116,5 +116,63 @@
     "lessMinutes": "{label}: one minute less",
     "moreMinutes": "{label}: one minute more"
   },
+  "dialog": {
+    "close": "Close"
+  },
+  "share": {
+    "action": "Share",
+    "title": "Share routes",
+    "text": "The link holds no route. | The link holds your route. | The link holds your {count} routes.",
+    "qrLabel": "QR code with the link to your routes",
+    "link": "Link",
+    "copy": "Copy link",
+    "copied": "Link copied",
+    "copyFailed": "Copying is not possible here. The link is selected, so you can copy it yourself.",
+    "share": "Share …",
+    "shareTitle": "Routes for Kairos",
+    "hint": "Scan the code with the camera or open the link on the other device. For the installed app on the iPhone, copy the link and paste it there under “Routes”. Anyone with the link can see your routes."
+  },
+  "linkImport": {
+    "action": "Paste link",
+    "emptyAction": "Add from a link",
+    "title": "Add routes from a link",
+    "text": "Paste the link you created with “Share” on another device.",
+    "field": "Link",
+    "placeholder": "https://",
+    "submit": "Continue",
+    "invalid": "This is not a Kairos link."
+  },
+  "import": {
+    "title": "Add shared routes",
+    "text": "These routes were shared with you. Routes you added from a link before are updated.",
+    "status": {
+      "new": "New",
+      "changed": "Will be updated",
+      "unchanged": "Already there",
+      "invalid": "Invalid"
+    },
+    "accept": "Nothing to add | Add route | Add {count} routes",
+    "cancel": "Cancel",
+    "done": "No route added. | One route added. | {count} routes added.",
+    "invalid": {
+      "title": "Invalid link",
+      "text": "This link is damaged or incomplete. Ask for it to be sent again.",
+      "action": "Go to routes"
+    }
+  },
+  "settings": {
+    "open": "Settings",
+    "title": "Settings",
+    "theme": {
+      "label": "Appearance",
+      "auto": "Automatic",
+      "light": "Light",
+      "dark": "Dark"
+    },
+    "language": {
+      "label": "Language",
+      "auto": "Automatic"
+    }
+  },
   "credit": "Timetable data: opentransportdata.swiss"
 }

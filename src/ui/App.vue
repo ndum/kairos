@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import ToastHost from './components/ToastHost.vue'
@@ -7,8 +8,13 @@ import AppTabBar from './layout/AppTabBar.vue'
 import AppTopBar from './layout/AppTopBar.vue'
 import AppScene from './scene/AppScene.vue'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const { still } = useAppearance()
+
+// Screen readers and hyphenation follow the language of the page.
+watchEffect(() => {
+  document.documentElement.lang = locale.value
+})
 </script>
 
 <template>

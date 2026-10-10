@@ -46,6 +46,12 @@ export function createAppRouter(
         props: true,
         meta: { section: 'routes' },
       },
+      {
+        path: '/import',
+        name: 'import',
+        component: () => import('./views/ImportView.vue'),
+        meta: { section: 'routes' },
+      },
       { path: '/:pathMatch(.*)*', redirect: '/' },
     ],
     // The browser restores the position on load. Scrolling then would force an early layout.
