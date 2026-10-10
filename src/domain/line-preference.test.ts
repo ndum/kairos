@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { at, home, journey, morningCommute, ride, walk, office } from '@/test/builders'
+import { at, commute, journey, morningCommute, ride, walk } from '@/test/builders'
 
 import {
   combineLineUsage,
@@ -12,13 +12,13 @@ import {
 import { type Trip, planTrip } from './trip'
 
 const plan = (...args: Parameters<typeof journey>): Trip => {
-  const trip = planTrip(journey(...args), home, office)
+  const trip = planTrip(journey(...args), commute)
   if (!trip) throw new Error('Expected a trip')
   return trip
 }
 
-const commute = (departure: string, options?: Parameters<typeof morningCommute>[1]): Trip => {
-  const trip = planTrip(morningCommute(departure, options), home, office)
+const tripAt = (departure: string, options?: Parameters<typeof morningCommute>[1]): Trip => {
+  const trip = planTrip(morningCommute(departure, options), commute)
   if (!trip) throw new Error('Expected a trip')
   return trip
 }
@@ -51,7 +51,7 @@ describe('usesPreferredLines', () => {
 
 describe('splitByPreference', () => {
   it('separates preferred trips from alternatives', () => {
-    const preferred = commute('07:05')
+    const preferred = tripAt('07:05')
     const alternative = viaTram('07:20')
 
     expect(splitByPreference([preferred, alternative], ['S1', 'S2', '20'])).toEqual({
@@ -67,17 +67,17 @@ describe('noteworthyAlternative', () => {
   it('suggests an alternative that arrives earlier', () => {
     const faster = viaTram('07:20')
 
-    expect(noteworthyAlternative(commute('07:05'), [faster], now)).toBe(faster)
+    expect(noteworthyAlternative(tripAt('07:05'), [faster], now)).toBe(faster)
   })
 
   it('stays quiet when the preferred trip is at least as fast', () => {
-    expect(noteworthyAlternative(commute('07:05'), [viaTram('07:25')], now)).toBeNull()
+    expect(noteworthyAlternative(tripAt('07:05'), [viaTram('07:25')], now)).toBeNull()
   })
 
   it('suggests an alternative when the preferred trip is cancelled', () => {
     const slower = viaTram('07:25')
 
-    expect(noteworthyAlternative(commute('07:05', { cancelled: true }), [slower], now)).toBe(slower)
+    expect(noteworthyAlternative(tripAt('07:05', { cancelled: true }), [slower], now)).toBe(slower)
   })
 
   it('suggests an alternative when no preferred trip is left', () => {
@@ -86,7 +86,7 @@ describe('noteworthyAlternative', () => {
     expect(noteworthyAlternative(null, [slower], now)).toBe(slower)
   })
 
-  it('ignores alternatives that are not reachable with the reserve', () => {
+  it('ignores alternatives that are not reachable with the buffer', () => {
     expect(noteworthyAlternative(null, [viaTram('07:20')], at('06:56'))).toBeNull()
   })
 

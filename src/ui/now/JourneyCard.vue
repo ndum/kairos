@@ -17,7 +17,7 @@ const props = defineProps<{ trip: Trip; ends: Endpoints }>()
 const { t } = useI18n()
 const headingId = useId()
 
-const segments = computed(() => segmentsOf(props.trip, props.ends.origin, props.ends.destination))
+const segments = computed(() => segmentsOf(props.trip, props.ends))
 const risk = computed(() => transferRiskOf(props.trip.journey))
 </script>
 

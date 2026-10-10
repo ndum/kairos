@@ -45,23 +45,32 @@
       "details": "losgehen {leave}, Ankunft {arrival}"
     },
     "tight": {
-      "minutes": "Ohne Reserve noch erreichbar: Abfahrt {time}, losgehen in {minutes} Min.",
-      "now": "Ohne Reserve noch erreichbar: Abfahrt {time}, sofort losgehen."
+      "minutes": "Ohne Puffer noch erreichbar: Abfahrt {time}, losgehen in {minutes} Min.",
+      "now": "Ohne Puffer noch erreichbar: Abfahrt {time}, sofort losgehen."
     },
     "loading": "Verbindungen werden geladen …",
     "unavailable": "Der Fahrplan ist gerade nicht erreichbar.",
     "retry": "Erneut versuchen",
     "noTrips": "Keine Verbindung in den nächsten Stunden.",
     "swap": "Richtung wechseln",
+    "directionNote": {
+      "location": "Richtung nach Standort",
+      "time": "Richtung nach Uhrzeit",
+      "locating": "Standort wird gesucht …",
+      "denied": "Kein Zugriff auf den Standort, Richtung nach Uhrzeit",
+      "unavailable": "Standort nicht gefunden, Richtung nach Uhrzeit"
+    },
     "journey": {
       "title": "Deine Verbindung",
       "walkTo": "{minutes} Min. Fussweg bis {stop}",
-      "walkToWithReserve": "{minutes} Min. Fussweg bis {stop}, {reserve} Min. Reserve",
+      "walkToWithBuffer": "{minutes} Min. Fussweg bis {stop}, {buffer} Min. Puffer",
       "towards": "Richtung {headsign}",
       "from": "ab {stop}",
       "until": "bis {stop}, an {time}",
       "transfer": "Umsteigen in {stop}",
       "transferTime": "keine Zeit zum Umsteigen | 1 Min. zum Umsteigen | {count} Min. zum Umsteigen",
+      "trainNumber": "Zug {number}",
+      "stopovers": "keine Zwischenhalte | 1 Zwischenhalt | {count} Zwischenhalte",
       "transferWithWalk": "{walk} Min. Fussweg, {time}",
       "walkFrom": "{minutes} Min. Fussweg ab {stop}"
     },
@@ -72,7 +81,8 @@
     "upcoming": {
       "title": "Danach",
       "empty": "Keine weiteren Verbindungen.",
-      "times": "ab {departure}, an {arrival}"
+      "times": "ab {departure}, an {arrival}",
+      "details": "Details anzeigen"
     },
     "live": {
       "loading": "Lädt",
@@ -125,13 +135,13 @@
     "add": "Neue Route",
     "empty": {
       "title": "Hier entstehen deine Routen",
-      "text": "Eine Route verbindet zwei Orte, jeweils mit Haltestelle, Fussweg und Reserve.",
+      "text": "Eine Route verbindet zwei Orte, jeweils mit Haltestelle und Fussweg.",
       "action": "Route anlegen"
     },
     "lines": "Linien",
     "allLines": "Alle Linien",
     "walk": "{minutes} Min. zu Fuss",
-    "reserve": "{minutes} Min. Reserve",
+    "buffer": "{minutes} Min. Puffer",
     "edit": "Bearbeiten",
     "editNamed": "«{name}» bearbeiten",
     "remove": "Löschen",
@@ -176,10 +186,14 @@
       },
       "stop": "Haltestelle",
       "stopPlaceholder": "Name der Haltestelle",
-      "walk": "Fussweg",
-      "walkHint": "Minuten zwischen dem Ort und der Haltestelle.",
-      "reserve": "Reserve",
-      "reserveHint": "Zusätzliche Minuten, damit du nicht rennen musst.",
+      "walk": {
+        "origin": "Fussweg zur Haltestelle",
+        "destination": "Fussweg ab der Haltestelle"
+      },
+      "walkHint": {
+        "origin": "Von diesem Ort bis zur Haltestelle. Auf dem Rückweg gilt er umgekehrt.",
+        "destination": "Von der Haltestelle bis zu diesem Ort. Auf dem Rückweg gilt er umgekehrt."
+      },
       "position": {
         "label": "Genauer Standort",
         "hint": "Optional. Hilft bei der Richtung nach Standort, wenn der Ort weiter von der Haltestelle entfernt ist. Bleibt auf diesem Gerät.",
@@ -211,6 +225,10 @@
       "uncovered": "Keine der nächsten Verbindungen fährt nur mit diesen Linien. Wähle auch die Linien, auf die du umsteigst, zum Beispiel den Bus nach dem Zug.",
       "journeys": "in keiner Verbindung | in einer Verbindung | in {count} Verbindungen",
       "name": "Name der Route"
+    },
+    "buffer": {
+      "label": "Puffer beim Losgehen",
+      "hint": "So viel Zeit plant Kairos zusätzlich ein, in beide Richtungen. Eine frühere Verbindung, die nur ohne Puffer klappt, zeigt es als Hinweis."
     }
   },
   "stopField": {
@@ -288,8 +306,8 @@
     "location": {
       "label": "Richtung nach Standort",
       "hint": "Kairos zeigt zuerst die Richtung, die an deinem Standort beginnt. Der Standort bleibt auf diesem Gerät.",
-      "denied": "Der Browser erlaubt Kairos keinen Zugriff auf den Standort. Du kannst ihn in den Einstellungen des Browsers freigeben.",
-      "unavailable": "Der Standort ist gerade nicht verfügbar. Versuche es später nochmals."
+      "denied": "Kairos hat keinen Zugriff auf den Standort. Erlaube ihn in den Einstellungen des Geräts, auf dem iPhone unter Datenschutz & Sicherheit > Ortungsdienste > Safari-Websites.",
+      "unavailable": "Der Standort ist gerade nicht verfügbar. Kairos sucht ihn bei jedem Öffnen wieder und zeigt bis dahin die Richtung nach Uhrzeit."
     },
     "awake": {
       "label": "Bildschirm wach halten",

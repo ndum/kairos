@@ -12,10 +12,8 @@ export interface StopRef {
 export interface Place {
   readonly name: string
   readonly stop: StopRef
-  /** Walking time between the place and its stop. */
+  /** Walking time between the place and its stop, the same in both directions. */
   readonly walk: Duration
-  /** Extra time the user wants to keep, on top of the walking time. */
-  readonly reserve: Duration
   /** Position of the place itself, if known. Falls back to the stop. */
   readonly coordinates?: Coordinates
 }
@@ -27,6 +25,8 @@ export interface Route {
   readonly id: string
   readonly name: string
   readonly places: readonly [Place, Place]
+  /** Extra time the user keeps on top of the walk when leaving either place. */
+  readonly buffer: Duration
   /** Lines such as the S1 or bus 20. An empty list accepts every line. */
   readonly preferredLines: readonly PreferredLine[]
 }
@@ -37,13 +37,14 @@ export type Direction = 'outbound' | 'return'
 export interface Endpoints {
   readonly origin: Place
   readonly destination: Place
+  /** Extra time kept when leaving the origin. */
+  readonly buffer: Duration
 }
 
 export function endpoints(route: Route, direction: Direction): Endpoints {
   const [first, second] = route.places
-  return direction === 'outbound'
-    ? { origin: first, destination: second }
-    : { origin: second, destination: first }
+  const [origin, destination] = direction === 'outbound' ? [first, second] : [second, first]
+  return { origin, destination, buffer: route.buffer }
 }
 
 export const oppositeDirection = (direction: Direction): Direction =>

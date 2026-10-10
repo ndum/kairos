@@ -1,9 +1,9 @@
 import { TimetableError } from '@/application/ports/timetable'
-import type { Journey, Leg, Line, StopEvent, TransportMode } from '@/domain/journey'
+import type { Journey, Leg, Line, StopEvent, Stopover, TransportMode } from '@/domain/journey'
 import type { StopRef } from '@/domain/route'
 import { MINUTE, SECOND } from '@/domain/time'
 
-import type { ApiCheckpoint, ApiConnection, ApiSection, ApiStation } from './schema'
+import type { ApiCheckpoint, ApiConnection, ApiPass, ApiSection, ApiStation } from './schema'
 
 const MODES: Readonly<Record<string, TransportMode>> = {
   S: 'train',
@@ -47,7 +47,8 @@ const COMPACT_CATEGORIES = new Set(['S', 'SN'])
 
 export function toLine(journey: NonNullable<ApiSection['journey']>): Line {
   const category = journey.category?.trim().toUpperCase() ?? ''
-  const number = journey.number?.trim() ?? ''
+  // Long-distance trains carry their padded train number, for example "000107" of an ICE.
+  const number = journey.number?.trim().replace(/^0+(?=.)/, '') ?? ''
   const mode = MODES[category] ?? 'other'
 
   let name: string
@@ -103,6 +104,29 @@ function toStopEvent(checkpoint: ApiCheckpoint, kind: 'departure' | 'arrival'): 
   }
 }
 
+/** The stops between the first and the last one. Stops without any time are left out. */
+function toStopovers(passList: readonly ApiPass[] | null | undefined): Stopover[] {
+  return (passList ?? []).slice(1, -1).flatMap((pass) => {
+    const timestamp = pass.departureTimestamp ?? pass.arrivalTimestamp
+    if (timestamp == null) return []
+    const scheduledAt = timestamp * SECOND
+    return [
+      {
+        stop: toStop(pass.station),
+        scheduledAt,
+        expectedAt: pass.delay == null ? undefined : scheduledAt + pass.delay * MINUTE,
+        platform: pass.platform ?? undefined,
+      },
+    ]
+  })
+}
+
+/** The API pads run numbers with zeros, for example "002254". */
+function toTripNumber(name: string | null | undefined): string | undefined {
+  const trimmed = name?.trim().replace(/^0+(?=.)/, '')
+  return trimmed || undefined
+}
+
 function walkDuration(section: ApiSection): number {
   if (section.walk?.duration != null) return section.walk.duration * SECOND
   const start = section.departure.departureTimestamp
@@ -111,7 +135,9 @@ function walkDuration(section: ApiSection): number {
 }
 
 function toLeg(section: ApiSection): Leg {
-  if (!section.journey) {
+  // Walks carry a walk object. Their journey is null, or empty once nested journey fields
+  // such as the pass list are requested.
+  if (section.walk || !section.journey) {
     return {
       kind: 'walk',
       from: toStop(section.departure.station),
@@ -124,6 +150,9 @@ function toLeg(section: ApiSection): Leg {
     line: toLine(section.journey),
     departure: toStopEvent(section.departure, 'departure'),
     arrival: toStopEvent(section.arrival, 'arrival'),
+    stopovers: toStopovers(section.journey.passList),
+    tripNumber: toTripNumber(section.journey.name),
+    operator: section.journey.operator?.trim() || undefined,
     // The Transport API does not report cancellations. Cancelled trips are left out of
     // its results instead.
     cancelled: false,

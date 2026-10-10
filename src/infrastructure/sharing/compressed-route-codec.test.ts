@@ -9,21 +9,20 @@ import { CompressedRouteCodec } from './compressed-route-codec'
 
 const codec = new CompressedRouteCodec()
 
-const zurich = {
+const fair = {
   name: 'Büro',
   stop: {
-    id: '8503000',
-    name: 'Zürich HB',
-    coordinates: { latitude: 47.3781765, longitude: 8.5401932 },
+    id: '8500899',
+    name: 'Basel, Messeplatz',
+    coordinates: { latitude: 47.5634543, longitude: 7.5996134 },
   },
   walk: minutes(7),
-  reserve: minutes(2),
 }
 
 const routes: Route[] = [
   route('commute-1', 'Commute', [home, office], [trainLine('S1'), busLine('20')]),
-  route('zurich-22', 'Zuhause ↔ Büro', [gym, zurich], [{ name: 'IC 1', mode: 'train' }]),
-  route('ferry', 'Ferry', [office, gym], [{ name: 'BAT', mode: 'ship' }]),
+  route('fair-22', 'Zuhause ↔ Büro', [gym, fair], [{ name: 'IC 1', mode: 'train' }], 5),
+  route('ferry', 'Ferry', [office, gym], [{ name: 'BAT', mode: 'ship' }], 0),
 ]
 
 /** Deflates and encodes arbitrary text like the codec does, to build malformed codes. */
@@ -49,12 +48,34 @@ describe('CompressedRouteCodec', () => {
         places: [
           gym,
           {
-            ...zurich,
-            stop: { ...zurich.stop, coordinates: { latitude: 47.37818, longitude: 8.54019 } },
+            ...fair,
+            stop: { ...fair.stop, coordinates: { latitude: 47.56345, longitude: 7.59961 } },
           },
         ],
       },
       routes[2],
+    ])
+  })
+
+  it('reads codes of version 1 and keeps the larger reserve as the buffer', async () => {
+    const code = await encodeRaw(
+      JSON.stringify([
+        1,
+        [
+          'commute',
+          'Commute',
+          ['Home', 'Riverside', 'Riverside', 8, 2, null, null],
+          ['Office', 'Market Square', 'Market Square', 5, 4, null, null],
+          [
+            ['S1', 0],
+            ['20', 2],
+          ],
+        ],
+      ]),
+    )
+
+    expect(await codec.decode(code)).toEqual([
+      route('commute', 'Commute', [home, office], [trainLine('S1'), busLine('20')], 4),
     ])
   })
 
@@ -88,8 +109,10 @@ describe('CompressedRouteCodec', () => {
 
   it('rejects other versions and unexpected content', async () => {
     const codes = await Promise.all([
-      encodeRaw('[2]'),
+      encodeRaw('[3]'),
       encodeRaw('{"routes":[]}'),
+      encodeRaw('[2,["id","n",["a","1","A",5,null,null],["b","2","B",5,null,null],[]]]'),
+      encodeRaw('[2,["id","n",["a","1","A",5,null,null],["b","2","B",5,null,null],[],-1]]'),
       encodeRaw('[1,["id","name"]]'),
       encodeRaw('[1,["id","n",["a","1","A",5,3,null,null],["b","2","B",-1,3,null,null],[]]]'),
       encodeRaw(

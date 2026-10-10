@@ -7,9 +7,9 @@ import locations from './fixtures/locations.json'
 import { TransportOpendataTimetable } from './transport-opendata-timetable'
 
 const query: JourneyQuery = {
-  from: { id: '8507100', name: 'Thun' },
-  to: { id: '8507110', name: 'Bern, Zytglogge' },
-  at: Date.parse('2026-10-12T07:00:00+02:00'),
+  from: { id: '8500023', name: 'Liestal' },
+  to: { id: '8500899', name: 'Basel, Messeplatz' },
+  at: Date.parse('2026-10-19T07:00:00+02:00'),
 }
 
 const json = (body: unknown, status = 200): Response =>
@@ -37,16 +37,19 @@ describe('findJourneys', () => {
     expect(`${url.origin}${url.pathname}`).toBe('https://transport.opendata.ch/v1/connections')
     expect(Object.fromEntries([...url.searchParams].filter(([key]) => key !== 'fields[]'))).toEqual(
       {
-        from: '8507100',
-        to: '8507110',
-        date: '2026-10-12',
+        from: '8500023',
+        to: '8500899',
+        date: '2026-10-19',
         time: '07:00',
         isArrivalTime: '0',
         limit: '4',
       },
     )
-    expect(url.searchParams.getAll('fields[]')).toContain(
-      'connections/sections/departure/prognosis',
+    expect(url.searchParams.getAll('fields[]')).toEqual(
+      expect.arrayContaining([
+        'connections/sections/departure/prognosis',
+        'connections/sections/journey/passList/departureTimestamp',
+      ]),
     )
   })
 
@@ -61,8 +64,9 @@ describe('findJourneys', () => {
   it('maps every connection to a journey', async () => {
     const journeys = await timetable(fakeFetch(json(connections))).findJourneys(query)
 
-    expect(journeys).toHaveLength(4)
-    expect(journeys[0]?.legs[0]).toMatchObject({ kind: 'ride', line: { name: 'IC 61' } })
+    expect(journeys).toHaveLength(6)
+    expect(journeys[0]?.legs.map((leg) => leg.kind)).toEqual(['ride', 'walk', 'ride'])
+    expect(journeys[0]?.legs[0]).toMatchObject({ kind: 'ride', line: { name: 'IR 37' } })
   })
 
   it('reports HTTP errors', async () => {
@@ -124,10 +128,10 @@ describe('searchStops', () => {
   it('searches stations by name', async () => {
     const fetch = fakeFetch(json(locations))
 
-    const stops = await timetable(fetch).searchStops('Zytglogge')
+    const stops = await timetable(fetch).searchStops('Liestal')
 
-    expect(requestedUrl(fetch).searchParams.get('query')).toBe('Zytglogge')
-    expect(stops[0]).toMatchObject({ id: '8507110', name: 'Bern, Zytglogge' })
+    expect(requestedUrl(fetch).searchParams.get('query')).toBe('Liestal')
+    expect(stops[0]).toMatchObject({ id: '8500023', name: 'Liestal' })
   })
 
   it('skips stations without an id', async () => {
@@ -135,13 +139,13 @@ describe('searchStops', () => {
       fakeFetch(
         json({
           stations: [
-            { id: null, name: 'Bern' },
-            { id: '8507000', name: 'Bern' },
+            { id: null, name: 'Basel' },
+            { id: '8500010', name: 'Basel SBB' },
           ],
         }),
       ),
-    ).searchStops('Bern')
+    ).searchStops('Basel')
 
-    expect(stops).toEqual([{ id: '8507000', name: 'Bern', coordinates: undefined }])
+    expect(stops).toEqual([{ id: '8500010', name: 'Basel SBB', coordinates: undefined }])
   })
 })

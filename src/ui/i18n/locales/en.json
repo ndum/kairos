@@ -45,23 +45,32 @@
       "details": "leave {leave}, arrive {arrival}"
     },
     "tight": {
-      "minutes": "Still reachable without the reserve: departs {time}, leave in {minutes} min.",
-      "now": "Still reachable without the reserve: departs {time}, leave right now."
+      "minutes": "Still reachable without the buffer: departs {time}, leave in {minutes} min.",
+      "now": "Still reachable without the buffer: departs {time}, leave right now."
     },
     "loading": "Loading connections …",
     "unavailable": "The timetable cannot be reached right now.",
     "retry": "Try again",
     "noTrips": "No connection in the next hours.",
+    "directionNote": {
+      "location": "Direction by location",
+      "time": "Direction by time of day",
+      "locating": "Finding your location …",
+      "denied": "No access to the location, direction by time of day",
+      "unavailable": "Location not found, direction by time of day"
+    },
     "swap": "Switch direction",
     "journey": {
       "title": "Your connection",
       "walkTo": "{minutes} min walk to {stop}",
-      "walkToWithReserve": "{minutes} min walk to {stop}, {reserve} min reserve",
+      "walkToWithBuffer": "{minutes} min walk to {stop}, {buffer} min buffer",
       "towards": "towards {headsign}",
       "from": "from {stop}",
       "until": "to {stop}, arrives {time}",
       "transfer": "Change at {stop}",
       "transferTime": "no time to change | 1 min to change | {count} min to change",
+      "trainNumber": "Train {number}",
+      "stopovers": "no stops in between | 1 stop in between | {count} stops in between",
       "transferWithWalk": "{walk} min walk, {time}",
       "walkFrom": "{minutes} min walk from {stop}"
     },
@@ -72,6 +81,7 @@
     "upcoming": {
       "title": "Later",
       "empty": "No further connections.",
+      "details": "Show details",
       "times": "departs {departure}, arrives {arrival}"
     },
     "live": {
@@ -125,13 +135,13 @@
     "add": "New route",
     "empty": {
       "title": "Your routes will appear here",
-      "text": "A route connects two places, each with its stop, walking time and reserve.",
+      "text": "A route connects two places, each with its stop and walking time.",
       "action": "Add a route"
     },
     "lines": "Lines",
     "allLines": "All lines",
     "walk": "{minutes} min walk",
-    "reserve": "{minutes} min reserve",
+    "buffer": "{minutes} min buffer",
     "edit": "Edit",
     "editNamed": "Edit “{name}”",
     "remove": "Delete",
@@ -176,10 +186,14 @@
       },
       "stop": "Stop",
       "stopPlaceholder": "Name of the stop",
-      "walk": "Walk",
-      "walkHint": "Minutes between the place and the stop.",
-      "reserve": "Reserve",
-      "reserveHint": "Extra minutes, so you do not have to run.",
+      "walk": {
+        "origin": "Walk to the stop",
+        "destination": "Walk from the stop"
+      },
+      "walkHint": {
+        "origin": "From this place to the stop. On the way back it counts the other way round.",
+        "destination": "From the stop to this place. On the way back it counts the other way round."
+      },
       "position": {
         "label": "Exact position",
         "hint": "Optional. Helps to choose the direction by location when the place is further from its stop. Stays on this device.",
@@ -211,6 +225,10 @@
       "uncovered": "None of the next connections runs on these lines only. Also choose the lines you change to, such as the bus after the train.",
       "journeys": "in no connection | in one connection | in {count} connections",
       "name": "Name of the route"
+    },
+    "buffer": {
+      "label": "Buffer when leaving",
+      "hint": "Kairos plans this much extra time in both directions. An earlier connection that only works without the buffer appears as a hint."
     }
   },
   "stopField": {
@@ -288,8 +306,8 @@
     "location": {
       "label": "Direction by location",
       "hint": "Kairos first shows the direction that starts where you are. Your location stays on this device.",
-      "denied": "The browser does not allow Kairos to access your location. You can allow it in the browser settings.",
-      "unavailable": "Your location is not available right now. Try again later."
+      "denied": "Kairos has no access to your location. Allow it in the settings of your device, on an iPhone under Privacy & Security > Location Services > Safari Websites.",
+      "unavailable": "Your location is not available right now. Kairos looks for it each time you open the app and shows the direction by time of day until then."
     },
     "awake": {
       "label": "Keep the screen on",

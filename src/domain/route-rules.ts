@@ -4,7 +4,9 @@ import { type Duration, MINUTE } from './time'
 
 export const NAME_MAX_LENGTH = 40
 export const WALK_MAX: Duration = 60 * MINUTE
-export const RESERVE_MAX: Duration = 30 * MINUTE
+export const BUFFER_MAX: Duration = 30 * MINUTE
+/** Buffer of new routes and of routes stored before the buffer moved to the route. */
+export const DEFAULT_BUFFER: Duration = 3 * MINUTE
 
 const inRange = (value: Duration, max: Duration): boolean => value >= 0 && value <= max
 
@@ -15,16 +17,16 @@ export function isValidName(name: string): boolean {
 }
 
 export const isValidPlace = (place: Place): boolean =>
-  isValidName(place.name) &&
-  place.stop.id !== '' &&
-  inRange(place.walk, WALK_MAX) &&
-  inRange(place.reserve, RESERVE_MAX)
+  isValidName(place.name) && place.stop.id !== '' && inRange(place.walk, WALK_MAX)
 
 export const hasDistinctStops = (route: Pick<Route, 'places'>): boolean =>
   route.places[0].stop.id !== route.places[1].stop.id
 
 export const isValidRoute = (route: Route): boolean =>
-  isValidName(route.name) && route.places.every(isValidPlace) && hasDistinctStops(route)
+  isValidName(route.name) &&
+  route.places.every(isValidPlace) &&
+  hasDistinctStops(route) &&
+  inRange(route.buffer, BUFFER_MAX)
 
 /** Trims line names and drops blanks and duplicates, keeping the first spelling. */
 export function normalizeLines(lines: readonly PreferredLine[]): PreferredLine[] {

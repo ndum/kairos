@@ -4,10 +4,12 @@ import { home, office } from '@/test/builders'
 
 import { chooseDirection } from './direction'
 import type { Route } from './route'
+import { minutes } from './time'
 
-const riverside = { latitude: 46.8, longitude: 7.5 }
-const marketSquare = { latitude: 46.95, longitude: 7.45 }
-const zurich = { latitude: 47.378177, longitude: 8.540192 }
+// Two stops about 13 km apart, and a place far from both.
+const riverside = { latitude: 47.4845, longitude: 7.7314 }
+const marketSquare = { latitude: 47.5635, longitude: 7.5996 }
+const geneva = { latitude: 46.2102, longitude: 6.1426 }
 
 const route: Route = {
   id: 'commute',
@@ -16,6 +18,7 @@ const route: Route = {
     { ...home, stop: { ...home.stop, coordinates: riverside } },
     { ...office, stop: { ...office.stop, coordinates: marketSquare } },
   ],
+  buffer: minutes(3),
   preferredLines: [],
 }
 
@@ -24,41 +27,58 @@ const afternoon = 16 * 60
 
 describe('chooseDirection', () => {
   it('starts at the place the user is close to', () => {
-    expect(chooseDirection(route, { location: riverside, minuteOfDay: afternoon })).toBe('outbound')
-    expect(chooseDirection(route, { location: marketSquare, minuteOfDay: morning })).toBe('return')
+    expect(chooseDirection(route, { location: riverside, minuteOfDay: afternoon })).toEqual({
+      direction: 'outbound',
+      basis: 'location',
+    })
+    expect(chooseDirection(route, { location: marketSquare, minuteOfDay: morning })).toEqual({
+      direction: 'return',
+      basis: 'location',
+    })
   })
 
   it('falls back to the time of day when the user is far from both places', () => {
-    expect(chooseDirection(route, { location: zurich, minuteOfDay: morning })).toBe('outbound')
-    expect(chooseDirection(route, { location: zurich, minuteOfDay: afternoon })).toBe('return')
+    expect(chooseDirection(route, { location: geneva, minuteOfDay: morning })).toEqual({
+      direction: 'outbound',
+      basis: 'time',
+    })
+    expect(chooseDirection(route, { location: geneva, minuteOfDay: afternoon })).toEqual({
+      direction: 'return',
+      basis: 'time',
+    })
   })
 
   it('uses the time of day without a location', () => {
-    expect(chooseDirection(route, { minuteOfDay: 11 * 60 + 59 })).toBe('outbound')
-    expect(chooseDirection(route, { minuteOfDay: 12 * 60 })).toBe('return')
+    expect(chooseDirection(route, { minuteOfDay: 11 * 60 + 59 })).toEqual({
+      direction: 'outbound',
+      basis: 'time',
+    })
+    expect(chooseDirection(route, { minuteOfDay: 12 * 60 }).direction).toBe('return')
   })
 
   it('respects a custom switch time', () => {
-    expect(chooseDirection(route, { minuteOfDay: afternoon, returnFrom: 17 * 60 })).toBe('outbound')
+    expect(chooseDirection(route, { minuteOfDay: afternoon, returnFrom: 17 * 60 }).direction).toBe(
+      'outbound',
+    )
   })
 
   it('prefers the position of the place over its stop', () => {
     const [first, second] = route.places
     const withHomePosition: Route = {
       ...route,
-      places: [{ ...first, coordinates: zurich }, second],
+      places: [{ ...first, coordinates: geneva }, second],
     }
 
-    expect(chooseDirection(withHomePosition, { location: zurich, minuteOfDay: afternoon })).toBe(
-      'outbound',
+    expect(chooseDirection(withHomePosition, { location: geneva, minuteOfDay: afternoon })).toEqual(
+      { direction: 'outbound', basis: 'location' },
     )
   })
 
   it('falls back to the time of day when a place has no position', () => {
     const withoutPositions: Route = { ...route, places: [home, office] }
 
-    expect(chooseDirection(withoutPositions, { location: riverside, minuteOfDay: afternoon })).toBe(
-      'return',
-    )
+    expect(
+      chooseDirection(withoutPositions, { location: riverside, minuteOfDay: afternoon }),
+    ).toEqual({ direction: 'return', basis: 'time' })
   })
 })

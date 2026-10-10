@@ -64,12 +64,15 @@ const inMinutes = (duration: Duration): number => Math.round(duration / MINUTE)
           <p class="font-semibold">{{ place.name }}</p>
           <p class="truncate text-ink-muted">{{ place.stop.name }}</p>
           <p class="text-sm text-ink-subtle">
-            {{ t('routes.walk', { minutes: inMinutes(place.walk) }) }},
-            {{ t('routes.reserve', { minutes: inMinutes(place.reserve) }) }}
+            {{ t('routes.walk', { minutes: inMinutes(place.walk) }) }}
           </p>
         </div>
       </li>
     </ol>
+
+    <p class="text-sm text-ink-subtle">
+      {{ t('routes.buffer', { minutes: inMinutes(route.buffer) }) }}
+    </p>
 
     <div class="flex flex-wrap items-center gap-2">
       <span class="mr-1 text-sm font-semibold text-ink-muted">{{ t('routes.lines') }}</span>

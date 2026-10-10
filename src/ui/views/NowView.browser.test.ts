@@ -3,6 +3,7 @@ import { afterEach, expect, test } from 'vitest'
 import { pinTrip } from '@/application/pinned-trip'
 import type { TimetablePort } from '@/application/ports/timetable'
 import type { Journey } from '@/domain/journey'
+import { endpoints } from '@/domain/route'
 import { planTrip } from '@/domain/trip'
 import {
   at,
@@ -56,7 +57,7 @@ test('counts down to leaving for the next trip', async () => {
   const screen = await renderWithApp(NowView, { routes: [commute], timetable: timetable(morning) })
   const hero = screen.getByRole('region', { name: /Home nach Office/ })
 
-  // The S1 at 07:20 leaves 8 minutes of walking and 3 minutes of reserve: leave at 07:09.
+  // The S1 at 07:20 leaves 8 minutes of walking and 3 minutes of buffer: leave at 07:09.
   await expect.element(hero).toMatchTextContent(/Losgehen in\s*9\s*Min\./)
   await expect.element(hero.getByText('Genug Zeit')).toBeVisible()
   await expect.element(hero.getByText('07:20')).toBeVisible()
@@ -74,14 +75,52 @@ test('shows the connection step by step and the trips after it', async () => {
   await expect.element(later).toMatchTextContent(/07:24.*07:39/)
 })
 
-test('warns about an earlier trip that is only reachable without the reserve', async () => {
+test('opens the details of a later trip and pins it', async () => {
+  const screen = await renderWithApp(NowView, { routes: [commute], timetable: timetable(morning) })
+
+  await screen
+    .getByRole('region', { name: 'Danach' })
+    .getByRole('button', { name: /07:24/ })
+    .click()
+
+  const sheet = screen.getByRole('dialog', { name: 'Losgehen um 07:24' })
+  await expect.element(sheet.getByText('ab Riverside')).toBeVisible()
+  await sheet.getByRole('button', { name: 'Merken' }).click()
+
+  await expect.element(screen.getByRole('region', { name: 'Gemerkte Fahrt' })).toBeVisible()
+})
+
+test('opens the details of the next trip back', async () => {
+  // Back on the preferred lines, so the trip counts for the board.
+  const back = journey(
+    ride('20', 'Market Square', '07:30', 'Central, Bus Station', '07:35', { mode: 'bus' }),
+    walk('Central, Bus Station', 'Central', 4),
+    ride('S1', 'Central', '07:45', 'Riverside', '07:54'),
+  )
+  const screen = await renderWithApp(NowView, {
+    routes: [commute],
+    timetable: {
+      findJourneys: ({ from }) => Promise.resolve(from.id === home.stop.id ? morning : [back]),
+    },
+  })
+
+  await screen
+    .getByRole('region', { name: /Office nach Home/ })
+    .getByRole('button', { name: 'Details' })
+    .click()
+
+  const sheet = screen.getByRole('dialog', { name: 'Losgehen um 07:22' })
+  await expect.element(sheet.getByText('ab Market Square')).toBeVisible()
+})
+
+test('warns about an earlier trip that is only reachable without the buffer', async () => {
   const screen = await renderWithApp(NowView, {
     routes: [commute],
     timetable: timetable([morningCommute('07:10'), ...morning]),
   })
 
   await expect
-    .element(screen.getByText(/Ohne Reserve noch erreichbar: Abfahrt 07:10, losgehen in 2 Min\./))
+    .element(screen.getByText(/Ohne Puffer noch erreichbar: Abfahrt 07:10, losgehen in 2 Min\./))
     .toBeVisible()
 })
 
@@ -108,12 +147,13 @@ test('switches to the other direction', async () => {
     .toMatchTextContent(/Richtung wechseln/)
 })
 
+const atOffice = { latitude: 47.5635, longitude: 7.5996 }
+const located = route('located', 'Commute', [
+  { ...home, stop: { ...home.stop, coordinates: { latitude: 47.4845, longitude: 7.7314 } } },
+  { ...office, stop: { ...office.stop, coordinates: atOffice } },
+])
+
 test('starts with the direction from the place the device is at', async () => {
-  const atOffice = { latitude: 46.95, longitude: 7.45 }
-  const located = route('located', 'Commute', [
-    { ...home, stop: { ...home.stop, coordinates: { latitude: 46.8, longitude: 7.5 } } },
-    { ...office, stop: { ...office.stop, coordinates: atOffice } },
-  ])
   localStorage.setItem('kairos:location', 'true')
 
   const screen = await renderWithApp(NowView, {
@@ -123,10 +163,33 @@ test('starts with the direction from the place the device is at', async () => {
   })
 
   // In the morning the board would start at home, but the device is at the office.
-  await expect
-    .element(screen.getByRole('region', { name: /Office nach Home/ }))
-    .toMatchTextContent(/Losgehen/)
+  const hero = screen.getByRole('region', { name: /Office nach Home/ })
+  await expect.element(hero).toMatchTextContent(/Losgehen/)
+  await expect.element(hero.getByText('Richtung nach Standort')).toBeVisible()
   await expect.element(screen.getByRole('button', { name: 'Richtung wechseln' })).toBeVisible()
+})
+
+test('tells when the position is missing and the time of day decides', async () => {
+  localStorage.setItem('kairos:location', 'true')
+
+  const screen = await renderWithApp(NowView, {
+    routes: [located],
+    timetable: timetable(morning),
+    location: { kind: 'unavailable' },
+  })
+
+  const hero = screen.getByRole('region', { name: /Home nach Office/ })
+  await expect
+    .element(hero.getByText('Standort nicht gefunden, Richtung nach Uhrzeit'))
+    .toBeVisible()
+})
+
+test('says nothing about the direction while the location is off', async () => {
+  const screen = await renderWithApp(NowView, { routes: [located], timetable: timetable(morning) })
+
+  const hero = screen.getByRole('region', { name: /Home nach Office/ })
+  await expect.element(hero).toMatchTextContent(/Losgehen/)
+  expect(hero.getByText(/Richtung nach/).query()).toBeNull()
 })
 
 test('offers to try again when the timetable cannot be reached', async () => {
@@ -150,7 +213,7 @@ test('offers to try again when the timetable cannot be reached', async () => {
 })
 
 test('counts down to a pinned trip and forgets it on request', async () => {
-  const later = planTrip(morningCommute('07:50'), home, office)
+  const later = planTrip(morningCommute('07:50'), endpoints(commute, 'outbound'))
   if (!later) throw new Error('Expected a trip')
   const screen = await renderWithApp(NowView, {
     routes: [commute],

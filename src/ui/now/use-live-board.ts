@@ -24,12 +24,11 @@ export function useLiveBoard(route: Ref<Route>, direction: Ref<Direction>, now: 
 
   watch(
     ends,
-    ({ origin, destination }) => {
+    (current) => {
       monitor.watch({
-        from: origin.stop,
-        to: destination.stop,
-        nextLeaveAt: (journeys, at) =>
-          nextLeaveAt(buildBoard(journeys, { origin, destination }, lines.value, at)),
+        from: current.origin.stop,
+        to: current.destination.stop,
+        nextLeaveAt: (journeys, at) => nextLeaveAt(buildBoard(journeys, current, lines.value, at)),
       })
     },
     { immediate: true },

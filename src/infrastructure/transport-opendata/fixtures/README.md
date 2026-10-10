@@ -1,8 +1,8 @@
 # Recorded responses
 
-Responses of the [Transport API](https://transport.opendata.ch) used by the adapter tests. They were recorded on 9 October 2026 for Monday, 12 October 2026, with the same field selection the adapter requests.
+Responses of the [Transport API](https://transport.opendata.ch) used by the adapter tests, the end-to-end tests and the README screenshots. They were recorded on 10 October 2026 for Monday, 19 October 2026, with the same field selection the adapter requests.
 
-- `connections.json`: Thun to Bern, Zytglogge, departing from 07:00
-- `locations.json`: station search for "Zytglogge"
+- `connections.json`: Liestal to Basel, Messeplatz, departing from 07:00, with the stops of every ride
+- `locations.json`: station search for "Liestal"
 
 Timetable data: [opentransportdata.swiss](https://opentransportdata.swiss).

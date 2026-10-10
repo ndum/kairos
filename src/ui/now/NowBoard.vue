@@ -1,15 +1,35 @@
 <script setup lang="ts">
 import { useOnline } from '@vueuse/core'
-import { computed, onUnmounted, toRef, watch, watchEffect } from 'vue'
+import {
+  computed,
+  defineAsyncComponent,
+  onUnmounted,
+  shallowRef,
+  toRef,
+  watch,
+  watchEffect,
+} from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import type { MonitorSnapshot } from '@/application/trip-monitor'
 
 import { ridesOf } from '@/domain/journey'
-import { type Direction, type Route, oppositeDirection } from '@/domain/route'
+import {
+  type Direction,
+  type Endpoints,
+  type Route,
+  endpoints,
+  oppositeDirection,
+} from '@/domain/route'
 import type { Instant } from '@/domain/time'
+import type { Trip } from '@/domain/trip'
 import { urgencyOf } from '@/domain/urgency'
 
+import { useDialog } from '../composables/use-dialog'
+import { usePinStore } from '../stores/pin'
 import { useSceneStore } from '../stores/scene'
+import { useToastStore } from '../stores/toasts'
+import type { DirectionNote } from './direction-note'
 import HeroCard from './HeroCard.vue'
 import JourneyCard from './JourneyCard.vue'
 import LiveStatus from './LiveStatus.vue'
@@ -17,9 +37,19 @@ import OppositeCard from './OppositeCard.vue'
 import UpcomingCard from './UpcomingCard.vue'
 import { useLiveBoard } from './use-live-board'
 
-const props = defineProps<{ route: Route; direction: Direction; now: Instant }>()
+const props = defineProps<{
+  route: Route
+  direction: Direction
+  now: Instant
+  directionNote?: DirectionNote | null
+}>()
 
 const emit = defineEmits<{ swap: [] }>()
+
+// Only needed once the user opens the details of a trip.
+const TripSheet = defineAsyncComponent(() => import('../plan/TripSheet.vue'))
+
+const { t } = useI18n()
 
 const route = toRef(props, 'route')
 const now = toRef(props, 'now')
@@ -56,6 +86,22 @@ watchEffect(() => {
   })
 })
 onUnmounted(scene.clear)
+
+// The details of a later trip or of the next trip back, which the user may also pin.
+const pins = usePinStore()
+const toasts = useToastStore()
+const sheet = useDialog()
+const selected = shallowRef<{ trip: Trip; direction: Direction; ends: Endpoints } | null>(null)
+
+function showDetails(trip: Trip, direction: Direction): void {
+  selected.value = { trip, direction, ends: endpoints(props.route, direction) }
+  sheet.show()
+}
+
+function pin({ trip, direction }: { trip: Trip; direction: Direction }): void {
+  pins.pin(props.route, direction, trip)
+  toasts.show(t('plan.pinnedToast'))
+}
 </script>
 
 <template>
@@ -73,6 +119,7 @@ onUnmounted(scene.clear)
       :ends="primary.endpoints.value"
       :now
       :status="primary.snapshot.value.status"
+      :direction-note
       @retry="primary.refresh"
     />
     <JourneyCard
@@ -82,16 +129,30 @@ onUnmounted(scene.clear)
       :ends="primary.endpoints.value"
     />
     <div class="side">
-      <UpcomingCard :trips="primary.board.value.upcoming" />
+      <UpcomingCard
+        :trips="primary.board.value.upcoming"
+        @details="(trip) => showDetails(trip, direction)"
+      />
       <OppositeCard
         :board="secondary.board.value"
         :ends="secondary.endpoints.value"
         :now
         :status="secondary.snapshot.value.status"
         @swap="emit('swap')"
+        @details="(trip) => showDetails(trip, oppositeDirection(direction))"
       />
     </div>
   </div>
+
+  <TripSheet
+    v-if="sheet.used.value && selected"
+    v-model:open="sheet.open.value"
+    :trip="selected.trip"
+    :ends="selected.ends"
+    :pinned="pins.isPinned(selected.trip)"
+    @pin="pin(selected)"
+    @unpin="pins.unpin"
+  />
 </template>
 
 <style scoped>

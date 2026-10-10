@@ -8,7 +8,7 @@ import { renderWithApp } from '@/test/render'
 
 import StopField from './StopField.vue'
 
-const stops = [stop('Thun'), stop('Thun, Bahnhof'), stop('Thun, Postbrücke')]
+const stops = [stop('Liestal'), stop('Liestal, Bahnhof'), stop('Liestal, Törli')]
 
 /** Renders the field with a model and shows the chosen stop below it. */
 const Harness = defineComponent(() => {
@@ -33,16 +33,16 @@ test('offers the stops found and takes the highlighted one with Enter', async ()
   const screen = await setup()
   const field = screen.getByRole('combobox', { name: 'Haltestelle' })
 
-  await userEvent.fill(field, 'Thun')
-  await expect.element(screen.getByRole('option', { name: 'Thun, Bahnhof' })).toBeVisible()
+  await userEvent.fill(field, 'Liestal')
+  await expect.element(screen.getByRole('option', { name: 'Liestal, Bahnhof' })).toBeVisible()
   await expect
-    .element(screen.getByRole('option', { name: 'Thun', exact: true }))
+    .element(screen.getByRole('option', { name: 'Liestal', exact: true }))
     .toHaveAttribute('aria-selected', 'true')
 
   await userEvent.keyboard('{ArrowDown}{Enter}')
 
-  await expect.element(screen.getByTestId('chosen')).toHaveTextContent('Thun, Bahnhof')
-  await expect.element(field).toHaveValue('Thun, Bahnhof')
+  await expect.element(screen.getByTestId('chosen')).toHaveTextContent('Liestal, Bahnhof')
+  await expect.element(field).toHaveValue('Liestal, Bahnhof')
   await expect.element(field).toHaveAttribute('aria-expanded', 'false')
 })
 
@@ -51,8 +51,8 @@ test('takes a stop with a click and forgets it when the text changes', async () 
   const field = screen.getByRole('combobox', { name: 'Haltestelle' })
 
   await userEvent.fill(field, 'Thu')
-  await screen.getByRole('option', { name: 'Thun, Postbrücke' }).click()
-  await expect.element(screen.getByTestId('chosen')).toHaveTextContent('Thun, Postbrücke')
+  await screen.getByRole('option', { name: 'Liestal, Törli' }).click()
+  await expect.element(screen.getByTestId('chosen')).toHaveTextContent('Liestal, Törli')
 
   await userEvent.type(field, 'x')
   await expect.element(screen.getByTestId('chosen')).toHaveTextContent('none')

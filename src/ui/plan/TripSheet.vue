@@ -28,7 +28,7 @@ const emit = defineEmits<{ pin: []; unpin: [] }>()
 const { t } = useI18n()
 const format = useFormat()
 
-const segments = computed(() => segmentsOf(props.trip, props.ends.origin, props.ends.destination))
+const segments = computed(() => segmentsOf(props.trip, props.ends))
 const risk = computed(() => transferRiskOf(props.trip.journey))
 </script>
 

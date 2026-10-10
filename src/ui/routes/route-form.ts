@@ -1,7 +1,7 @@
 import type { RouteDraft } from '@/application/route-library'
 import type { Coordinates } from '@/domain/geo'
 import type { Place, PreferredLine, Route, StopRef } from '@/domain/route'
-import { isValidName } from '@/domain/route-rules'
+import { DEFAULT_BUFFER, isValidName } from '@/domain/route-rules'
 import { MINUTE, minutes } from '@/domain/time'
 
 // The editor works with whole minutes and an optional stop. The domain uses durations.
@@ -11,8 +11,6 @@ export interface PlaceForm {
   stop: StopRef | null
   /** Minutes on foot between the place and its stop. */
   walk: number
-  /** Extra minutes the user wants to keep. */
-  reserve: number
   /** Position of the place itself, which stays on the device. */
   coordinates?: Coordinates
 }
@@ -20,22 +18,23 @@ export interface PlaceForm {
 export interface RouteForm {
   name: string
   places: [PlaceForm, PlaceForm]
+  /** Extra minutes kept when leaving either place. */
+  buffer: number
   preferredLines: PreferredLine[]
 }
 
 export const DEFAULT_WALK = 5
-export const DEFAULT_RESERVE = 3
 
 export const emptyPlace = (): PlaceForm => ({
   name: '',
   stop: null,
   walk: DEFAULT_WALK,
-  reserve: DEFAULT_RESERVE,
 })
 
 export const emptyForm = (): RouteForm => ({
   name: '',
   places: [emptyPlace(), emptyPlace()],
+  buffer: DEFAULT_BUFFER / MINUTE,
   preferredLines: [],
 })
 
@@ -43,13 +42,13 @@ const placeFormOf = (place: Place): PlaceForm => ({
   name: place.name,
   stop: place.stop,
   walk: Math.round(place.walk / MINUTE),
-  reserve: Math.round(place.reserve / MINUTE),
   ...(place.coordinates && { coordinates: place.coordinates }),
 })
 
 export const formOf = (route: Route): RouteForm => ({
   name: route.name,
   places: [placeFormOf(route.places[0]), placeFormOf(route.places[1])],
+  buffer: Math.round(route.buffer / MINUTE),
   preferredLines: [...route.preferredLines],
 })
 
@@ -59,7 +58,6 @@ function placeOf(form: PlaceForm): Place {
     name: form.name,
     stop: form.stop,
     walk: minutes(form.walk),
-    reserve: minutes(form.reserve),
     ...(form.coordinates && { coordinates: form.coordinates }),
   }
 }
@@ -67,6 +65,7 @@ function placeOf(form: PlaceForm): Place {
 export const draftOf = (form: RouteForm): RouteDraft => ({
   name: form.name,
   places: [placeOf(form.places[0]), placeOf(form.places[1])],
+  buffer: minutes(form.buffer),
   preferredLines: form.preferredLines,
 })
 

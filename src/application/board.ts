@@ -1,16 +1,16 @@
 import type { Journey } from '@/domain/journey'
 import { noteworthyAlternative, splitByPreference } from '@/domain/line-preference'
 import type { Endpoints } from '@/domain/route'
-import { distinctByFirstDeparture, selectTrips } from '@/domain/selection'
+import { distinctByFirstDeparture, selectTrips, withoutSlowerTrips } from '@/domain/selection'
 import type { Instant } from '@/domain/time'
 import { type TransferRisk, transferRiskOf } from '@/domain/transfer'
 import { type Trip, planTrip } from '@/domain/trip'
 
 /** Everything the app shows for one direction of a route at a given moment. */
 export interface Board {
-  /** First trip on the preferred lines that is reachable with the full reserve. */
+  /** Fastest trip on the preferred lines that is reachable with the full buffer. */
   readonly main: Trip | null
-  /** An earlier preferred trip that is only reachable without the reserve. */
+  /** An earlier preferred trip that is only reachable without the buffer. */
   readonly tight: Trip | null
   readonly upcoming: readonly Trip[]
   /** A faster trip on other lines, or a replacement when the main trip is cancelled. */
@@ -25,10 +25,10 @@ export function buildBoard(
   now: Instant,
 ): Board {
   const trips = journeys
-    .map((journey) => planTrip(journey, endpoints.origin, endpoints.destination))
+    .map((journey) => planTrip(journey, endpoints))
     .filter((trip) => trip !== null)
   const split = splitByPreference(trips, preferredLines)
-  const selection = selectTrips(distinctByFirstDeparture(split.preferred), now)
+  const selection = selectTrips(withoutSlowerTrips(distinctByFirstDeparture(split.preferred)), now)
 
   return {
     ...selection,

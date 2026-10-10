@@ -1,14 +1,15 @@
 import { describe, expect, it } from 'vitest'
 
+import { endpoints } from '@/domain/route'
 import { planTrip } from '@/domain/trip'
-import { at, home, morningCommute, office, route } from '@/test/builders'
+import { at, morningCommute, route } from '@/test/builders'
 
 import { currentJourney, journeyKey, pinTrip } from './pinned-trip'
 
 const commute = route('commute')
 
 const plan = (journey = morningCommute('07:20')) => {
-  const trip = planTrip(journey, home, office)
+  const trip = planTrip(journey, endpoints(commute, 'outbound'))
   if (!trip) throw new Error('Expected a trip')
   return trip
 }

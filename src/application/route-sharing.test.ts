@@ -4,7 +4,7 @@ import { busLine, gym, home, office, route, trainLine } from '@/test/builders'
 
 import { forSharing, planImport } from './route-sharing'
 
-const position = { latitude: 46.8, longitude: 7.5 }
+const position = { latitude: 47.4845, longitude: 7.7314 }
 const commute = route(
   'commute',
   'Commute',
@@ -41,10 +41,10 @@ describe('planImport', () => {
     expect(planImport([], [broken])).toEqual([{ route: broken, status: 'invalid' }])
   })
 
-  it('counts other walking times, reserves, stops and lines as changes', () => {
+  it('counts other walking times, buffers, stops and lines as changes', () => {
     const changes = [
       { ...training, places: [{ ...home, walk: home.walk + 60_000 }, gym] as const },
-      { ...training, places: [home, { ...gym, reserve: 0 }] as const },
+      { ...training, buffer: training.buffer + 60_000 },
       { ...training, places: [home, { ...gym, stop: office.stop }] as const },
       { ...training, preferredLines: [busLine('20')] },
     ]

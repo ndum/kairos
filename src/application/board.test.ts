@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
 
-import { at, home, journey, morningCommute, office, ride, walk } from '@/test/builders'
+import { at, commute, journey, morningCommute, ride, walk } from '@/test/builders'
 
 import { buildBoard, nextLeaveAt } from './board'
 
-const endpoints = { origin: home, destination: office }
+const endpoints = commute
 const preferredLines = ['S1', '20']
 
 /** S1 to Central, then tram 9, which is not a preferred line. */
@@ -17,6 +17,16 @@ const viaTram = (departure: string, tramArrival: string) =>
 
 describe('buildBoard', () => {
   const journeys = [morningCommute('06:59'), morningCommute('07:05'), morningCommute('07:29')]
+
+  it('picks the trip that arrives first, even when a slower one leaves earlier', () => {
+    const slow = journey(ride('S1', 'Riverside', '07:05', 'Market Square', '07:45'))
+    const fast = journey(ride('IR 2', 'Riverside', '07:10', 'Market Square', '07:30'))
+
+    const board = buildBoard([slow, fast], endpoints, [], at('06:40'))
+
+    expect(board.main?.journey).toBe(fast)
+    expect(board.upcoming).toEqual([])
+  })
 
   it('selects the trips on the preferred lines', () => {
     const board = buildBoard(journeys, endpoints, preferredLines, at('06:40'))

@@ -9,7 +9,7 @@ import { shareCodeFrom } from './share-link'
 import ShareDialog from './ShareDialog.vue'
 
 const commute = route('commute', 'Commute', [
-  { ...home, coordinates: { latitude: 46.8, longitude: 7.5 } },
+  { ...home, coordinates: { latitude: 47.4845, longitude: 7.7314 } },
   office,
 ])
 

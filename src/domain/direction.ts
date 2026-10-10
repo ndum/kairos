@@ -16,11 +16,18 @@ export interface DirectionHints {
   readonly returnFrom?: number
 }
 
+export interface DirectionChoice {
+  readonly direction: Direction
+  /** Whether the position of the device or the time of day decided. */
+  readonly basis: 'location' | 'time'
+}
+
 /** Shows the direction that starts at the place the user is at, or guesses it from the time. */
-export function chooseDirection(route: Route, hints: DirectionHints): Direction {
+export function chooseDirection(route: Route, hints: DirectionHints): DirectionChoice {
   const byLocation = hints.location ? directionByLocation(route, hints.location) : null
-  if (byLocation) return byLocation
-  return hints.minuteOfDay < (hints.returnFrom ?? DEFAULT_RETURN_FROM) ? 'outbound' : 'return'
+  if (byLocation) return { direction: byLocation, basis: 'location' }
+  const returnFrom = hints.returnFrom ?? DEFAULT_RETURN_FROM
+  return { direction: hints.minuteOfDay < returnFrom ? 'outbound' : 'return', basis: 'time' }
 }
 
 function directionByLocation(route: Route, location: Coordinates): Direction | null {

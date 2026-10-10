@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import IconCurrentLocation from '~icons/tabler/current-location'
 
-import { NAME_MAX_LENGTH, RESERVE_MAX, WALK_MAX } from '@/domain/route-rules'
+import { NAME_MAX_LENGTH, WALK_MAX } from '@/domain/route-rules'
 import { MINUTE } from '@/domain/time'
 
 import BaseButton from '../components/BaseButton.vue'
@@ -17,6 +17,8 @@ import type { PlaceErrors, PlaceForm } from './route-form'
 const place = defineModel<PlaceForm>({ required: true })
 
 const props = defineProps<{
+  /** Whether the place is where the route starts or where it ends, for the walking text. */
+  end: 'origin' | 'destination'
   errors: PlaceErrors
   /** Name of the other place, which is not offered again as a suggestion. */
   otherName?: string
@@ -113,20 +115,12 @@ const stopError = computed(() => {
       </p>
     </div>
 
-    <div class="grid gap-6 sm:grid-cols-2">
-      <MinuteField
-        v-model="place.walk"
-        :label="t('editor.place.walk')"
-        :hint="t('editor.place.walkHint')"
-        :max="WALK_MAX / MINUTE"
-      />
-      <MinuteField
-        v-model="place.reserve"
-        :label="t('editor.place.reserve')"
-        :hint="t('editor.place.reserveHint')"
-        :max="RESERVE_MAX / MINUTE"
-      />
-    </div>
+    <MinuteField
+      v-model="place.walk"
+      :label="t(`editor.place.walk.${end}`)"
+      :hint="t(`editor.place.walkHint.${end}`)"
+      :max="WALK_MAX / MINUTE"
+    />
   </div>
 </template>
 

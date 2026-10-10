@@ -11,6 +11,7 @@ import { useLocationPreference } from '../composables/use-location-preference'
 import { useNow } from '../composables/use-now'
 import { HOUR } from '@/domain/time'
 
+import { directionNoteOf } from '../now/direction-note'
 import NowBoard from '../now/NowBoard.vue'
 import RouteSwitcher from '../now/RouteSwitcher.vue'
 import { useDeviceLocation } from '../now/use-device-location'
@@ -29,8 +30,9 @@ const location = useDeviceLocation(useLocationPreference())
 const choice = useRouteChoice(
   computed(() => store.routes),
   now,
-  location,
+  computed(() => (location.value.kind === 'found' ? location.value.coordinates : null)),
 )
+const directionNote = computed(() => directionNoteOf(choice.basis.value, location.value))
 const linkImport = useDialog()
 useKeepAwake(useAwakePreference())
 
@@ -54,6 +56,7 @@ watchEffect(() => {
     <NowBoard
       :route="choice.route.value"
       :direction="choice.direction.value"
+      :direction-note
       :now
       @swap="choice.swap"
     >

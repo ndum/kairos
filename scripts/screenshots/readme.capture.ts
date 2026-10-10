@@ -1,6 +1,6 @@
 import { type Browser, test } from '@playwright/test'
 
-import { fixture, thunToZytglogge } from '../../e2e/support'
+import { fixture, liestalToMesseplatz } from '../../e2e/support'
 
 interface Shot {
   readonly name: string
@@ -9,14 +9,7 @@ interface Shot {
   readonly colorScheme: 'light' | 'dark'
 }
 
-// With the S11 among the preferred lines, the board also shows the trips after the next one.
-const route = {
-  ...thunToZytglogge,
-  preferredLines: [
-    { name: 'IC 61', mode: 'train' },
-    { name: 'S11', mode: 'train' },
-  ],
-}
+const route = liestalToMesseplatz
 
 const SHOTS: readonly Shot[] = [
   { name: 'now-phone-light', path: '/', phone: true, colorScheme: 'light' },
@@ -39,10 +32,10 @@ async function device(browser: Browser, shot: Shot) {
     serviceWorkers: 'block',
   })
   const page = await context.newPage()
-  await page.clock.install({ time: new Date('2026-10-12T06:46:30+02:00') })
+  await page.clock.install({ time: new Date('2026-10-19T06:46:30+02:00') })
   await page.route('https://transport.opendata.ch/v1/connections?*', (route) => {
     const from = new URL(route.request().url()).searchParams.get('from')
-    const body = from === '8507100' ? fixture('connections.json') : '{"connections":[]}'
+    const body = from === '8500023' ? fixture('connections.json') : '{"connections":[]}'
     return route.fulfill({ contentType: 'application/json', body })
   })
   await page.goto('/')
@@ -50,7 +43,7 @@ async function device(browser: Browser, shot: Shot) {
     (routes) => {
       localStorage.setItem('kairos:routes', routes)
     },
-    JSON.stringify({ version: 1, routes: [route] }),
+    JSON.stringify({ version: 2, routes: [route] }),
   )
   return { context, page }
 }

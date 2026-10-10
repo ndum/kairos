@@ -3,235 +3,49 @@
     {
       "sections": [
         {
-          "journey": { "category": "IC", "number": "61", "operator": "SBB", "to": "Basel SBB" },
-          "walk": null,
-          "departure": {
-            "station": {
-              "id": "8507100",
-              "name": "Thun",
-              "score": null,
-              "coordinate": { "type": "WGS84", "x": 46.754852, "y": 7.629607 },
-              "distance": null
-            },
-            "departureTimestamp": 1791781440,
-            "delay": null,
-            "platform": "3",
-            "prognosis": {
-              "platform": null,
-              "arrival": null,
-              "departure": null,
-              "capacity1st": null,
-              "capacity2nd": null
-            }
-          },
-          "arrival": {
-            "station": {
-              "id": "8507000",
-              "name": "Bern",
-              "score": null,
-              "coordinate": { "type": "WGS84", "x": 46.948831, "y": 7.439129 },
-              "distance": null
-            },
-            "arrivalTimestamp": 1791782700,
-            "platform": "5",
-            "prognosis": {
-              "platform": null,
-              "arrival": null,
-              "departure": null,
-              "capacity1st": null,
-              "capacity2nd": null
-            }
-          }
-        },
-        {
-          "journey": null,
-          "walk": { "duration": 1020 },
-          "departure": {
-            "station": {
-              "id": "8507000",
-              "name": "Bern",
-              "score": null,
-              "coordinate": { "type": "WGS84", "x": 46.948831, "y": 7.439129 },
-              "distance": null
-            },
-            "departureTimestamp": 1791782700,
-            "delay": null,
-            "platform": "5",
-            "prognosis": {
-              "platform": null,
-              "arrival": null,
-              "departure": null,
-              "capacity1st": null,
-              "capacity2nd": null
-            }
-          },
-          "arrival": {
-            "station": {
-              "id": "8507110",
-              "name": "Bern, Zytglogge",
-              "score": null,
-              "coordinate": { "type": "WGS84", "x": 46.947838, "y": 7.447501 },
-              "distance": null
-            },
-            "arrivalTimestamp": 1791783720,
-            "platform": null,
-            "prognosis": {
-              "platform": null,
-              "arrival": null,
-              "departure": null,
-              "capacity1st": null,
-              "capacity2nd": null
-            }
-          }
-        }
-      ]
-    },
-    {
-      "sections": [
-        {
-          "journey": { "category": "IC", "number": "61", "operator": "SBB", "to": "Basel SBB" },
-          "walk": null,
-          "departure": {
-            "station": {
-              "id": "8507100",
-              "name": "Thun",
-              "score": null,
-              "coordinate": { "type": "WGS84", "x": 46.754852, "y": 7.629607 },
-              "distance": null
-            },
-            "departureTimestamp": 1791781440,
-            "delay": null,
-            "platform": "3",
-            "prognosis": {
-              "platform": null,
-              "arrival": null,
-              "departure": null,
-              "capacity1st": null,
-              "capacity2nd": null
-            }
-          },
-          "arrival": {
-            "station": {
-              "id": "8507000",
-              "name": "Bern",
-              "score": null,
-              "coordinate": { "type": "WGS84", "x": 46.948831, "y": 7.439129 },
-              "distance": null
-            },
-            "arrivalTimestamp": 1791782700,
-            "platform": "5",
-            "prognosis": {
-              "platform": null,
-              "arrival": null,
-              "departure": null,
-              "capacity1st": null,
-              "capacity2nd": null
-            }
-          }
-        },
-        {
-          "journey": null,
-          "walk": { "duration": 240 },
-          "departure": {
-            "station": {
-              "id": "8507000",
-              "name": "Bern",
-              "score": null,
-              "coordinate": { "type": "WGS84", "x": 46.948831, "y": 7.439129 },
-              "distance": null
-            },
-            "departureTimestamp": 1791782700,
-            "delay": null,
-            "platform": "5",
-            "prognosis": {
-              "platform": null,
-              "arrival": null,
-              "departure": null,
-              "capacity1st": null,
-              "capacity2nd": null
-            }
-          },
-          "arrival": {
-            "station": {
-              "id": "8576646",
-              "name": "Bern, Bahnhof",
-              "score": null,
-              "coordinate": { "type": "WGS84", "x": 46.948107, "y": 7.440207 },
-              "distance": null
-            },
-            "arrivalTimestamp": 1791782940,
-            "platform": "M",
-            "prognosis": {
-              "platform": null,
-              "arrival": null,
-              "departure": null,
-              "capacity1st": null,
-              "capacity2nd": null
-            }
-          }
-        },
-        {
           "journey": {
-            "category": "B",
-            "number": "19",
-            "operator": "SVB Auto",
-            "to": "Bern, Elfenau"
+            "name": "002254",
+            "category": "IR",
+            "number": "37",
+            "operator": "SBB",
+            "to": "Basel SBB",
+            "passList": [
+              {
+                "station": {
+                  "id": "8500023",
+                  "name": "Liestal"
+                },
+                "arrivalTimestamp": null,
+                "departureTimestamp": 1792386300,
+                "delay": null,
+                "platform": "4"
+              },
+              {
+                "station": {
+                  "id": "8500010",
+                  "name": "Basel SBB"
+                },
+                "arrivalTimestamp": 1792386960,
+                "departureTimestamp": null,
+                "delay": null,
+                "platform": "10"
+              }
+            ]
           },
           "walk": null,
           "departure": {
             "station": {
-              "id": "8576646",
-              "name": "Bern, Bahnhof",
+              "id": "8500023",
+              "name": "Liestal",
               "score": null,
-              "coordinate": { "type": "WGS84", "x": 46.948107, "y": 7.440207 },
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.484461,
+                "y": 7.731368
+              },
               "distance": null
             },
-            "departureTimestamp": 1791782940,
-            "delay": null,
-            "platform": "M",
-            "prognosis": {
-              "platform": null,
-              "arrival": null,
-              "departure": null,
-              "capacity1st": null,
-              "capacity2nd": null
-            }
-          },
-          "arrival": {
-            "station": {
-              "id": "8507110",
-              "name": "Bern, Zytglogge",
-              "score": null,
-              "coordinate": { "type": "WGS84", "x": 46.947838, "y": 7.447501 },
-              "distance": null
-            },
-            "arrivalTimestamp": 1791783060,
-            "platform": "G",
-            "prognosis": {
-              "platform": null,
-              "arrival": null,
-              "departure": null,
-              "capacity1st": null,
-              "capacity2nd": null
-            }
-          }
-        }
-      ]
-    },
-    {
-      "sections": [
-        {
-          "journey": { "category": "S", "number": "11", "operator": "BLS-bls", "to": "Bern" },
-          "walk": null,
-          "departure": {
-            "station": {
-              "id": "8507100",
-              "name": "Thun",
-              "score": null,
-              "coordinate": { "type": "WGS84", "x": 46.754852, "y": 7.629607 },
-              "distance": null
-            },
-            "departureTimestamp": 1791781680,
+            "departureTimestamp": 1792386300,
             "delay": null,
             "platform": "4",
             "prognosis": {
@@ -244,14 +58,18 @@
           },
           "arrival": {
             "station": {
-              "id": "8507000",
-              "name": "Bern",
+              "id": "8500010",
+              "name": "Basel SBB",
               "score": null,
-              "coordinate": { "type": "WGS84", "x": 46.948831, "y": 7.439129 },
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.547413,
+                "y": 7.58956
+              },
               "distance": null
             },
-            "arrivalTimestamp": 1791783360,
-            "platform": "1E-H",
+            "arrivalTimestamp": 1792386960,
+            "platform": "10",
             "prognosis": {
               "platform": null,
               "arrival": null,
@@ -263,18 +81,24 @@
         },
         {
           "journey": null,
-          "walk": { "duration": 900 },
+          "walk": {
+            "duration": 300
+          },
           "departure": {
             "station": {
-              "id": "8507000",
-              "name": "Bern",
+              "id": "8500010",
+              "name": "Basel SBB",
               "score": null,
-              "coordinate": { "type": "WGS84", "x": 46.948831, "y": 7.439129 },
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.547413,
+                "y": 7.58956
+              },
               "distance": null
             },
-            "departureTimestamp": 1791783360,
+            "departureTimestamp": 1792386960,
             "delay": null,
-            "platform": "1E-H",
+            "platform": "10",
             "prognosis": {
               "platform": null,
               "arrival": null,
@@ -285,14 +109,135 @@
           },
           "arrival": {
             "station": {
-              "id": "8507110",
-              "name": "Bern, Zytglogge",
+              "id": "8578143",
+              "name": "Basel, Bahnhof SBB",
               "score": null,
-              "coordinate": { "type": "WGS84", "x": 46.947838, "y": 7.447501 },
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.548286,
+                "y": 7.590297
+              },
               "distance": null
             },
-            "arrivalTimestamp": 1791784260,
-            "platform": null,
+            "arrivalTimestamp": 1792387260,
+            "platform": "F",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          }
+        },
+        {
+          "journey": {
+            "name": "002041",
+            "category": "T",
+            "number": "2",
+            "operator": "BVB",
+            "to": "Riehen, Fondation Beyeler",
+            "passList": [
+              {
+                "station": {
+                  "id": "8578143",
+                  "name": "Basel, Bahnhof SBB"
+                },
+                "arrivalTimestamp": null,
+                "departureTimestamp": 1792387260,
+                "delay": null,
+                "platform": "F"
+              },
+              {
+                "station": {
+                  "id": "8589333",
+                  "name": "Basel, Kirschgarten"
+                },
+                "arrivalTimestamp": 1792387380,
+                "departureTimestamp": 1792387380,
+                "delay": null,
+                "platform": null
+              },
+              {
+                "station": {
+                  "id": "8500237",
+                  "name": "Basel, Bankverein"
+                },
+                "arrivalTimestamp": 1792387380,
+                "departureTimestamp": 1792387440,
+                "delay": null,
+                "platform": "C"
+              },
+              {
+                "station": {
+                  "id": "8589336",
+                  "name": "Basel, Kunstmuseum"
+                },
+                "arrivalTimestamp": 1792387500,
+                "departureTimestamp": 1792387500,
+                "delay": null,
+                "platform": null
+              },
+              {
+                "station": {
+                  "id": "8589376",
+                  "name": "Basel, Wettsteinplatz"
+                },
+                "arrivalTimestamp": 1792387560,
+                "departureTimestamp": 1792387560,
+                "delay": null,
+                "platform": null
+              },
+              {
+                "station": {
+                  "id": "8500899",
+                  "name": "Basel, Messeplatz"
+                },
+                "arrivalTimestamp": 1792387680,
+                "departureTimestamp": null,
+                "delay": null,
+                "platform": "D"
+              }
+            ]
+          },
+          "walk": null,
+          "departure": {
+            "station": {
+              "id": "8578143",
+              "name": "Basel, Bahnhof SBB",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.548286,
+                "y": 7.590297
+              },
+              "distance": null
+            },
+            "departureTimestamp": 1792387260,
+            "delay": null,
+            "platform": "F",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          },
+          "arrival": {
+            "station": {
+              "id": "8500899",
+              "name": "Basel, Messeplatz",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.563454,
+                "y": 7.599613
+              },
+              "distance": null
+            },
+            "arrivalTimestamp": 1792387680,
+            "platform": "D",
             "prognosis": {
               "platform": null,
               "arrival": null,
@@ -307,17 +252,338 @@
     {
       "sections": [
         {
-          "journey": { "category": "S", "number": "11", "operator": "BLS-bls", "to": "Bern" },
+          "journey": {
+            "name": "017322",
+            "category": "S",
+            "number": "3",
+            "operator": "SBB",
+            "to": "Laufen",
+            "passList": [
+              {
+                "station": {
+                  "id": "8500023",
+                  "name": "Liestal"
+                },
+                "arrivalTimestamp": null,
+                "departureTimestamp": 1792386600,
+                "delay": null,
+                "platform": "2"
+              },
+              {
+                "station": {
+                  "id": "8500022",
+                  "name": "Frenkendorf-Füllinsdorf"
+                },
+                "arrivalTimestamp": 1792386780,
+                "departureTimestamp": 1792386780,
+                "delay": null,
+                "platform": "2"
+              },
+              {
+                "station": {
+                  "id": "8500021",
+                  "name": "Pratteln"
+                },
+                "arrivalTimestamp": 1792386960,
+                "departureTimestamp": 1792387020,
+                "delay": null,
+                "platform": "1"
+              },
+              {
+                "station": {
+                  "id": "8500020",
+                  "name": "Muttenz"
+                },
+                "arrivalTimestamp": 1792387200,
+                "departureTimestamp": 1792387200,
+                "delay": null,
+                "platform": "1"
+              },
+              {
+                "station": {
+                  "id": "8500010",
+                  "name": "Basel SBB"
+                },
+                "arrivalTimestamp": 1792387560,
+                "departureTimestamp": null,
+                "delay": null,
+                "platform": "14"
+              }
+            ]
+          },
           "walk": null,
           "departure": {
             "station": {
-              "id": "8507100",
-              "name": "Thun",
+              "id": "8500023",
+              "name": "Liestal",
               "score": null,
-              "coordinate": { "type": "WGS84", "x": 46.754852, "y": 7.629607 },
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.484461,
+                "y": 7.731368
+              },
               "distance": null
             },
-            "departureTimestamp": 1791781680,
+            "departureTimestamp": 1792386600,
+            "delay": null,
+            "platform": "2",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          },
+          "arrival": {
+            "station": {
+              "id": "8500010",
+              "name": "Basel SBB",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.547413,
+                "y": 7.58956
+              },
+              "distance": null
+            },
+            "arrivalTimestamp": 1792387560,
+            "platform": "14",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          }
+        },
+        {
+          "journey": null,
+          "walk": {
+            "duration": 240
+          },
+          "departure": {
+            "station": {
+              "id": "8500010",
+              "name": "Basel SBB",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.547413,
+                "y": 7.58956
+              },
+              "distance": null
+            },
+            "departureTimestamp": 1792387560,
+            "delay": null,
+            "platform": "14",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          },
+          "arrival": {
+            "station": {
+              "id": "8578143",
+              "name": "Basel, Bahnhof SBB",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.548286,
+                "y": 7.590297
+              },
+              "distance": null
+            },
+            "arrivalTimestamp": 1792387800,
+            "platform": "F",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          }
+        },
+        {
+          "journey": {
+            "name": "001041",
+            "category": "T",
+            "number": "1",
+            "operator": "BVB",
+            "to": "Basel, Badischer Bahnhof",
+            "passList": [
+              {
+                "station": {
+                  "id": "8578143",
+                  "name": "Basel, Bahnhof SBB"
+                },
+                "arrivalTimestamp": null,
+                "departureTimestamp": 1792387860,
+                "delay": null,
+                "platform": "F"
+              },
+              {
+                "station": {
+                  "id": "8589333",
+                  "name": "Basel, Kirschgarten"
+                },
+                "arrivalTimestamp": 1792387980,
+                "departureTimestamp": 1792387980,
+                "delay": null,
+                "platform": null
+              },
+              {
+                "station": {
+                  "id": "8500237",
+                  "name": "Basel, Bankverein"
+                },
+                "arrivalTimestamp": 1792388040,
+                "departureTimestamp": 1792388040,
+                "delay": null,
+                "platform": "C"
+              },
+              {
+                "station": {
+                  "id": "8589336",
+                  "name": "Basel, Kunstmuseum"
+                },
+                "arrivalTimestamp": 1792388100,
+                "departureTimestamp": 1792388100,
+                "delay": null,
+                "platform": null
+              },
+              {
+                "station": {
+                  "id": "8589376",
+                  "name": "Basel, Wettsteinplatz"
+                },
+                "arrivalTimestamp": 1792388220,
+                "departureTimestamp": 1792388220,
+                "delay": null,
+                "platform": null
+              },
+              {
+                "station": {
+                  "id": "8500899",
+                  "name": "Basel, Messeplatz"
+                },
+                "arrivalTimestamp": 1792388340,
+                "departureTimestamp": null,
+                "delay": null,
+                "platform": "D"
+              }
+            ]
+          },
+          "walk": null,
+          "departure": {
+            "station": {
+              "id": "8578143",
+              "name": "Basel, Bahnhof SBB",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.548286,
+                "y": 7.590297
+              },
+              "distance": null
+            },
+            "departureTimestamp": 1792387860,
+            "delay": null,
+            "platform": "F",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          },
+          "arrival": {
+            "station": {
+              "id": "8500899",
+              "name": "Basel, Messeplatz",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.563454,
+                "y": 7.599613
+              },
+              "distance": null
+            },
+            "arrivalTimestamp": 1792388340,
+            "platform": "D",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "sections": [
+        {
+          "journey": {
+            "name": "017044",
+            "category": "S",
+            "number": "32",
+            "operator": "SBB",
+            "to": "Basel SBB",
+            "passList": [
+              {
+                "station": {
+                  "id": "8500023",
+                  "name": "Liestal"
+                },
+                "arrivalTimestamp": null,
+                "departureTimestamp": 1792387500,
+                "delay": null,
+                "platform": "4"
+              },
+              {
+                "station": {
+                  "id": "8500020",
+                  "name": "Muttenz"
+                },
+                "arrivalTimestamp": 1792387860,
+                "departureTimestamp": 1792387860,
+                "delay": null,
+                "platform": "1"
+              },
+              {
+                "station": {
+                  "id": "8500010",
+                  "name": "Basel SBB"
+                },
+                "arrivalTimestamp": 1792388160,
+                "departureTimestamp": null,
+                "delay": null,
+                "platform": "16"
+              }
+            ]
+          },
+          "walk": null,
+          "departure": {
+            "station": {
+              "id": "8500023",
+              "name": "Liestal",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.484461,
+                "y": 7.731368
+              },
+              "distance": null
+            },
+            "departureTimestamp": 1792387500,
             "delay": null,
             "platform": "4",
             "prognosis": {
@@ -330,14 +596,18 @@
           },
           "arrival": {
             "station": {
-              "id": "8507002",
-              "name": "Ostermundigen",
+              "id": "8500010",
+              "name": "Basel SBB",
               "score": null,
-              "coordinate": { "type": "WGS84", "x": 46.956803, "y": 7.481502 },
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.547413,
+                "y": 7.58956
+              },
               "distance": null
             },
-            "arrivalTimestamp": 1791782880,
-            "platform": "1",
+            "arrivalTimestamp": 1792388160,
+            "platform": "16",
             "prognosis": {
               "platform": null,
               "arrival": null,
@@ -349,18 +619,24 @@
         },
         {
           "journey": null,
-          "walk": { "duration": 240 },
+          "walk": {
+            "duration": 300
+          },
           "departure": {
             "station": {
-              "id": "8507002",
-              "name": "Ostermundigen",
+              "id": "8500010",
+              "name": "Basel SBB",
               "score": null,
-              "coordinate": { "type": "WGS84", "x": 46.956803, "y": 7.481502 },
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.547413,
+                "y": 7.58956
+              },
               "distance": null
             },
-            "departureTimestamp": 1791782880,
+            "departureTimestamp": 1792388160,
             "delay": null,
-            "platform": "1",
+            "platform": "16",
             "prognosis": {
               "platform": null,
               "arrival": null,
@@ -371,14 +647,18 @@
           },
           "arrival": {
             "station": {
-              "id": "8577003",
-              "name": "Ostermundigen, Bahnhof",
+              "id": "8578143",
+              "name": "Basel, Bahnhof SBB",
               "score": null,
-              "coordinate": { "type": "WGS84", "x": 46.955852, "y": 7.482014 },
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.548286,
+                "y": 7.590297
+              },
               "distance": null
             },
-            "arrivalTimestamp": 1791783120,
-            "platform": "A",
+            "arrivalTimestamp": 1792388460,
+            "platform": "F",
             "prognosis": {
               "platform": null,
               "arrival": null,
@@ -390,23 +670,90 @@
         },
         {
           "journey": {
-            "category": "B",
-            "number": "10",
-            "operator": "SVB Auto",
-            "to": "Schliern, Bus-Endstation"
+            "name": "002047",
+            "category": "T",
+            "number": "2",
+            "operator": "BVB",
+            "to": "Basel, Eglisee",
+            "passList": [
+              {
+                "station": {
+                  "id": "8578143",
+                  "name": "Basel, Bahnhof SBB"
+                },
+                "arrivalTimestamp": null,
+                "departureTimestamp": 1792388580,
+                "delay": null,
+                "platform": "F"
+              },
+              {
+                "station": {
+                  "id": "8589333",
+                  "name": "Basel, Kirschgarten"
+                },
+                "arrivalTimestamp": 1792388700,
+                "departureTimestamp": 1792388700,
+                "delay": null,
+                "platform": null
+              },
+              {
+                "station": {
+                  "id": "8500237",
+                  "name": "Basel, Bankverein"
+                },
+                "arrivalTimestamp": 1792388760,
+                "departureTimestamp": 1792388760,
+                "delay": null,
+                "platform": "C"
+              },
+              {
+                "station": {
+                  "id": "8589336",
+                  "name": "Basel, Kunstmuseum"
+                },
+                "arrivalTimestamp": 1792388820,
+                "departureTimestamp": 1792388820,
+                "delay": null,
+                "platform": null
+              },
+              {
+                "station": {
+                  "id": "8589376",
+                  "name": "Basel, Wettsteinplatz"
+                },
+                "arrivalTimestamp": 1792388880,
+                "departureTimestamp": 1792388940,
+                "delay": null,
+                "platform": null
+              },
+              {
+                "station": {
+                  "id": "8500899",
+                  "name": "Basel, Messeplatz"
+                },
+                "arrivalTimestamp": 1792389060,
+                "departureTimestamp": null,
+                "delay": null,
+                "platform": "D"
+              }
+            ]
           },
           "walk": null,
           "departure": {
             "station": {
-              "id": "8577003",
-              "name": "Ostermundigen, Bahnhof",
+              "id": "8578143",
+              "name": "Basel, Bahnhof SBB",
               "score": null,
-              "coordinate": { "type": "WGS84", "x": 46.955852, "y": 7.482014 },
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.548286,
+                "y": 7.590297
+              },
               "distance": null
             },
-            "departureTimestamp": 1791783180,
+            "departureTimestamp": 1792388580,
             "delay": null,
-            "platform": "A",
+            "platform": "F",
             "prognosis": {
               "platform": null,
               "arrival": null,
@@ -417,14 +764,795 @@
           },
           "arrival": {
             "station": {
-              "id": "8507110",
-              "name": "Bern, Zytglogge",
+              "id": "8500899",
+              "name": "Basel, Messeplatz",
               "score": null,
-              "coordinate": { "type": "WGS84", "x": 46.947838, "y": 7.447501 },
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.563454,
+                "y": 7.599613
+              },
               "distance": null
             },
-            "arrivalTimestamp": 1791783840,
-            "platform": "A",
+            "arrivalTimestamp": 1792389060,
+            "platform": "D",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "sections": [
+        {
+          "journey": {
+            "name": "002458",
+            "category": "IR",
+            "number": "27",
+            "operator": "SBB",
+            "to": "Basel SBB",
+            "passList": [
+              {
+                "station": {
+                  "id": "8500023",
+                  "name": "Liestal"
+                },
+                "arrivalTimestamp": null,
+                "departureTimestamp": 1792388040,
+                "delay": null,
+                "platform": "4"
+              },
+              {
+                "station": {
+                  "id": "8500010",
+                  "name": "Basel SBB"
+                },
+                "arrivalTimestamp": 1792388640,
+                "departureTimestamp": null,
+                "delay": null,
+                "platform": "3"
+              }
+            ]
+          },
+          "walk": null,
+          "departure": {
+            "station": {
+              "id": "8500023",
+              "name": "Liestal",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.484461,
+                "y": 7.731368
+              },
+              "distance": null
+            },
+            "departureTimestamp": 1792388040,
+            "delay": null,
+            "platform": "4",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          },
+          "arrival": {
+            "station": {
+              "id": "8500010",
+              "name": "Basel SBB",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.547413,
+                "y": 7.58956
+              },
+              "distance": null
+            },
+            "arrivalTimestamp": 1792388640,
+            "platform": "3",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          }
+        },
+        {
+          "journey": null,
+          "walk": {
+            "duration": 300
+          },
+          "departure": {
+            "station": {
+              "id": "8500010",
+              "name": "Basel SBB",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.547413,
+                "y": 7.58956
+              },
+              "distance": null
+            },
+            "departureTimestamp": 1792388640,
+            "delay": null,
+            "platform": "3",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          },
+          "arrival": {
+            "station": {
+              "id": "8578143",
+              "name": "Basel, Bahnhof SBB",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.548286,
+                "y": 7.590297
+              },
+              "distance": null
+            },
+            "arrivalTimestamp": 1792388940,
+            "platform": "F",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          }
+        },
+        {
+          "journey": {
+            "name": "002049",
+            "category": "T",
+            "number": "2",
+            "operator": "BVB",
+            "to": "Basel, Eglisee",
+            "passList": [
+              {
+                "station": {
+                  "id": "8578143",
+                  "name": "Basel, Bahnhof SBB"
+                },
+                "arrivalTimestamp": null,
+                "departureTimestamp": 1792389060,
+                "delay": null,
+                "platform": "F"
+              },
+              {
+                "station": {
+                  "id": "8589333",
+                  "name": "Basel, Kirschgarten"
+                },
+                "arrivalTimestamp": 1792389120,
+                "departureTimestamp": 1792389180,
+                "delay": null,
+                "platform": null
+              },
+              {
+                "station": {
+                  "id": "8500237",
+                  "name": "Basel, Bankverein"
+                },
+                "arrivalTimestamp": 1792389180,
+                "departureTimestamp": 1792389180,
+                "delay": null,
+                "platform": "C"
+              },
+              {
+                "station": {
+                  "id": "8589336",
+                  "name": "Basel, Kunstmuseum"
+                },
+                "arrivalTimestamp": 1792389240,
+                "departureTimestamp": 1792389300,
+                "delay": null,
+                "platform": null
+              },
+              {
+                "station": {
+                  "id": "8589376",
+                  "name": "Basel, Wettsteinplatz"
+                },
+                "arrivalTimestamp": 1792389360,
+                "departureTimestamp": 1792389360,
+                "delay": null,
+                "platform": null
+              },
+              {
+                "station": {
+                  "id": "8500899",
+                  "name": "Basel, Messeplatz"
+                },
+                "arrivalTimestamp": 1792389480,
+                "departureTimestamp": null,
+                "delay": null,
+                "platform": "D"
+              }
+            ]
+          },
+          "walk": null,
+          "departure": {
+            "station": {
+              "id": "8578143",
+              "name": "Basel, Bahnhof SBB",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.548286,
+                "y": 7.590297
+              },
+              "distance": null
+            },
+            "departureTimestamp": 1792389060,
+            "delay": null,
+            "platform": "F",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          },
+          "arrival": {
+            "station": {
+              "id": "8500899",
+              "name": "Basel, Messeplatz",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.563454,
+                "y": 7.599613
+              },
+              "distance": null
+            },
+            "arrivalTimestamp": 1792389480,
+            "platform": "D",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "sections": [
+        {
+          "journey": {
+            "name": "017324",
+            "category": "S",
+            "number": "3",
+            "operator": "SBB",
+            "to": "Laufen",
+            "passList": [
+              {
+                "station": {
+                  "id": "8500023",
+                  "name": "Liestal"
+                },
+                "arrivalTimestamp": null,
+                "departureTimestamp": 1792388400,
+                "delay": null,
+                "platform": "2"
+              },
+              {
+                "station": {
+                  "id": "8500022",
+                  "name": "Frenkendorf-Füllinsdorf"
+                },
+                "arrivalTimestamp": 1792388580,
+                "departureTimestamp": 1792388580,
+                "delay": null,
+                "platform": "2"
+              },
+              {
+                "station": {
+                  "id": "8500021",
+                  "name": "Pratteln"
+                },
+                "arrivalTimestamp": 1792388760,
+                "departureTimestamp": 1792388820,
+                "delay": null,
+                "platform": "1"
+              },
+              {
+                "station": {
+                  "id": "8500020",
+                  "name": "Muttenz"
+                },
+                "arrivalTimestamp": 1792389000,
+                "departureTimestamp": 1792389000,
+                "delay": null,
+                "platform": "1"
+              },
+              {
+                "station": {
+                  "id": "8500010",
+                  "name": "Basel SBB"
+                },
+                "arrivalTimestamp": 1792389360,
+                "departureTimestamp": null,
+                "delay": null,
+                "platform": "16"
+              }
+            ]
+          },
+          "walk": null,
+          "departure": {
+            "station": {
+              "id": "8500023",
+              "name": "Liestal",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.484461,
+                "y": 7.731368
+              },
+              "distance": null
+            },
+            "departureTimestamp": 1792388400,
+            "delay": null,
+            "platform": "2",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          },
+          "arrival": {
+            "station": {
+              "id": "8500010",
+              "name": "Basel SBB",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.547413,
+                "y": 7.58956
+              },
+              "distance": null
+            },
+            "arrivalTimestamp": 1792389360,
+            "platform": "16",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          }
+        },
+        {
+          "journey": null,
+          "walk": {
+            "duration": 300
+          },
+          "departure": {
+            "station": {
+              "id": "8500010",
+              "name": "Basel SBB",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.547413,
+                "y": 7.58956
+              },
+              "distance": null
+            },
+            "departureTimestamp": 1792389360,
+            "delay": null,
+            "platform": "16",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          },
+          "arrival": {
+            "station": {
+              "id": "8578143",
+              "name": "Basel, Bahnhof SBB",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.548286,
+                "y": 7.590297
+              },
+              "distance": null
+            },
+            "arrivalTimestamp": 1792389660,
+            "platform": "F",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          }
+        },
+        {
+          "journey": {
+            "name": "001049",
+            "category": "T",
+            "number": "1",
+            "operator": "BVB",
+            "to": "Basel, Badischer Bahnhof",
+            "passList": [
+              {
+                "station": {
+                  "id": "8578143",
+                  "name": "Basel, Bahnhof SBB"
+                },
+                "arrivalTimestamp": null,
+                "departureTimestamp": 1792389660,
+                "delay": null,
+                "platform": "F"
+              },
+              {
+                "station": {
+                  "id": "8589333",
+                  "name": "Basel, Kirschgarten"
+                },
+                "arrivalTimestamp": 1792389780,
+                "departureTimestamp": 1792389780,
+                "delay": null,
+                "platform": null
+              },
+              {
+                "station": {
+                  "id": "8500237",
+                  "name": "Basel, Bankverein"
+                },
+                "arrivalTimestamp": 1792389840,
+                "departureTimestamp": 1792389840,
+                "delay": null,
+                "platform": "C"
+              },
+              {
+                "station": {
+                  "id": "8589336",
+                  "name": "Basel, Kunstmuseum"
+                },
+                "arrivalTimestamp": 1792389900,
+                "departureTimestamp": 1792389900,
+                "delay": null,
+                "platform": null
+              },
+              {
+                "station": {
+                  "id": "8589376",
+                  "name": "Basel, Wettsteinplatz"
+                },
+                "arrivalTimestamp": 1792390020,
+                "departureTimestamp": 1792390020,
+                "delay": null,
+                "platform": null
+              },
+              {
+                "station": {
+                  "id": "8500899",
+                  "name": "Basel, Messeplatz"
+                },
+                "arrivalTimestamp": 1792390140,
+                "departureTimestamp": null,
+                "delay": null,
+                "platform": "D"
+              }
+            ]
+          },
+          "walk": null,
+          "departure": {
+            "station": {
+              "id": "8578143",
+              "name": "Basel, Bahnhof SBB",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.548286,
+                "y": 7.590297
+              },
+              "distance": null
+            },
+            "departureTimestamp": 1792389660,
+            "delay": null,
+            "platform": "F",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          },
+          "arrival": {
+            "station": {
+              "id": "8500899",
+              "name": "Basel, Messeplatz",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.563454,
+                "y": 7.599613
+              },
+              "distance": null
+            },
+            "arrivalTimestamp": 1792390140,
+            "platform": "D",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "sections": [
+        {
+          "journey": {
+            "name": "010374",
+            "category": "IC",
+            "number": "61",
+            "operator": "SBB",
+            "to": "Basel SBB",
+            "passList": [
+              {
+                "station": {
+                  "id": "8500023",
+                  "name": "Liestal"
+                },
+                "arrivalTimestamp": null,
+                "departureTimestamp": 1792388940,
+                "delay": null,
+                "platform": "4"
+              },
+              {
+                "station": {
+                  "id": "8500010",
+                  "name": "Basel SBB"
+                },
+                "arrivalTimestamp": 1792389600,
+                "departureTimestamp": null,
+                "delay": null,
+                "platform": "8"
+              }
+            ]
+          },
+          "walk": null,
+          "departure": {
+            "station": {
+              "id": "8500023",
+              "name": "Liestal",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.484461,
+                "y": 7.731368
+              },
+              "distance": null
+            },
+            "departureTimestamp": 1792388940,
+            "delay": null,
+            "platform": "4",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          },
+          "arrival": {
+            "station": {
+              "id": "8500010",
+              "name": "Basel SBB",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.547413,
+                "y": 7.58956
+              },
+              "distance": null
+            },
+            "arrivalTimestamp": 1792389600,
+            "platform": "8",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          }
+        },
+        {
+          "journey": null,
+          "walk": {
+            "duration": 240
+          },
+          "departure": {
+            "station": {
+              "id": "8500010",
+              "name": "Basel SBB",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.547413,
+                "y": 7.58956
+              },
+              "distance": null
+            },
+            "departureTimestamp": 1792389600,
+            "delay": null,
+            "platform": "8",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          },
+          "arrival": {
+            "station": {
+              "id": "8578143",
+              "name": "Basel, Bahnhof SBB",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.548286,
+                "y": 7.590297
+              },
+              "distance": null
+            },
+            "arrivalTimestamp": 1792389840,
+            "platform": "F",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          }
+        },
+        {
+          "journey": {
+            "name": "002053",
+            "category": "T",
+            "number": "2",
+            "operator": "BVB",
+            "to": "Basel, Eglisee",
+            "passList": [
+              {
+                "station": {
+                  "id": "8578143",
+                  "name": "Basel, Bahnhof SBB"
+                },
+                "arrivalTimestamp": null,
+                "departureTimestamp": 1792389960,
+                "delay": null,
+                "platform": "F"
+              },
+              {
+                "station": {
+                  "id": "8589333",
+                  "name": "Basel, Kirschgarten"
+                },
+                "arrivalTimestamp": 1792390020,
+                "departureTimestamp": 1792390080,
+                "delay": null,
+                "platform": null
+              },
+              {
+                "station": {
+                  "id": "8500237",
+                  "name": "Basel, Bankverein"
+                },
+                "arrivalTimestamp": 1792390080,
+                "departureTimestamp": 1792390080,
+                "delay": null,
+                "platform": "C"
+              },
+              {
+                "station": {
+                  "id": "8589336",
+                  "name": "Basel, Kunstmuseum"
+                },
+                "arrivalTimestamp": 1792390140,
+                "departureTimestamp": 1792390200,
+                "delay": null,
+                "platform": null
+              },
+              {
+                "station": {
+                  "id": "8589376",
+                  "name": "Basel, Wettsteinplatz"
+                },
+                "arrivalTimestamp": 1792390260,
+                "departureTimestamp": 1792390260,
+                "delay": null,
+                "platform": null
+              },
+              {
+                "station": {
+                  "id": "8500899",
+                  "name": "Basel, Messeplatz"
+                },
+                "arrivalTimestamp": 1792390380,
+                "departureTimestamp": null,
+                "delay": null,
+                "platform": "D"
+              }
+            ]
+          },
+          "walk": null,
+          "departure": {
+            "station": {
+              "id": "8578143",
+              "name": "Basel, Bahnhof SBB",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.548286,
+                "y": 7.590297
+              },
+              "distance": null
+            },
+            "departureTimestamp": 1792389960,
+            "delay": null,
+            "platform": "F",
+            "prognosis": {
+              "platform": null,
+              "arrival": null,
+              "departure": null,
+              "capacity1st": null,
+              "capacity2nd": null
+            }
+          },
+          "arrival": {
+            "station": {
+              "id": "8500899",
+              "name": "Basel, Messeplatz",
+              "score": null,
+              "coordinate": {
+                "type": "WGS84",
+                "x": 47.563454,
+                "y": 7.599613
+              },
+              "distance": null
+            },
+            "arrivalTimestamp": 1792390380,
+            "platform": "D",
             "prognosis": {
               "platform": null,
               "arrival": null,

@@ -21,11 +21,27 @@ export interface StopEvent {
   readonly expectedPlatform?: string
 }
 
+/** A stop the vehicle calls at between boarding and alighting. */
+export interface Stopover {
+  readonly stop: StopRef
+  /** Departure from the stop, or the arrival where the timetable has no departure. */
+  readonly scheduledAt: Instant
+  /** Real-time prognosis, if the operator reports a delay. */
+  readonly expectedAt?: Instant
+  readonly platform?: string
+}
+
 export interface RideLeg {
   readonly kind: 'ride'
   readonly line: Line
   readonly departure: StopEvent
   readonly arrival: StopEvent
+  /** Stops between departure and arrival, in the order the vehicle calls at them. */
+  readonly stopovers: readonly Stopover[]
+  /** Number of this run, for trains the train number, for example "2254". */
+  readonly tripNumber?: string
+  /** Short name of the operator, for example "SBB". */
+  readonly operator?: string
   readonly cancelled: boolean
 }
 

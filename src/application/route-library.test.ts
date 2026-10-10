@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 
+import { minutes } from '@/domain/time'
 import { busLine, gym, home, office, route, trainLine } from '@/test/builders'
 import { MemoryRouteRepository } from '@/test/fakes'
 
@@ -15,6 +16,7 @@ const draft: RouteDraft = {
     { ...home, name: ' Home ' },
     { ...office, name: 'Office' },
   ],
+  buffer: minutes(3),
   preferredLines: [trainLine('S1'), trainLine('s1'), busLine(' 20 ')],
 }
 
@@ -69,6 +71,7 @@ describe('RouteLibrary', () => {
     const { library, repository } = setup()
 
     expect(() => library.add({ ...draft, places: [home, home] })).toThrow(InvalidRouteError)
+    expect(() => library.add({ ...draft, buffer: minutes(31) })).toThrow(InvalidRouteError)
     expect(() => {
       library.update({ ...commute, name: '' })
     }).toThrow(InvalidRouteError)
@@ -146,7 +149,7 @@ describe('RouteLibrary', () => {
   })
 
   it('forgets the position of a place whose stop changes', () => {
-    const position = { latitude: 46.8, longitude: 7.5 }
+    const position = { latitude: 47.4845, longitude: 7.7314 }
     const located = route('training', 'Training', [{ ...home, coordinates: position }, gym])
     const { library } = setup([located])
 
@@ -156,7 +159,7 @@ describe('RouteLibrary', () => {
   })
 
   it('keeps the position of a place whose stop stays the same', () => {
-    const position = { latitude: 46.8, longitude: 7.5 }
+    const position = { latitude: 47.4845, longitude: 7.7314 }
     const located = route('training', 'Training', [{ ...home, coordinates: position }, gym])
     const { library } = setup([located])
 

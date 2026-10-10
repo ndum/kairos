@@ -31,13 +31,24 @@ const CheckpointSchema = v.object({
   prognosis: v.nullish(PrognosisSchema),
 })
 
+const PassSchema = v.object({
+  station: StationSchema,
+  arrivalTimestamp: v.nullish(v.number()),
+  departureTimestamp: v.nullish(v.number()),
+  delay: v.nullish(v.number()),
+  platform: v.nullish(v.string()),
+})
+
 const SectionSchema = v.object({
   journey: v.nullish(
     v.object({
+      name: v.nullish(v.string()),
       category: v.nullish(v.string()),
       number: v.nullish(v.string()),
       to: v.nullish(v.string()),
       operator: v.nullish(v.string()),
+      /** Every stop of the section, the first and the last included. */
+      passList: v.nullish(v.array(PassSchema)),
     }),
   ),
   walk: v.nullish(v.object({ duration: v.nullish(v.number()) })),
@@ -57,3 +68,4 @@ export type ApiStation = v.InferOutput<typeof StationSchema>
 export type ApiSection = v.InferOutput<typeof SectionSchema>
 export type ApiConnection = v.InferOutput<typeof ConnectionsResponseSchema>['connections'][number]
 export type ApiCheckpoint = ApiSection['departure']
+export type ApiPass = v.InferOutput<typeof PassSchema>

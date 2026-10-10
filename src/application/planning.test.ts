@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import { at, home, journey, morningCommute, office, ride, walk } from '@/test/builders'
+import { at, commute, home, journey, morningCommute, office, ride, walk } from '@/test/builders'
 
 import { PLAN_LIMIT, planTrips } from './planning'
 import type { TimetablePort } from './ports/timetable'
 
-const ends = { origin: home, destination: office }
+const ends = commute
 
 const viaTram = (departure: string, arrival: string) =>
   journey(
@@ -20,7 +20,7 @@ function timetable(journeys = [morningCommute('07:05'), morningCommute('07:20')]
 }
 
 describe('planTrips', () => {
-  it('asks for departures once the user has walked to the stop and kept the reserve', async () => {
+  it('asks for departures once the user has walked to the stop and kept the buffer', async () => {
     const { timetable: source, findJourneys } = timetable()
     const signal = new AbortController().signal
 
@@ -88,6 +88,17 @@ describe('planTrips', () => {
 
     expect(plan.recommended?.journey).toEqual(morningCommute('07:20'))
     expect(plan.alternatives).toHaveLength(1)
+  })
+
+  it('leaves out trips that leave earlier but do not arrive earlier', async () => {
+    const slow = journey(ride('S1', 'Riverside', '07:05', 'Market Square', '07:45'))
+    const fast = journey(ride('IR 2', 'Riverside', '07:10', 'Market Square', '07:30'))
+    const { timetable: source } = timetable([slow, fast])
+
+    const plan = await planTrips(source, ends, [], { mode: 'depart', at: at('06:40') })
+
+    expect(plan.trips.map((trip) => trip.journey)).toEqual([fast])
+    expect(plan.recommended?.journey).toBe(fast)
   })
 
   it('recommends nothing when no trip fits', async () => {

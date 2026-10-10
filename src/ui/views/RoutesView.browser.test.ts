@@ -27,7 +27,8 @@ test('shows each route with its places and lines', async () => {
   const card = screen.getByRole('article', { name: 'Commute' })
 
   await expect.element(card.getByText('Riverside')).toBeVisible()
-  await expect.element(card.getByText('8 Min. zu Fuss, 3 Min. Reserve')).toBeVisible()
+  await expect.element(card.getByText('8 Min. zu Fuss')).toBeVisible()
+  await expect.element(card.getByText('3 Min. Puffer')).toBeVisible()
   await expect.element(card.getByText('S1')).toBeVisible()
   await expect
     .element(screen.getByRole('article', { name: 'Training' }).getByText('Alle Linien'))

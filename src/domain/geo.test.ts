@@ -2,19 +2,19 @@ import { describe, expect, it } from 'vitest'
 
 import { distanceInMeters } from './geo'
 
-const bern = { latitude: 46.948831, longitude: 7.439129 }
-const thun = { latitude: 46.754852, longitude: 7.629607 }
+const basel = { latitude: 47.547413, longitude: 7.58956 }
+const liestal = { latitude: 47.484461, longitude: 7.731368 }
 
 describe('distanceInMeters', () => {
   it('is zero for the same point', () => {
-    expect(distanceInMeters(bern, bern)).toBe(0)
+    expect(distanceInMeters(basel, basel)).toBe(0)
   })
 
-  it('measures the distance between the stations of Bern and Thun', () => {
-    expect(distanceInMeters(bern, thun)).toBeCloseTo(25982, -2)
+  it('measures the distance between the stations of Basel and Liestal', () => {
+    expect(distanceInMeters(basel, liestal)).toBeCloseTo(12744, -2)
   })
 
   it('is symmetric', () => {
-    expect(distanceInMeters(bern, thun)).toBe(distanceInMeters(thun, bern))
+    expect(distanceInMeters(basel, liestal)).toBe(distanceInMeters(liestal, basel))
   })
 })

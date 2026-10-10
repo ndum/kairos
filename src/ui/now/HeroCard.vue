@@ -2,6 +2,8 @@
 import { computed, useId } from 'vue'
 import { useI18n } from 'vue-i18n'
 import IconBolt from '~icons/tabler/bolt'
+import IconClock from '~icons/tabler/clock'
+import IconCurrentLocation from '~icons/tabler/current-location'
 import IconLoader from '~icons/tabler/loader-2'
 
 import type { Board } from '@/application/board'
@@ -16,6 +18,7 @@ import GlassCard from '../components/GlassCard.vue'
 import LineBadge from '../components/LineBadge.vue'
 import { useFormat } from '../composables/use-format'
 import { countdownTo, urgencyProgress } from './countdown'
+import type { DirectionNote } from './direction-note'
 import DirectionTag from './DirectionTag.vue'
 import PlatformText from './PlatformText.vue'
 
@@ -24,6 +27,8 @@ const props = defineProps<{
   ends: Endpoints
   now: Instant
   status: MonitorStatus
+  /** Why the board shows this direction, if the location may choose it. */
+  directionNote?: DirectionNote | null
 }>()
 
 const emit = defineEmits<{ retry: [] }>()
@@ -45,7 +50,7 @@ const label = computed(() => {
   return t('now.leaveIn')
 })
 
-/** Minutes left to catch the tight trip, which no longer leaves room for the reserve. */
+/** Minutes left to catch the tight trip, which no longer leaves room for the buffer. */
 const tightMinutes = computed(() => {
   const tight = props.board.tight
   return tight ? Math.max(0, format.minutes(tight.latestLeaveAt - props.now)) : 0
@@ -69,6 +74,14 @@ const alternative = computed(() => {
     <div class="flex flex-wrap items-center gap-2.5">
       <DirectionTag :id="directionId" :ends />
       <h2 :id="headingId" class="label font-semibold text-ink-subtle">{{ label }}</h2>
+      <p v-if="directionNote" class="flex w-full items-center gap-1.5 text-sm text-ink-subtle">
+        <IconCurrentLocation
+          v-if="directionNote === 'location' || directionNote === 'locating'"
+          aria-hidden="true"
+        />
+        <IconClock v-else aria-hidden="true" />
+        {{ t(`now.directionNote.${directionNote}`) }}
+      </p>
     </div>
 
     <template v-if="main && countdown && firstRide">
