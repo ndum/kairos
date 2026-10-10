@@ -1,15 +1,45 @@
 {
+  "_EmptyState-CcGZrtoc.css": {
+    "file": "assets/EmptyState-CcGZrtoc.css",
+    "src": "_EmptyState-CcGZrtoc.css"
+  },
+  "_EmptyState-DyQck9QZ.js": {
+    "file": "assets/EmptyState-DyQck9QZ.js",
+    "name": "EmptyState",
+    "css": [
+      "assets/EmptyState-CcGZrtoc.css"
+    ]
+  },
+  "_routes-BIE8TtO7.css": {
+    "file": "assets/routes-BIE8TtO7.css",
+    "src": "_routes-BIE8TtO7.css"
+  },
+  "_routes-D0Zn8jHK.js": {
+    "file": "assets/routes-D0Zn8jHK.js",
+    "name": "routes",
+    "imports": [
+      "_EmptyState-DyQck9QZ.js",
+      "index.html"
+    ],
+    "css": [
+      "assets/routes-BIE8TtO7.css"
+    ]
+  },
   "index.html": {
-    "file": "assets/index-DKbfU0rF.js",
+    "file": "assets/index-DCyYws63.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
+    "imports": [
+      "_EmptyState-DyQck9QZ.js"
+    ],
     "dynamicImports": [
+      "src/ui/views/RouteEditorView.vue",
       "src/ui/views/PlanView.vue",
       "src/ui/views/RoutesView.vue"
     ],
     "css": [
-      "assets/index-BktlEef4.css"
+      "assets/index-DVunzhqX.css"
     ],
     "assets": [
       "assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2",
@@ -40,21 +70,41 @@
     "src": "node_modules/@fontsource-variable/geist/files/geist-vietnamese-wght-normal.woff2"
   },
   "src/ui/views/PlanView.vue": {
-    "file": "assets/PlanView-Djq12s_G.js",
+    "file": "assets/PlanView-UaoGfCmc.js",
     "name": "PlanView",
     "src": "src/ui/views/PlanView.vue",
     "isDynamicEntry": true,
     "imports": [
+      "_EmptyState-DyQck9QZ.js",
       "index.html"
     ]
   },
+  "src/ui/views/RouteEditorView.vue": {
+    "file": "assets/RouteEditorView-C0kIhnzQ.js",
+    "name": "RouteEditorView",
+    "src": "src/ui/views/RouteEditorView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_EmptyState-DyQck9QZ.js",
+      "index.html",
+      "_routes-D0Zn8jHK.js"
+    ],
+    "css": [
+      "assets/RouteEditorView-DRGsfdjj.css"
+    ]
+  },
   "src/ui/views/RoutesView.vue": {
-    "file": "assets/RoutesView-BXGLIfUi.js",
+    "file": "assets/RoutesView-DMbB2gso.js",
     "name": "RoutesView",
     "src": "src/ui/views/RoutesView.vue",
     "isDynamicEntry": true,
     "imports": [
-      "index.html"
+      "_EmptyState-DyQck9QZ.js",
+      "index.html",
+      "_routes-D0Zn8jHK.js"
+    ],
+    "css": [
+      "assets/RoutesView-JjcKZbIF.css"
     ]
   }
 }
