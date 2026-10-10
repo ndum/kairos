@@ -4,6 +4,7 @@ import { createApp } from 'vue'
 import { RouteLibrary } from './application/route-library'
 import { StopSearch } from './application/stop-search'
 import { TripMonitor } from './application/trip-monitor'
+import { BrowserLocation } from './infrastructure/browser/browser-location'
 import { LocalStorageJourneyCache } from './infrastructure/browser/local-storage-journey-cache'
 import { LocalStorageRouteRepository } from './infrastructure/browser/local-storage-route-repository'
 import { randomId } from './infrastructure/browser/random-id'
@@ -26,6 +27,7 @@ const services: AppServices = {
   routes: new RouteLibrary({ repository: new LocalStorageRouteRepository(), createId: randomId }),
   stops: new StopSearch(timetable),
   codec: new CompressedRouteCodec(),
+  location: new BrowserLocation(),
   createTripMonitor: () =>
     new TripMonitor({ timetable, cache, clock: systemClock, scheduler: timerScheduler }),
 }

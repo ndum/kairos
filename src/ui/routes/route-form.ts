@@ -1,4 +1,5 @@
 import type { RouteDraft } from '@/application/route-library'
+import type { Coordinates } from '@/domain/geo'
 import type { Place, PreferredLine, Route, StopRef } from '@/domain/route'
 import { isValidName } from '@/domain/route-rules'
 import { MINUTE, minutes } from '@/domain/time'
@@ -12,6 +13,8 @@ export interface PlaceForm {
   walk: number
   /** Extra minutes the user wants to keep. */
   reserve: number
+  /** Position of the place itself, which stays on the device. */
+  coordinates?: Coordinates
 }
 
 export interface RouteForm {
@@ -41,6 +44,7 @@ const placeFormOf = (place: Place): PlaceForm => ({
   stop: place.stop,
   walk: Math.round(place.walk / MINUTE),
   reserve: Math.round(place.reserve / MINUTE),
+  ...(place.coordinates && { coordinates: place.coordinates }),
 })
 
 export const formOf = (route: Route): RouteForm => ({
@@ -56,6 +60,7 @@ function placeOf(form: PlaceForm): Place {
     stop: form.stop,
     walk: minutes(form.walk),
     reserve: minutes(form.reserve),
+    ...(form.coordinates && { coordinates: form.coordinates }),
   }
 }
 

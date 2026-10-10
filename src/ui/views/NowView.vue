@@ -6,9 +6,11 @@ import IconRoute from '~icons/tabler/route'
 import BaseButton from '../components/BaseButton.vue'
 import EmptyState from '../components/EmptyState.vue'
 import { useDialog } from '../composables/use-dialog'
+import { useLocationPreference } from '../composables/use-location-preference'
 import { useNow } from '../composables/use-now'
 import NowBoard from '../now/NowBoard.vue'
 import RouteSwitcher from '../now/RouteSwitcher.vue'
+import { useDeviceLocation } from '../now/use-device-location'
 import { useRouteChoice } from '../now/use-route-choice'
 import { useRouteStore } from '../stores/routes'
 
@@ -17,9 +19,11 @@ const LinkImportDialog = defineAsyncComponent(() => import('../routes/LinkImport
 const { t } = useI18n()
 const store = useRouteStore()
 const now = useNow()
+const location = useDeviceLocation(useLocationPreference())
 const choice = useRouteChoice(
   computed(() => store.routes),
   now,
+  location,
 )
 const linkImport = useDialog()
 </script>

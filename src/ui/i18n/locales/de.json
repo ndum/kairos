@@ -148,7 +148,18 @@
       "walk": "Fussweg",
       "walkHint": "Minuten zwischen dem Ort und der Haltestelle.",
       "reserve": "Reserve",
-      "reserveHint": "Zusätzliche Minuten, damit du nicht rennen musst."
+      "reserveHint": "Zusätzliche Minuten, damit du nicht rennen musst.",
+      "position": {
+        "label": "Genauer Standort",
+        "hint": "Optional. Hilft bei der Richtung nach Standort, wenn der Ort weiter von der Haltestelle entfernt ist. Bleibt auf diesem Gerät.",
+        "set": "Aktuellen Standort verwenden",
+        "update": "Standort aktualisieren",
+        "remove": "Standort entfernen",
+        "found": "Standort gespeichert.",
+        "denied": "Kein Zugriff auf den Standort.",
+        "unavailable": "Der Standort ist gerade nicht verfügbar.",
+        "removed": "Standort entfernt."
+      }
     },
     "errors": {
       "nameMissing": "Gib einen Namen ein.",
@@ -238,6 +249,12 @@
     "language": {
       "label": "Sprache",
       "auto": "Automatisch"
+    },
+    "location": {
+      "label": "Richtung nach Standort",
+      "hint": "Kairos zeigt zuerst die Richtung, die an deinem Standort beginnt. Der Standort bleibt auf diesem Gerät.",
+      "denied": "Der Browser erlaubt Kairos keinen Zugriff auf den Standort. Du kannst ihn in den Einstellungen des Browsers freigeben.",
+      "unavailable": "Der Standort ist gerade nicht verfügbar. Versuche es später nochmals."
     }
   },
   "credit": "Fahrplandaten: opentransportdata.swiss"

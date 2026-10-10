@@ -106,6 +106,27 @@ test('switches to the other direction', async () => {
     .toMatchTextContent(/Richtung wechseln/)
 })
 
+test('starts with the direction from the place the device is at', async () => {
+  const atOffice = { latitude: 46.95, longitude: 7.45 }
+  const located = route('located', 'Commute', [
+    { ...home, stop: { ...home.stop, coordinates: { latitude: 46.8, longitude: 7.5 } } },
+    { ...office, stop: { ...office.stop, coordinates: atOffice } },
+  ])
+  localStorage.setItem('kairos:location', 'true')
+
+  const screen = await renderWithApp(NowView, {
+    routes: [located],
+    timetable: timetable(morning),
+    location: { kind: 'found', coordinates: atOffice },
+  })
+
+  // In the morning the board would start at home, but the device is at the office.
+  await expect
+    .element(screen.getByRole('region', { name: /Office nach Home/ }))
+    .toMatchTextContent(/Losgehen/)
+  await expect.element(screen.getByRole('button', { name: 'Richtung wechseln' })).toBeVisible()
+})
+
 test('offers to try again when the timetable cannot be reached', async () => {
   let attempts = 0
   const screen = await renderWithApp(NowView, {

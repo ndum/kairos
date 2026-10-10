@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import IconCurrentLocation from '~icons/tabler/current-location'
 
 import { NAME_MAX_LENGTH, RESERVE_MAX, WALK_MAX } from '@/domain/route-rules'
 import { MINUTE } from '@/domain/time'
 
+import BaseButton from '../components/BaseButton.vue'
 import MinuteField from '../components/MinuteField.vue'
 import StopField from '../components/StopField.vue'
 import TextField from '../components/TextField.vue'
+import { useLocationPreference } from '../composables/use-location-preference'
+import { useServices } from '../services'
 import type { PlaceErrors, PlaceForm } from './route-form'
 
 const place = defineModel<PlaceForm>({ required: true })
@@ -34,6 +38,26 @@ const nameError = computed(() => {
     return t('editor.errors.nameTooLong', { max: NAME_MAX_LENGTH })
   return undefined
 })
+
+// With the direction chosen by position, the position of the place itself is more exact than
+// the one of its stop. It is only offered when the user allows using the position.
+const useLocation = useLocationPreference()
+const { location } = useServices()
+const locating = ref(false)
+const locationMessage = ref('')
+
+async function locate(): Promise<void> {
+  locating.value = true
+  const result = await location.current()
+  locating.value = false
+  if (result.kind === 'found') place.value.coordinates = result.coordinates
+  locationMessage.value = t(`editor.place.position.${result.kind}`)
+}
+
+function forget(): void {
+  place.value.coordinates = undefined
+  locationMessage.value = t('editor.place.position.removed')
+}
 
 const stopError = computed(() => {
   if (props.errors.stop === 'missing') return t('editor.errors.stopMissing')
@@ -69,6 +93,25 @@ const stopError = computed(() => {
       :placeholder="t('editor.place.stopPlaceholder')"
       :error="stopError"
     />
+
+    <div v-if="useLocation" class="flex flex-col gap-2">
+      <p class="font-semibold">{{ t('editor.place.position.label') }}</p>
+      <p class="text-sm text-pretty text-ink-subtle">{{ t('editor.place.position.hint') }}</p>
+      <div class="flex flex-wrap gap-2">
+        <BaseButton :disabled="locating" @click="locate">
+          <IconCurrentLocation aria-hidden="true" />
+          {{
+            place.coordinates ? t('editor.place.position.update') : t('editor.place.position.set')
+          }}
+        </BaseButton>
+        <BaseButton v-if="place.coordinates" variant="quiet" @click="forget">
+          {{ t('editor.place.position.remove') }}
+        </BaseButton>
+      </div>
+      <p role="status" class="text-sm text-ink-muted" :class="{ 'sr-only': !locationMessage }">
+        {{ locationMessage }}
+      </p>
+    </div>
 
     <div class="grid gap-6 sm:grid-cols-2">
       <MinuteField

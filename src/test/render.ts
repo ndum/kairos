@@ -3,6 +3,7 @@ import type { Component } from 'vue'
 import { createMemoryHistory } from 'vue-router'
 import { render } from 'vitest-browser-vue'
 
+import type { LocationPort, LocationResult } from '@/application/ports/location'
 import type { TimetablePort } from '@/application/ports/timetable'
 import { RouteLibrary } from '@/application/route-library'
 import { StopSearch } from '@/application/stop-search'
@@ -26,6 +27,8 @@ export interface RenderOptions {
   readonly timetable?: Partial<TimetablePort>
   /** Time of the app clock, 07:00 on Monday, 12 October 2026 by default. */
   readonly now?: number
+  /** Position of the device, unknown by default. */
+  readonly location?: LocationResult
 }
 
 const emptyTimetable: TimetablePort = {
@@ -47,6 +50,9 @@ export function testServices(options: RenderOptions = {}) {
     routes: new RouteLibrary({ repository, createId: () => `route-${nextId++}` }),
     stops: new StopSearch(timetable),
     codec: new CompressedRouteCodec(),
+    location: {
+      current: () => Promise.resolve(options.location ?? { kind: 'unavailable' }),
+    } satisfies LocationPort,
     createTripMonitor: () => new TripMonitor({ timetable, cache, clock, scheduler }),
   }
   return { services, repository, clock, scheduler }
