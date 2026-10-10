@@ -1,1 +1,0 @@
-import{Tt as e,Z as t,et as n,ft as r}from"./vendor-WcXpQcvL.js";var i={viewBox:`0 0 24 24`,width:`1.2em`,height:`1.2em`};function a(e,a){return r(),n(`svg`,i,[...a[0]||=[t(`path`,{fill:`none`,stroke:`currentColor`,"stroke-linecap":`round`,"stroke-linejoin":`round`,"stroke-width":`2`,d:`m5 12l5 5L20 7`},null,-1)]])}var o=e({name:`tabler-check`,render:a});export{o as t};
