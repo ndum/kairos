@@ -1,0 +1,1 @@
+import{a as e,c as t,n,r,s as i,t as a,u as o}from"./index-DKbfU0rF.js";var s=i({__name:`PlanView`,setup(i){let{t:s}=r();return(r,i)=>(t(),e(a,{icon:o(n),title:o(s)(`plan.empty.title`),text:o(s)(`plan.empty.text`),action:{label:o(s)(`plan.empty.action`),to:{name:`routes`}}},null,8,[`icon`,`title`,`text`,`action`]))}});export{s as default};
