@@ -1,10 +1,21 @@
-import { createI18n } from 'vue-i18n'
+import { type Composer, createI18n } from 'vue-i18n'
 
 import { DEFAULT_LOCALE, LOCALE_STORAGE_KEY, type Locale, resolveLocale } from './locale'
 import de from './locales/de.json'
-import en from './locales/en.json'
 
 export type MessageSchema = typeof de
+
+/**
+ * German is the default and the fallback, so it comes with the app. Every other language loads
+ * when it is used, which keeps the JavaScript of the start small.
+ */
+type LoadedLater = Exclude<Locale, 'de'>
+
+const loaders: Record<LoadedLater, () => Promise<MessageSchema>> = {
+  en: () => import('./locales/en.json').then((module) => module.default),
+}
+
+const loadsLater = (locale: Locale): locale is LoadedLater => locale in loaders
 
 /** Reading localStorage throws when the user blocks site data. */
 function storedPreference(): string | null {
@@ -22,6 +33,15 @@ export function createAppI18n(
     legacy: false,
     locale,
     fallbackLocale: DEFAULT_LOCALE,
-    messages: { de, en },
+    messages: { de } as Record<Locale, MessageSchema>,
   })
+}
+
+/** Loads the messages of a language unless they are there already. */
+export async function loadLocale(
+  composer: Pick<Composer, 'availableLocales' | 'setLocaleMessage'>,
+  locale: Locale,
+): Promise<void> {
+  if (!loadsLater(locale) || composer.availableLocales.includes(locale)) return
+  composer.setLocaleMessage(locale, await loaders[locale]())
 }
