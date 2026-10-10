@@ -108,6 +108,16 @@
     "opposite": {
       "next": "Next: leave at {leave}, arrives {arrival}"
     },
+    "schedule": {
+      "inTime": "In time for {time}",
+      "late": "Too late for {time}",
+      "returnFrom": "Way back from {time}"
+    },
+    "tab": {
+      "minutes": "Leave in {minutes} min",
+      "now": "Leave now",
+      "at": "Leave at {time}"
+    },
     "weather": {
       "label": "Weather when leaving: {sky}, {temperature} degrees",
       "sky": {
@@ -129,16 +139,6 @@
           "from-stop": "Snow on the walk from {stop} around {time}."
         }
       }
-    },
-    "schedule": {
-      "inTime": "In time for {time}",
-      "late": "Too late for {time}",
-      "returnFrom": "Way back from {time}"
-    },
-    "tab": {
-      "minutes": "Leave in {minutes} min",
-      "now": "Leave now",
-      "at": "Leave at {time}"
     }
   },
   "plan": {

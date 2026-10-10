@@ -108,6 +108,16 @@
     "opposite": {
       "next": "Nächste: losgehen {leave}, an {arrival}"
     },
+    "schedule": {
+      "inTime": "Rechtzeitig für {time}",
+      "late": "Zu spät für {time}",
+      "returnFrom": "Rückweg ab {time}"
+    },
+    "tab": {
+      "minutes": "Losgehen in {minutes} Min.",
+      "now": "Jetzt losgehen",
+      "at": "Losgehen um {time}"
+    },
     "weather": {
       "label": "Wetter beim Losgehen: {sky}, {temperature} Grad",
       "sky": {
@@ -129,16 +139,6 @@
           "from-stop": "Gegen {time} schneit es auf dem Fussweg ab {stop}."
         }
       }
-    },
-    "schedule": {
-      "inTime": "Rechtzeitig für {time}",
-      "late": "Zu spät für {time}",
-      "returnFrom": "Rückweg ab {time}"
-    },
-    "tab": {
-      "minutes": "Losgehen in {minutes} Min.",
-      "now": "Jetzt losgehen",
-      "at": "Losgehen um {time}"
     }
   },
   "plan": {
