@@ -3,6 +3,7 @@ import type { Component } from 'vue'
 import { createMemoryHistory } from 'vue-router'
 import { render } from 'vitest-browser-vue'
 
+import type { PinnedTrip } from '@/application/pinned-trip'
 import type { LocationPort, LocationResult } from '@/application/ports/location'
 import type { TimetablePort } from '@/application/ports/timetable'
 import { RouteLibrary } from '@/application/route-library'
@@ -16,7 +17,13 @@ import { createAppRouter } from '@/ui/router'
 import { type AppServices, servicesKey } from '@/ui/services'
 
 import { at } from './builders'
-import { FakeClock, FakeScheduler, MemoryJourneyCache, MemoryRouteRepository } from './fakes'
+import {
+  FakeClock,
+  FakeScheduler,
+  MemoryJourneyCache,
+  MemoryPinStore,
+  MemoryRouteRepository,
+} from './fakes'
 
 export interface RenderOptions {
   readonly path?: string
@@ -29,6 +36,8 @@ export interface RenderOptions {
   readonly now?: number
   /** Position of the device, unknown by default. */
   readonly location?: LocationResult
+  /** A trip pinned before the app starts. */
+  readonly pinned?: PinnedTrip
 }
 
 const emptyTimetable: TimetablePort = {
@@ -53,6 +62,7 @@ export function testServices(options: RenderOptions = {}) {
     location: {
       current: () => Promise.resolve(options.location ?? { kind: 'unavailable' }),
     } satisfies LocationPort,
+    pins: new MemoryPinStore(options.pinned ?? null),
     createTripMonitor: () => new TripMonitor({ timetable, cache, clock, scheduler }),
   }
   return { services, repository, clock, scheduler }

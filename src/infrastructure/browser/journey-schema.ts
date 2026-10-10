@@ -34,8 +34,10 @@ const LegSchema = v.variant('kind', [
 
 export const CACHE_VERSION = 1
 
+export const JourneySchema = v.object({ legs: v.array(LegSchema) })
+
 export const StoredJourneysSchema = v.object({
   version: v.literal(CACHE_VERSION),
-  journeys: v.array(v.object({ legs: v.array(LegSchema) })),
+  journeys: v.array(JourneySchema),
   fetchedAt: v.number(),
 })

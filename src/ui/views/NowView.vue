@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import IconRoute from '~icons/tabler/route'
 
@@ -8,13 +8,18 @@ import EmptyState from '../components/EmptyState.vue'
 import { useDialog } from '../composables/use-dialog'
 import { useLocationPreference } from '../composables/use-location-preference'
 import { useNow } from '../composables/use-now'
+import { HOUR } from '@/domain/time'
+
 import NowBoard from '../now/NowBoard.vue'
 import RouteSwitcher from '../now/RouteSwitcher.vue'
 import { useDeviceLocation } from '../now/use-device-location'
 import { useRouteChoice } from '../now/use-route-choice'
+import { usePinStore } from '../stores/pin'
 import { useRouteStore } from '../stores/routes'
 
 const LinkImportDialog = defineAsyncComponent(() => import('../routes/LinkImportDialog.vue'))
+// Only needed while a trip is pinned.
+const PinnedCard = defineAsyncComponent(() => import('../now/PinnedCard.vue'))
 
 const { t } = useI18n()
 const store = useRouteStore()
@@ -26,6 +31,18 @@ const choice = useRouteChoice(
   location,
 )
 const linkImport = useDialog()
+
+const pins = usePinStore()
+const pinnedRoute = computed(
+  () => store.routes.find(({ id }) => id === pins.pinned?.routeId) ?? null,
+)
+
+// A pinned trip is forgotten once it lies well behind, or when its route is gone.
+watchEffect(() => {
+  const pinned = pins.pinned
+  if (!pinned) return
+  if (!pinnedRoute.value || now.value > pinned.departureAt + 2 * HOUR) pins.unpin()
+})
 </script>
 
 <template>
@@ -36,6 +53,15 @@ const linkImport = useDialog()
       :now
       @swap="choice.swap"
     >
+      <template #before>
+        <PinnedCard
+          v-if="pins.pinned && pinnedRoute"
+          :pinned="pins.pinned"
+          :route="pinnedRoute"
+          :now
+          @unpin="pins.unpin"
+        />
+      </template>
       <template #title>
         <h1 class="sr-only">{{ t('now.title') }}</h1>
         <RouteSwitcher

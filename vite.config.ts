@@ -32,7 +32,9 @@ export default defineConfig(({ mode }) => ({
     rolldownOptions: {
       output: {
         // Libraries change less often than the app, so their own chunk stays cached across
-        // releases. Only those needed at the start go there, the QR code generator stays apart.
+        // releases. Only code needed at the start is grouped: libraries such as the QR code
+        // generator and the app's own lazy parts stay apart, and the start needs no tiny
+        // chunks of code shared with them.
         codeSplitting: {
           groups: [
             {
@@ -40,6 +42,7 @@ export default defineConfig(({ mode }) => ({
               test: /\/node_modules\/|plugin-vue:export-helper/,
               tags: ['$initial'],
             },
+            { name: 'app', test: /\/src\//, tags: ['$initial'] },
           ],
         },
       },

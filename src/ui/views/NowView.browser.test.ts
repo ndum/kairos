@@ -1,7 +1,9 @@
 import { afterEach, expect, test } from 'vitest'
 
+import { pinTrip } from '@/application/pinned-trip'
 import type { TimetablePort } from '@/application/ports/timetable'
 import type { Journey } from '@/domain/journey'
+import { planTrip } from '@/domain/trip'
 import {
   at,
   busLine,
@@ -145,4 +147,22 @@ test('offers to try again when the timetable cannot be reached', async () => {
   await expect
     .element(screen.getByRole('region', { name: /Home nach Office/ }))
     .toMatchTextContent(/9\s*Min\./)
+})
+
+test('counts down to a pinned trip and forgets it on request', async () => {
+  const later = planTrip(morningCommute('07:50'), home, office)
+  if (!later) throw new Error('Expected a trip')
+  const screen = await renderWithApp(NowView, {
+    routes: [commute],
+    timetable: timetable(morning),
+    pinned: pinTrip(commute, 'outbound', later),
+  })
+  const pinned = screen.getByRole('region', { name: 'Gemerkte Fahrt' })
+
+  // The S1 at 07:50 leaves eleven minutes earlier, at 07:39.
+  await expect.element(pinned).toMatchTextContent(/Losgehen in\s*39\s*Min\./)
+
+  await pinned.getByRole('button', { name: 'Nicht mehr merken' }).click()
+  await expect.element(pinned).not.toBeInTheDocument()
+  expect(screen.services.pins.load()).toBeNull()
 })

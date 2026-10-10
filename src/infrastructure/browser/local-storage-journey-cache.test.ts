@@ -55,6 +55,7 @@ describe('LocalStorageJourneyCache', () => {
         setItem: () => {
           throw new DOMException('Full', 'QuotaExceededError')
         },
+        removeItem: () => undefined,
       },
       events,
     })

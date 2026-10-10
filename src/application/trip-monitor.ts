@@ -29,6 +29,8 @@ export interface MonitorTarget {
   readonly to: StopRef
   /** Leave time of the next relevant trip, which decides how often to refresh. */
   readonly nextLeaveAt: (journeys: readonly Journey[], now: Instant) => Instant | null
+  /** Asks for journeys from this time instead of now, for example for a trip planned later. */
+  readonly at?: Instant
 }
 
 export interface TripMonitorDependencies {
@@ -49,7 +51,8 @@ const INITIAL: MonitorSnapshot = {
   nextRefreshAt: null,
 }
 
-export const cacheKey = (from: StopRef, to: StopRef): string => `${from.id}>${to.id}`
+export const cacheKey = (from: StopRef, to: StopRef, at?: Instant): string =>
+  at === undefined ? `${from.id}>${to.id}` : `${from.id}>${to.id}@${at}`
 
 /**
  * Keeps the journeys of one connection up to date. Refreshes adapt to how soon the user has
@@ -93,7 +96,7 @@ export class TripMonitor {
   watch(target: MonitorTarget): void {
     this.#cancel()
     this.#target = target
-    this.#key = cacheKey(target.from, target.to)
+    this.#key = cacheKey(target.from, target.to, target.at)
     this.#failures = 0
 
     const cached = this.#deps.cache.read(this.#key)
@@ -124,7 +127,12 @@ export class TripMonitor {
     this.#request = request
     try {
       const journeys = await timetable.findJourneys(
-        { from: target.from, to: target.to, at: now, limit: JOURNEY_LIMIT },
+        {
+          from: target.from,
+          to: target.to,
+          at: Math.max(now, target.at ?? now),
+          limit: JOURNEY_LIMIT,
+        },
         request.signal,
       )
       if (request.signal.aborted) return

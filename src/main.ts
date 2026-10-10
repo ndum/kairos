@@ -6,6 +6,7 @@ import { StopSearch } from './application/stop-search'
 import { TripMonitor } from './application/trip-monitor'
 import { BrowserLocation } from './infrastructure/browser/browser-location'
 import { LocalStorageJourneyCache } from './infrastructure/browser/local-storage-journey-cache'
+import { LocalStoragePinStore } from './infrastructure/browser/local-storage-pin-store'
 import { LocalStorageRouteRepository } from './infrastructure/browser/local-storage-route-repository'
 import { randomId } from './infrastructure/browser/random-id'
 import { systemClock } from './infrastructure/browser/system-clock'
@@ -28,6 +29,7 @@ const services: AppServices = {
   stops: new StopSearch(timetable),
   codec: new CompressedRouteCodec(),
   location: new BrowserLocation(),
+  pins: new LocalStoragePinStore(),
   createTripMonitor: () =>
     new TripMonitor({ timetable, cache, clock: systemClock, scheduler: timerScheduler }),
 }

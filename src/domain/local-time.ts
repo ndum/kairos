@@ -1,4 +1,4 @@
-import type { Instant } from './time'
+import { HOUR, type Instant, MINUTE } from './time'
 
 /** Kairos works with Swiss timetables, so local time is always Swiss time. */
 export const TIME_ZONE = 'Europe/Zurich'
@@ -33,4 +33,26 @@ export function toLocal(instant: Instant): LocalDateTime {
     time: `${hour}:${minute}`,
     minuteOfDay: Number(hour) * 60 + Number(minute),
   }
+}
+
+/** Offset of Swiss time from UTC at an instant, in milliseconds. */
+function offsetAt(instant: Instant): number {
+  const { date, time } = toLocal(instant)
+  const [year = 0, month = 1, day = 1] = date.split('-').map(Number)
+  const [hour = 0, minute = 0] = time.split(':').map(Number)
+  const flooredToMinute = Math.floor(instant / MINUTE) * MINUTE
+  return Date.UTC(year, month - 1, day, hour, minute) - flooredToMinute
+}
+
+/**
+ * The instant of a Swiss date and time, as entered in a form. Swiss time is at most two hours
+ * ahead of UTC, so the offset two hours before the wall time applies. When the clocks go back,
+ * this takes the first of the repeated hours; a time skipped when they go forward moves on by
+ * the missing hour.
+ */
+export function fromLocal(date: string, time: string): Instant {
+  const [year = 0, month = 1, day = 1] = date.split('-').map(Number)
+  const [hour = 0, minute = 0] = time.split(':').map(Number)
+  const wallClock = Date.UTC(year, month - 1, day, hour, minute)
+  return wallClock - offsetAt(wallClock - 2 * HOUR)
 }

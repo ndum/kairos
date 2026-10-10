@@ -48,6 +48,8 @@ onUnmounted(scene.clear)
     <LiveStatus class="ml-auto" :snapshot="primary.snapshot.value" @refresh="primary.refresh" />
   </div>
 
+  <slot name="before" />
+
   <div class="bento">
     <HeroCard
       class="hero"

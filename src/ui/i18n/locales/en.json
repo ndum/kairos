@@ -80,6 +80,10 @@
       "error": "Offline",
       "updated": "As of {time}",
       "refresh": "Refresh now"
+    },
+    "pinned": {
+      "label": "Pinned trip",
+      "missed": "This trip can no longer be reached."
     }
   },
   "plan": {
@@ -87,6 +91,32 @@
       "title": "Add a route first",
       "text": "Once you have set up a route, you can plan trips by arrival or departure time here.",
       "action": "Go to routes"
+    },
+    "title": "Plan",
+    "direction": "Direction",
+    "mode": {
+      "label": "Time",
+      "depart": "Leave after",
+      "arrive": "Arrive by"
+    },
+    "date": "Date",
+    "time": "Time",
+    "now": "Now",
+    "results": "Connections",
+    "loading": "Looking up connections …",
+    "failed": "The connections could not be loaded.",
+    "retry": "Try again",
+    "none": "No connection fits. Try another time.",
+    "alternatives": "On other lines",
+    "with": "with {lines}",
+    "recommended": "Recommended",
+    "pinned": "Pinned",
+    "details": "Details",
+    "pin": "Pin",
+    "unpin": "Unpin",
+    "pinnedToast": "Trip pinned. Its countdown appears under “Now”.",
+    "sheet": {
+      "title": "Leave at {time}"
     }
   },
   "routes": {
