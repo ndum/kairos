@@ -200,7 +200,7 @@
       },
       "where": {
         "label": "Address or company",
-        "hint": "Kairos suggests the stops nearby. Where the place lies stays on this device.",
+        "hint": "Kairos suggests the stops nearby. The position stays on this device, only this search sends it to the timetable, rounded to about 100 m.",
         "placeholder": "Messeplatz 1, Basel"
       },
       "position": {

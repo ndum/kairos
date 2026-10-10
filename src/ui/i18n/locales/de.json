@@ -200,7 +200,7 @@
       },
       "where": {
         "label": "Adresse oder Firma",
-        "hint": "Kairos schlägt dir die Haltestellen in der Nähe vor. Die Lage des Ortes bleibt auf diesem Gerät.",
+        "hint": "Kairos schlägt dir die Haltestellen in der Nähe vor. Die Lage bleibt auf diesem Gerät, nur für diese Suche geht sie auf etwa 100 m gerundet an den Fahrplan.",
         "placeholder": "Messeplatz 1, Basel"
       },
       "position": {
