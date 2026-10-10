@@ -10,6 +10,12 @@ export default defineConfig((env) =>
         provider: 'v8',
         include: ['src/domain/**', 'src/application/**', 'src/infrastructure/**'],
         exclude: ['**/*.test.ts'],
+        thresholds: {
+          statements: 90,
+          branches: 90,
+          functions: 90,
+          lines: 90,
+        },
       },
       projects: [
         {
@@ -19,7 +25,6 @@ export default defineConfig((env) =>
             environment: 'node',
             include: ['src/**/*.test.ts'],
             exclude: ['src/**/*.browser.test.ts'],
-            passWithNoTests: true,
           },
         },
         {
