@@ -30,7 +30,7 @@ updates:
       git-hooks:
         patterns: ['lefthook', '@commitlint/*']
     ignore:
-      # The Vue language tools do not support TypeScript 7 yet (docs/adr/0005-frontend-stack.md).
+      # The Vue language tools do not support TypeScript 7 yet.
       - dependency-name: typescript
         update-types: ['version-update:semver-major']
 

@@ -30,29 +30,31 @@ Commits follow [Conventional Commits](https://www.conventionalcommits.org), enfo
 
 ```text
 feat(routes): share a route as a QR code
-fix(countdown): keep the reserve when a train is delayed
-docs(adr): record the choice of the timetable source
+fix(countdown): keep the buffer when a train is delayed
+docs(readme): describe the place search
 ```
 
 The release notes are generated from these messages.
 
 ## Architecture
 
-The code follows a hexagonal architecture with four layers, described in [ADR 3](docs/adr/0003-hexagonal-architecture.md):
+The code follows a hexagonal architecture with four layers:
 
 - `src/domain` contains plain TypeScript without framework imports.
 - `src/application` holds use cases and the ports to the outside world.
 - `src/infrastructure` implements the ports.
 - `src/ui` contains the Vue components and views.
 
-ESLint fails when an import crosses a layer in the wrong direction. Decisions that change this structure need a new [architecture decision record](docs/adr/README.md).
+ESLint fails when an import crosses a layer in the wrong direction. Please open an issue before changing this structure.
+
+Preferences that only affect the interface, such as the theme, the language or reduced motion, may stay in the UI layer and use the browser storage directly. Everything with a meaning for the domain, such as routes, pinned trips or the last known connections, goes through a port.
 
 ## Tests
 
 - Domain and application code is written test-first. Unit tests live next to the code as `*.test.ts`.
 - Component tests run in real browsers (Chromium and WebKit) and are named `*.browser.test.ts`.
 - End-to-end tests in `e2e/` cover the main user journeys on an iPhone profile and desktop Chrome.
-- Tests that touch the timetable API use recorded responses. Only the scheduled contract test calls the real API.
+- Tests that touch the timetable or the address search use recorded responses. Only the scheduled contract tests call the real services.
 
 Run everything locally before opening a pull request:
 

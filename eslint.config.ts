@@ -9,7 +9,7 @@ const layerRule = (forbidden: string[], reason: string): Linter.RulesRecord => (
     'error',
     {
       patterns: [
-        { group: forbidden, message: `${reason} See docs/adr/0003-hexagonal-architecture.md.` },
+        { group: forbidden, message: `${reason} See the architecture in CONTRIBUTING.md.` },
       ],
     },
   ],
