@@ -6,7 +6,7 @@ import SettingsDialog from './SettingsDialog.vue'
 
 afterEach(() => {
   localStorage.clear()
-  document.documentElement.classList.remove('dark')
+  document.documentElement.classList.remove('dark', 'reduce-motion')
 })
 
 test('switches the language right away', async () => {
@@ -43,6 +43,15 @@ test('explains when the browser refuses the location', async () => {
   await expect.element(screen.getByText(/keinen Zugriff auf den Standort/)).toBeVisible()
   await expect.element(toggle).not.toBeChecked()
   expect(localStorage.getItem('kairos:location')).toBe('false')
+})
+
+test('reduces motion in the whole app', async () => {
+  const screen = await renderWithApp(SettingsDialog, { props: { open: true } })
+
+  await screen.getByRole('switch', { name: 'Bewegung reduzieren' }).click()
+
+  await expect.poll(() => document.documentElement.classList.contains('reduce-motion')).toBe(true)
+  expect(localStorage.getItem('kairos:still')).toBe('true')
 })
 
 test('switches to the dark appearance', async () => {

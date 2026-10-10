@@ -1,7 +1,8 @@
 {
   "app": {
     "name": "Kairos",
-    "tagline": "When to leave, to the minute."
+    "tagline": "When to leave, to the minute.",
+    "skip": "Skip to content"
   },
   "nav": {
     "label": "Main navigation",
@@ -195,7 +196,7 @@
       "nameMissing": "Enter a name.",
       "nameTooLong": "{max} characters at most.",
       "stopMissing": "Choose a stop from the list.",
-      "stopSame": "Choose a different stop than at the start."
+      "stopSame": "Choose a stop other than the one at the start."
     },
     "lines": {
       "label": "Lines",
@@ -280,10 +281,14 @@
       "label": "Language",
       "auto": "Automatic"
     },
+    "motion": {
+      "label": "Reduce motion",
+      "hint": "The landscape stands still, without transitions and animations."
+    },
     "location": {
       "label": "Direction by location",
       "hint": "Kairos first shows the direction that starts where you are. Your location stays on this device.",
-      "denied": "The browser does not allow Kairos to access your location. You can allow it in the settings of the browser.",
+      "denied": "The browser does not allow Kairos to access your location. You can allow it in the browser settings.",
       "unavailable": "Your location is not available right now. Try again later."
     },
     "awake": {

@@ -106,17 +106,19 @@ function submit(): void {
 </script>
 
 <template>
-  <EmptyState
-    v-if="id !== undefined && !existing"
-    :icon="IconRouteOff"
-    :title="t('editor.notFound.title')"
-    :text="t('editor.notFound.text')"
-    :action="{ label: t('editor.notFound.action'), to: { name: 'routes' } }"
-  />
+  <template v-if="id !== undefined && !existing">
+    <h1 tabindex="-1" class="sr-only">{{ t('editor.editTitle') }}</h1>
+    <EmptyState
+      :icon="IconRouteOff"
+      :title="t('editor.notFound.title')"
+      :text="t('editor.notFound.text')"
+      :action="{ label: t('editor.notFound.action'), to: { name: 'routes' } }"
+    />
+  </template>
 
   <div v-else class="mx-auto flex w-full max-w-2xl flex-col gap-5">
     <div class="flex flex-wrap items-center justify-between gap-4">
-      <h1 class="text-3xl font-bold tracking-tight">
+      <h1 tabindex="-1" class="text-3xl font-bold tracking-tight outline-none">
         {{ existing ? t('editor.editTitle') : t('editor.newTitle') }}
       </h1>
       <BaseButton variant="quiet" :to="{ name: 'routes' }">{{ t('editor.cancel') }}</BaseButton>

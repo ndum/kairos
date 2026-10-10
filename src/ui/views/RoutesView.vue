@@ -38,7 +38,9 @@ function remove(id: string): void {
 <template>
   <div class="flex flex-col gap-5">
     <div class="flex flex-wrap items-center justify-between gap-4">
-      <h1 class="text-3xl font-bold tracking-tight">{{ t('routes.title') }}</h1>
+      <h1 tabindex="-1" class="text-3xl font-bold tracking-tight outline-none">
+        {{ t('routes.title') }}
+      </h1>
       <div v-if="store.routes.length > 0" class="flex flex-wrap gap-2">
         <BaseButton variant="quiet" @click="linkImport.show">
           <IconClipboard aria-hidden="true" />

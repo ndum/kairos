@@ -14,7 +14,7 @@ import { useServices } from '../services'
 const open = defineModel<boolean>('open', { required: true })
 
 const { t } = useI18n()
-const { theme } = useAppearance()
+const { theme, reduceMotion } = useAppearance()
 const language = useLanguage()
 const { location } = useServices()
 const useLocation = useLocationPreference()
@@ -72,6 +72,11 @@ const languages = computed(
       :error="locationError"
       :disabled="locating"
       @update:model-value="setLocation"
+    />
+    <SettingSwitch
+      v-model="reduceMotion"
+      :label="t('settings.motion.label')"
+      :hint="t('settings.motion.hint')"
     />
     <SettingSwitch
       v-model="keepAwake"
