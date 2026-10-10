@@ -1,13 +1,18 @@
 <script setup lang="ts">
-import { computed, nextTick, reactive, ref, useTemplateRef, watch } from 'vue'
+import { useStorage } from '@vueuse/core'
+import { computed, nextTick, reactive, ref, shallowRef, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import IconCheck from '~icons/tabler/check'
+import IconCircleCheck from '~icons/tabler/circle-check'
 import IconRouteOff from '~icons/tabler/route-off'
+
+import type { Route } from '@/domain/route'
 
 import BaseButton from '../components/BaseButton.vue'
 import EmptyState from '../components/EmptyState.vue'
 import GlassCard from '../components/GlassCard.vue'
+import { SELECTED_ROUTE_KEY } from '../now/use-route-choice'
 import LineStep from '../routes/LineStep.vue'
 import PlaceStep from '../routes/PlaceStep.vue'
 import {
@@ -42,6 +47,11 @@ const attempted = ref(false)
 const renamed = ref(existing !== undefined)
 const editor = useTemplateRef<HTMLElement>('editor')
 const heading = useTemplateRef<HTMLHeadingElement>('heading')
+
+/** The route just created, which the editor offers to show or to follow with another one. */
+const created = shallowRef<Route | null>(null)
+const createdHeading = useTemplateRef<HTMLHeadingElement>('createdHeading')
+const selectedRoute = useStorage<string>(SELECTED_ROUTE_KEY, '')
 
 // Names a new route after its places until the user picks a name.
 watch(
@@ -91,12 +101,36 @@ async function showErrors(): Promise<void> {
   editor.value?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus()
 }
 
-function save(): void {
+/** An edited route goes back to the list. A new one asks what comes next. */
+async function save(): Promise<void> {
   const draft = draftOf(form)
-  if (existing) store.update({ ...draft, id: existing.id })
-  else store.add(draft)
-  toasts.show(t('routes.saved', { name: draft.name.trim() }))
-  void router.push({ name: 'routes' })
+  if (existing) {
+    store.update({ ...draft, id: existing.id })
+    toasts.show(t('routes.saved', { name: draft.name.trim() }))
+    void router.push({ name: 'routes' })
+    return
+  }
+  created.value = store.add(draft)
+  await nextTick()
+  createdHeading.value?.focus()
+}
+
+/** Shows the new route on the board. */
+function showCreated(): void {
+  if (created.value) selectedRoute.value = created.value.id
+  void router.push({ name: 'now' })
+}
+
+/** Starts over with an empty form for the next route. */
+async function addAnother(): Promise<void> {
+  Object.assign(form, emptyForm())
+  renamed.value = false
+  attempted.value = false
+  direction.value = 'forward'
+  step.value = 0
+  created.value = null
+  await nextTick()
+  heading.value?.focus()
 }
 
 /** A new route moves on step by step and is saved after the last one. */
@@ -106,12 +140,12 @@ function submitStep(): void {
     return
   }
   if (step.value < STEPS.length - 1) void goTo(step.value + 1)
-  else save()
+  else void save()
 }
 
 /** An existing route is edited on one page and saved at once. */
 function submitPage(): void {
-  if (STEPS.every((_, index) => isComplete(index))) save()
+  if (STEPS.every((_, index) => isComplete(index))) void save()
   else void showErrors()
 }
 </script>
@@ -132,7 +166,9 @@ function submitPage(): void {
       <h1 tabindex="-1" class="text-3xl font-bold tracking-tight sky-text outline-none">
         {{ existing ? t('editor.editTitle') : t('editor.newTitle') }}
       </h1>
-      <BaseButton variant="sky" :to="{ name: 'routes' }">{{ t('editor.cancel') }}</BaseButton>
+      <BaseButton v-if="!created" variant="sky" :to="{ name: 'routes' }">
+        {{ t('editor.cancel') }}
+      </BaseButton>
     </div>
 
     <form v-if="existing" novalidate class="flex flex-col gap-5" @submit.prevent="submitPage">
@@ -174,6 +210,29 @@ function submitPage(): void {
         <BaseButton variant="primary" type="submit">{{ t('editor.save') }}</BaseButton>
       </div>
     </form>
+
+    <GlassCard v-else-if="created" class="flex flex-col items-start gap-5">
+      <IconCircleCheck aria-hidden="true" class="text-5xl text-go" />
+      <div class="flex flex-col gap-1.5">
+        <h2
+          ref="createdHeading"
+          tabindex="-1"
+          class="text-2xl font-semibold tracking-tight outline-none"
+        >
+          {{ t('editor.created.title', { name: created.name }) }}
+        </h2>
+        <p class="text-pretty text-ink-muted">{{ t('editor.created.text') }}</p>
+      </div>
+      <div class="flex w-full flex-col gap-2.5 sm:flex-row sm:flex-wrap">
+        <BaseButton variant="primary" @click="showCreated">
+          {{ t('editor.created.now') }}
+        </BaseButton>
+        <BaseButton @click="addAnother">{{ t('editor.created.another') }}</BaseButton>
+        <BaseButton variant="quiet" :to="{ name: 'routes' }">
+          {{ t('editor.created.routes') }}
+        </BaseButton>
+      </div>
+    </GlassCard>
 
     <template v-else>
       <nav :aria-label="t('editor.steps')">

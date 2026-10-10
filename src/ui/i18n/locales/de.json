@@ -272,6 +272,13 @@
     "buffer": {
       "label": "Puffer beim Losgehen",
       "hint": "So viel Zeit plant Kairos zusätzlich ein, in beide Richtungen. Eine frühere Verbindung, die nur ohne Puffer klappt, zeigt es als Hinweis."
+    },
+    "created": {
+      "title": "«{name}» ist bereit",
+      "text": "Unter «Jetzt» siehst du ab sofort, wann du losgehen musst. Hast du noch einen anderen Weg, etwa zum Sport, legst du dafür einfach eine weitere Route an.",
+      "now": "Zu «Jetzt»",
+      "another": "Weitere Route anlegen",
+      "routes": "Zu den Routen"
     }
   },
   "placeField": {
