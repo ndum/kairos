@@ -13,7 +13,7 @@ let timer: ReturnType<typeof setTimeout> | undefined
 function schedule(): void {
   clearTimeout(timer)
   const toast = toasts.current
-  if (!toast || paused.value) return
+  if (!toast || toast.persistent || paused.value) return
   timer = setTimeout(() => {
     toasts.dismiss(toast.id)
   }, VISIBLE_FOR)

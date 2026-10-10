@@ -3,6 +3,7 @@ import { watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import ToastHost from './components/ToastHost.vue'
+import { useAppUpdate } from './composables/use-app-update'
 import { useAppearance } from './composables/use-appearance'
 import AppTabBar from './layout/AppTabBar.vue'
 import AppTopBar from './layout/AppTopBar.vue'
@@ -12,6 +13,7 @@ import { useSceneStore } from './stores/scene'
 const { t, locale } = useI18n()
 const { still } = useAppearance()
 const scene = useSceneStore()
+useAppUpdate()
 
 // Screen readers and hyphenation follow the language of the page.
 watchEffect(() => {

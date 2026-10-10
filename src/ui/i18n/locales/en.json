@@ -285,7 +285,16 @@
       "hint": "Kairos first shows the direction that starts where you are. Your location stays on this device.",
       "denied": "The browser does not allow Kairos to access your location. You can allow it in the settings of the browser.",
       "unavailable": "Your location is not available right now. Try again later."
+    },
+    "awake": {
+      "label": "Keep the screen on",
+      "hint": "While the “Now” view is open, the screen does not turn off.",
+      "unsupported": "This browser cannot keep the screen on."
     }
+  },
+  "update": {
+    "available": "A new version of Kairos is ready.",
+    "reload": "Update"
   },
   "credit": "Timetable data: opentransportdata.swiss"
 }

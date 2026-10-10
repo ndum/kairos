@@ -6,6 +6,7 @@ import IconRoute from '~icons/tabler/route'
 import BaseButton from '../components/BaseButton.vue'
 import EmptyState from '../components/EmptyState.vue'
 import { useDialog } from '../composables/use-dialog'
+import { useAwakePreference, useKeepAwake } from '../composables/use-keep-awake'
 import { useLocationPreference } from '../composables/use-location-preference'
 import { useNow } from '../composables/use-now'
 import { HOUR } from '@/domain/time'
@@ -31,6 +32,7 @@ const choice = useRouteChoice(
   location,
 )
 const linkImport = useDialog()
+useKeepAwake(useAwakePreference())
 
 const pins = usePinStore()
 const pinnedRoute = computed(

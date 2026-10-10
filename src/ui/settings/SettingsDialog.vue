@@ -6,6 +6,7 @@ import AppDialog from '../components/AppDialog.vue'
 import SegmentedControl from '../components/SegmentedControl.vue'
 import SettingSwitch from '../components/SettingSwitch.vue'
 import { useAppearance } from '../composables/use-appearance'
+import { useAwakePreference } from '../composables/use-keep-awake'
 import { useLanguage } from '../composables/use-language'
 import { useLocationPreference } from '../composables/use-location-preference'
 import { useServices } from '../services'
@@ -17,6 +18,8 @@ const { theme } = useAppearance()
 const language = useLanguage()
 const { location } = useServices()
 const useLocation = useLocationPreference()
+const keepAwake = useAwakePreference()
+const canKeepAwake = 'wakeLock' in navigator
 const locating = ref(false)
 const locationError = ref<string>()
 
@@ -69,6 +72,12 @@ const languages = computed(
       :error="locationError"
       :disabled="locating"
       @update:model-value="setLocation"
+    />
+    <SettingSwitch
+      v-model="keepAwake"
+      :label="t('settings.awake.label')"
+      :hint="canKeepAwake ? t('settings.awake.hint') : t('settings.awake.unsupported')"
+      :disabled="!canKeepAwake"
     />
   </AppDialog>
 </template>

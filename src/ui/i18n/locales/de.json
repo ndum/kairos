@@ -285,7 +285,16 @@
       "hint": "Kairos zeigt zuerst die Richtung, die an deinem Standort beginnt. Der Standort bleibt auf diesem Gerät.",
       "denied": "Der Browser erlaubt Kairos keinen Zugriff auf den Standort. Du kannst ihn in den Einstellungen des Browsers freigeben.",
       "unavailable": "Der Standort ist gerade nicht verfügbar. Versuche es später nochmals."
+    },
+    "awake": {
+      "label": "Bildschirm wach halten",
+      "hint": "Solange die Ansicht «Jetzt» offen ist, schaltet sich der Bildschirm nicht aus.",
+      "unsupported": "Dieser Browser kann den Bildschirm nicht wach halten."
     }
+  },
+  "update": {
+    "available": "Eine neue Version von Kairos ist bereit.",
+    "reload": "Aktualisieren"
   },
   "credit": "Fahrplandaten: opentransportdata.swiss"
 }
