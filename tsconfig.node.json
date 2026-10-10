@@ -18,6 +18,8 @@
     "vitest.config.ts",
     "playwright.config.ts",
     "eslint.config.ts",
+    "pwa-assets.config.ts",
+    "scripts/**/*.ts",
     "e2e/**/*.ts"
   ]
 }
