@@ -2,6 +2,7 @@
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-S/9/rtnXcLVmAOkk/R67NIM6V/lWK89JqB+eop/4lH4='; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://transport.opendata.ch; manifest-src 'self'; worker-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta
       name="description"
@@ -11,7 +12,6 @@
     <meta name="theme-color" content="#03051a" media="(prefers-color-scheme: dark)" />
     <meta name="apple-mobile-web-app-title" content="Kairos" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <link rel="icon" href="/kairos/favicon.svg" type="image/svg+xml" />
     <title>Kairos</title>
     <script>
       // Applies the saved theme before the first paint to avoid a flash of the wrong one.
@@ -26,11 +26,14 @@
         // Storage is blocked; the app applies the system theme once it starts.
       }
     </script>
-    <script type="module" crossorigin src="/kairos/assets/index-1_5OFqzr.js"></script>
-    <link rel="modulepreload" crossorigin href="/kairos/assets/vendor-BUbyPFoq.js">
-    <link rel="modulepreload" crossorigin href="/kairos/assets/app-BD6PPPcT.js">
-    <link rel="stylesheet" crossorigin href="/kairos/assets/app-B9q-6Cpo.css">
-  </head>
+    <script type="module" crossorigin src="/kairos/assets/index-C5EitEXf.js"></script>
+    <link rel="modulepreload" crossorigin href="/kairos/assets/vendor-WcXpQcvL.js">
+    <link rel="modulepreload" crossorigin href="/kairos/assets/app-CFNwIhcM.js">
+    <link rel="stylesheet" crossorigin href="/kairos/assets/app-DGWbAT9r.css">
+  <link rel="manifest" href="/kairos/manifest.webmanifest">
+<link rel="icon" href="/kairos/favicon.ico" sizes="48x48">
+<link rel="icon" href="/kairos/favicon.svg" sizes="any" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/kairos/apple-touch-icon-180x180.png"></head>
   <body>
     <div id="app"></div>
   </body>
