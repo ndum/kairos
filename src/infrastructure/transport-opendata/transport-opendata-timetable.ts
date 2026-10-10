@@ -1,16 +1,19 @@
 import * as v from 'valibot'
 
+import type { FoundPlace, PlaceSearchPort } from '@/application/ports/place-search'
 import {
   type JourneyQuery,
   TimetableError,
   type TimetablePort,
 } from '@/application/ports/timetable'
+import type { Coordinates } from '@/domain/geo'
 import type { Journey } from '@/domain/journey'
 import { toLocal } from '@/domain/local-time'
 import type { StopRef } from '@/domain/route'
 import { type Duration, SECOND } from '@/domain/time'
 
-import { toJourney, toStop } from './mapping'
+import { HttpError, fetchJson } from '../http/fetch-json'
+import { toFoundPlace, toJourney, toStop } from './mapping'
 import { ConnectionsResponseSchema, LocationsResponseSchema } from './schema'
 
 const DEFAULT_BASE_URL = 'https://transport.opendata.ch/v1'
@@ -42,6 +45,7 @@ const CONNECTION_FIELDS = [
   'connections/sections/walk',
 ]
 const LOCATION_FIELDS = ['stations/id', 'stations/name', 'stations/coordinate']
+const PLACE_FIELDS = ['stations/name', 'stations/coordinate']
 
 export interface TransportOpendataOptions {
   readonly baseUrl?: string
@@ -49,8 +53,11 @@ export interface TransportOpendataOptions {
   readonly fetch?: typeof globalThis.fetch
 }
 
-/** Timetable adapter for the Transport API of Opendata.ch (transport.opendata.ch). */
-export class TransportOpendataTimetable implements TimetablePort {
+/**
+ * Timetable adapter for the Transport API of Opendata.ch (transport.opendata.ch). The same
+ * API also finds companies and buildings by name.
+ */
+export class TransportOpendataTimetable implements TimetablePort, PlaceSearchPort {
   readonly #baseUrl: string
   readonly #timeout: Duration
   readonly #fetch: typeof globalThis.fetch
@@ -87,32 +94,41 @@ export class TransportOpendataTimetable implements TimetablePort {
       .map(toStop)
   }
 
+  async stopsNear(position: Coordinates, signal?: AbortSignal): Promise<StopRef[]> {
+    // The API calls latitude x and longitude y.
+    const params = new URLSearchParams({
+      x: String(position.latitude),
+      y: String(position.longitude),
+      type: 'station',
+    })
+    for (const field of LOCATION_FIELDS) params.append('fields[]', field)
+
+    const body = await this.#get(`locations?${params.toString()}`, signal)
+    // The address at the position comes first, as a station without an id.
+    return this.#parse(LocationsResponseSchema, body)
+      .stations.filter((station) => station.id && station.name)
+      .map(toStop)
+      .filter((stop) => stop.coordinates)
+  }
+
+  async searchPlaces(text: string, signal?: AbortSignal): Promise<FoundPlace[]> {
+    const params = new URLSearchParams({ query: text, type: 'poi' })
+    for (const field of PLACE_FIELDS) params.append('fields[]', field)
+
+    const body = await this.#get(`locations?${params.toString()}`, signal)
+    return this.#parse(LocationsResponseSchema, body).stations.flatMap(toFoundPlace)
+  }
+
   async #get(path: string, signal?: AbortSignal): Promise<unknown> {
-    const timeout = AbortSignal.timeout(this.#timeout)
-    const combined = signal ? AbortSignal.any([signal, timeout]) : timeout
-
-    let response: Response
     try {
-      response = await this.#fetch(`${this.#baseUrl}/${path}`, { signal: combined })
-    } catch (error) {
-      if (signal?.aborted) throw error
-      if (timeout.aborted) {
-        throw new TimetableError('timeout', 'The timetable did not respond in time.', {
-          cause: error,
-        })
-      }
-      throw new TimetableError('network', 'The timetable could not be reached.', { cause: error })
-    }
-
-    if (!response.ok) {
-      throw new TimetableError('http', `The timetable answered with status ${response.status}.`)
-    }
-    try {
-      return await response.json()
-    } catch (error) {
-      throw new TimetableError('invalid-response', 'The timetable sent malformed data.', {
-        cause: error,
+      return await fetchJson(`${this.#baseUrl}/${path}`, {
+        fetch: this.#fetch,
+        timeout: this.#timeout,
+        signal,
       })
+    } catch (error) {
+      if (!(error instanceof HttpError)) throw error
+      throw new TimetableError(error.reason, error.message, { cause: error })
     }
   }
 

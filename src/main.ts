@@ -1,6 +1,7 @@
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 
+import { PlaceFinder } from './application/place-finder'
 import { RouteLibrary } from './application/route-library'
 import { StopSearch } from './application/stop-search'
 import { TripMonitor } from './application/trip-monitor'
@@ -12,6 +13,7 @@ import { randomId } from './infrastructure/browser/random-id'
 import { systemClock } from './infrastructure/browser/system-clock'
 import { timerScheduler } from './infrastructure/browser/timer-scheduler'
 import { CompressedRouteCodec } from './infrastructure/sharing/compressed-route-codec'
+import { SwisstopoAddressSearch } from './infrastructure/swisstopo/swisstopo-address-search'
 import { TransportOpendataTimetable } from './infrastructure/transport-opendata/transport-opendata-timetable'
 import App from './ui/App.vue'
 import { createAppI18n } from './ui/i18n'
@@ -27,6 +29,11 @@ const services: AppServices = {
   timetable,
   routes: new RouteLibrary({ repository: new LocalStorageRouteRepository(), createId: randomId }),
   stops: new StopSearch(timetable),
+  places: new PlaceFinder({
+    addresses: new SwisstopoAddressSearch(),
+    companies: timetable,
+    timetable,
+  }),
   codec: new CompressedRouteCodec(),
   location: new BrowserLocation(),
   pins: new LocalStoragePinStore(),

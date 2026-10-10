@@ -22,6 +22,19 @@ describe('Transport API contract', () => {
     expect(stops).toContainEqual(expect.objectContaining({ id: '8500023', name: 'Liestal' }))
   })
 
+  it('finds the stations around a position', async () => {
+    const stops = await timetable.stopsNear({ latitude: 47.4845, longitude: 7.7314 })
+
+    expect(stops).toContainEqual(expect.objectContaining({ id: '8500023', name: 'Liestal' }))
+  })
+
+  it('finds companies and buildings by name', async () => {
+    const places = await timetable.searchPlaces('Kunstmuseum Basel')
+
+    expect(places.length).toBeGreaterThan(0)
+    expect(places[0]).toMatchObject({ kind: 'poi', coordinates: { latitude: expect.any(Number) } })
+  })
+
   it('returns journeys that map to trains, trams, walks and stopovers', async () => {
     const journeys = await timetable.findJourneys({
       from: { id: '8500023', name: 'Liestal' },

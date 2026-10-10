@@ -1,3 +1,4 @@
+import type { Coordinates } from '@/domain/geo'
 import type { Journey } from '@/domain/journey'
 import type { StopRef } from '@/domain/route'
 import type { Instant } from '@/domain/time'
@@ -16,6 +17,8 @@ export interface JourneyQuery {
 export interface TimetablePort {
   findJourneys(query: JourneyQuery, signal?: AbortSignal): Promise<Journey[]>
   searchStops(text: string, signal?: AbortSignal): Promise<StopRef[]>
+  /** Stops around a position, the closest first, each with its own position. */
+  stopsNear(position: Coordinates, signal?: AbortSignal): Promise<StopRef[]>
 }
 
 export type TimetableErrorReason = 'network' | 'timeout' | 'http' | 'invalid-response'

@@ -16,7 +16,7 @@ const viaTram = (departure: string, arrival: string) =>
 
 function timetable(journeys = [morningCommute('07:05'), morningCommute('07:20')]) {
   const findJourneys = vi.fn<TimetablePort['findJourneys']>().mockResolvedValue(journeys)
-  return { timetable: { findJourneys, searchStops: vi.fn() }, findJourneys }
+  return { timetable: { findJourneys, searchStops: vi.fn(), stopsNear: vi.fn() }, findJourneys }
 }
 
 describe('planTrips', () => {

@@ -52,7 +52,7 @@ export default defineConfig(({ mode }) => ({
         cleanupOutdatedCaches: true,
       },
     }),
-    contentSecurityPolicy(['https://transport.opendata.ch']),
+    contentSecurityPolicy(['https://transport.opendata.ch', 'https://api3.geo.admin.ch']),
     mode === 'lan' && basicSsl(),
   ],
   resolve: {

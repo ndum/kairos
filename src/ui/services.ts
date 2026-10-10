@@ -1,5 +1,6 @@
 import { type InjectionKey, inject } from 'vue'
 
+import type { PlaceFinder } from '@/application/place-finder'
 import type { Clock } from '@/application/ports/clock'
 import type { LocationPort } from '@/application/ports/location'
 import type { PinStore } from '@/application/ports/pin-store'
@@ -15,6 +16,7 @@ export interface AppServices {
   readonly timetable: TimetablePort
   readonly routes: RouteLibrary
   readonly stops: StopSearch
+  readonly places: PlaceFinder
   readonly codec: RouteCodec
   readonly location: LocationPort
   readonly pins: PinStore

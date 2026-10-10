@@ -149,3 +149,57 @@ describe('searchStops', () => {
     expect(stops).toEqual([{ id: '8500010', name: 'Basel SBB', coordinates: undefined }])
   })
 })
+
+describe('stopsNear', () => {
+  it('asks for stations around the position and skips the address found there', async () => {
+    const fetch = fakeFetch(
+      json({
+        stations: [
+          {
+            id: null,
+            name: 'Rheinstrasse 27, 4410 Liestal',
+            coordinate: { x: 47.4862, y: 7.7305 },
+          },
+          { id: '8578318', name: 'Liestal, Kantonsspital', coordinate: { x: 47.4871, y: 7.7305 } },
+          { id: '8500023', name: 'Liestal', coordinate: { x: 47.4844, y: 7.7313 } },
+          { id: '8500999', name: 'Somewhere', coordinate: null },
+        ],
+      }),
+    )
+
+    const stops = await timetable(fetch).stopsNear({ latitude: 47.486, longitude: 7.73 })
+
+    const params = requestedUrl(fetch).searchParams
+    expect([params.get('x'), params.get('y'), params.get('type')]).toEqual([
+      '47.486',
+      '7.73',
+      'station',
+    ])
+    expect(stops.map((stop) => stop.name)).toEqual(['Liestal, Kantonsspital', 'Liestal'])
+  })
+})
+
+describe('searchPlaces', () => {
+  it('finds companies and buildings by name', async () => {
+    const fetch = fakeFetch(
+      json({
+        stations: [
+          { id: null, name: 'Kunstmuseum Basel | Neubau', coordinate: { x: 47.5545, y: 7.5948 } },
+          { id: null, name: ' ', coordinate: { x: 47.5, y: 7.5 } },
+          { id: null, name: 'Without position', coordinate: null },
+        ],
+      }),
+    )
+
+    const places = await timetable(fetch).searchPlaces('Kunstmuseum')
+
+    expect(requestedUrl(fetch).searchParams.get('type')).toBe('poi')
+    expect(places).toEqual([
+      {
+        name: 'Kunstmuseum Basel | Neubau',
+        kind: 'poi',
+        coordinates: { latitude: 47.5545, longitude: 7.5948 },
+      },
+    ])
+  })
+})

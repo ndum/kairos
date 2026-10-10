@@ -21,7 +21,7 @@ describe('findLineOptions', () => {
     const signal = new AbortController().signal
 
     const options = await findLineOptions(
-      { findJourneys, searchStops: vi.fn() },
+      { findJourneys, searchStops: vi.fn(), stopsNear: vi.fn() },
       [home.stop, office.stop],
       at('07:00'),
       signal,
