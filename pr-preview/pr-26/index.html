@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-S/9/rtnXcLVmAOkk/R67NIM6V/lWK89JqB+eop/4lH4='; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://transport.opendata.ch https://api3.geo.admin.ch; manifest-src 'self'; worker-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="Kairos sagt dir, wann du losgehen musst, damit du deine Verbindung entspannt erreichst."
+    />
+    <meta name="theme-color" content="#5d6cd0" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#03051a" media="(prefers-color-scheme: dark)" />
+    <meta name="apple-mobile-web-app-title" content="Kairos" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>Kairos</title>
+    <script>
+      // Applies the saved theme before the first paint to avoid a flash of the wrong one.
+      try {
+        const theme = localStorage.getItem('kairos:theme')
+        const dark =
+          theme === 'dark' ||
+          ((theme === null || theme === 'auto') &&
+            matchMedia('(prefers-color-scheme: dark)').matches)
+        document.documentElement.classList.toggle('dark', dark)
+      } catch {
+        // Storage is blocked; the app applies the system theme once it starts.
+      }
+    </script>
+    <script type="module" crossorigin src="/pr-preview/pr-26/assets/index-DK9hyvKj.js"></script>
+    <link rel="modulepreload" crossorigin href="/pr-preview/pr-26/assets/vendor-D6vE9iGf.js">
+    <link rel="modulepreload" crossorigin href="/pr-preview/pr-26/assets/app-DWZRGNey.js">
+    <link rel="stylesheet" crossorigin href="/pr-preview/pr-26/assets/app-BWyGzwwZ.css">
+  <link rel="manifest" href="/pr-preview/pr-26/manifest.webmanifest">
+<link rel="icon" href="/pr-preview/pr-26/favicon.ico" sizes="48x48">
+<link rel="icon" href="/pr-preview/pr-26/favicon.svg" sizes="any" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/pr-preview/pr-26/apple-touch-icon-180x180.png"></head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>
