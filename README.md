@@ -116,7 +116,7 @@ sequenceDiagram
     note over app: The exact position is only stored on the device
 ```
 
-The board keeps itself up to date. It asks the timetable every 30 seconds while the leave time is less than 20 minutes away and every two minutes otherwise, pauses while the app is in the background and catches up as soon as it is visible again.
+The board keeps itself up to date. It asks the timetable every 30 seconds while the leave time is less than 20 minutes away, every two minutes up to two hours before and every ten minutes otherwise. It pauses while the app is in the background and catches up as soon as it is visible again.
 
 A few decisions shape the code. Kairos is a progressive web app, so one code base serves the iPhone and the desktop. Without a backend, hosting stays static and free, and nothing about the user is stored anywhere but on the device. The timetable and the place search sit behind ports, so another source could replace transport.opendata.ch without touching the domain. Preferences that only affect the interface, such as the theme, stay in the UI layer, while everything with a meaning for the domain goes through a port.
 
