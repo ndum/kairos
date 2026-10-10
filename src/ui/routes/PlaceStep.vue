@@ -3,6 +3,7 @@ import { computed, onScopeDispose, ref, shallowRef, useId, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import IconCurrentLocation from '~icons/tabler/current-location'
 import IconLoader from '~icons/tabler/loader-2'
+import IconPlus from '~icons/tabler/plus'
 
 import type { NearbyStop } from '@/application/place-finder'
 import type { FoundPlace } from '@/application/ports/place-search'
@@ -60,6 +61,10 @@ const stopError = computed(() => {
   if (props.errors.stop === 'same') return t('editor.errors.stopSame')
   return undefined
 })
+
+const secondStopError = computed(() =>
+  props.errors.secondStop === 'same' ? t('editor.errors.secondStopSame') : undefined,
+)
 
 // Where the place lies, found by address or company or taken from the current position. It
 // stays on the device and leads to the stops nearby.
@@ -143,13 +148,30 @@ function chooseOther(): void {
   if (isNearby(place.value.stop)) place.value.stop = null
 }
 
+/** The walk to a stop from the position of the place, if both are known. */
+function estimatedWalk(stop: StopRef | null): number | null {
+  const position = place.value.coordinates
+  if (!stop?.coordinates || !position) return null
+  return format.minutes(estimateWalk(distanceInMeters(position, stop.coordinates)))
+}
+
 /** A stop chosen by name gets its walk from the position of the place, if that is known. */
 function chooseStop(stop: StopRef | null): void {
   place.value.stop = stop
-  const position = place.value.coordinates
-  if (stop?.coordinates && position) {
-    place.value.walk = format.minutes(estimateWalk(distanceInMeters(position, stop.coordinates)))
-  }
+  place.value.walk = estimatedWalk(stop) ?? place.value.walk
+}
+
+// A second stop nearby, for example a bus stop next to the station.
+const addingSecond = ref(place.value.secondStop !== null)
+
+function chooseSecondStop(stop: StopRef | null): void {
+  place.value.secondStop = stop
+  place.value.secondWalk = estimatedWalk(stop) ?? place.value.secondWalk
+}
+
+function removeSecondStop(): void {
+  addingSecond.value = false
+  place.value.secondStop = null
 }
 </script>
 
@@ -277,10 +299,44 @@ function chooseStop(stop: StopRef | null): void {
       :hint="t(`editor.place.walkHint.${end}`)"
       :max="WALK_MAX / MINUTE"
     />
+
+    <BaseButton
+      v-if="!addingSecond"
+      variant="quiet"
+      class="self-start"
+      @click="addingSecond = true"
+    >
+      <IconPlus aria-hidden="true" />
+      {{ t('editor.place.second.add') }}
+    </BaseButton>
+    <div v-else class="second flex flex-col gap-5">
+      <StopField
+        :model-value="place.secondStop"
+        :label="t('editor.place.second.stop')"
+        :hint="t('editor.place.second.hint')"
+        :placeholder="t('editor.place.stopPlaceholder')"
+        :error="secondStopError"
+        @update:model-value="chooseSecondStop"
+      />
+      <MinuteField
+        v-model="place.secondWalk"
+        :label="t(`editor.place.second.walk.${end}`)"
+        :max="WALK_MAX / MINUTE"
+      />
+      <BaseButton variant="quiet" class="self-start" @click="removeSecondStop">
+        {{ t('editor.place.second.remove') }}
+      </BaseButton>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.second {
+  border-radius: 1.125rem;
+  padding: 1rem;
+  background: var(--color-group);
+}
+
 .suggestion {
   border: 1px solid var(--color-hairline);
   color: var(--color-ink-muted);

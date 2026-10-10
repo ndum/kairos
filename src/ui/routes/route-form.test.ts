@@ -20,8 +20,8 @@ const commute = route('commute', 'Commute', [home, office], [trainLine('S1'), bu
 const filled = (): RouteForm => ({
   name: 'Commute',
   places: [
-    { name: 'Home', stop: stop('Riverside'), walk: 8 },
-    { name: 'Office', stop: stop('Market Square'), walk: 5 },
+    { name: 'Home', stop: stop('Riverside'), walk: 8, secondStop: null, secondWalk: 5 },
+    { name: 'Office', stop: stop('Market Square'), walk: 5, secondStop: null, secondWalk: 5 },
   ],
   buffer: 3,
   preferredLines: [trainLine('S1'), busLine('20')],
@@ -82,6 +82,34 @@ describe('scheduleErrors', () => {
     form.schedule[2] = { weekday: 3, arriveBy: '08:00', returnFrom: '' }
 
     expect(scheduleErrors(form)).toEqual([2])
+  })
+})
+
+describe('second stops', () => {
+  it('keep the second stop of a place and its walk', () => {
+    const bus = { stop: stop('Riverside, Bus Stop'), walk: minutes(3) }
+    const withBus = route('commute', 'Commute', [{ ...home, secondStop: bus }, office])
+    const form = formOf(withBus)
+
+    expect(form.places[0]).toMatchObject({ secondStop: bus.stop, secondWalk: 3 })
+    expect(draftOf(form).places[0].secondStop).toEqual(bus)
+    expect(draftOf(form).places[1]).not.toHaveProperty('secondStop')
+  })
+
+  it('report a second stop that the route has already', () => {
+    const form = filled()
+    form.places[0].secondStop = stop('Riverside')
+    form.places[1].secondStop = stop('Riverside')
+
+    expect(placeErrors(form, 0)).toEqual({ secondStop: 'same' })
+    expect(placeErrors(form, 1)).toEqual({ secondStop: 'same' })
+  })
+
+  it('report a main stop of the destination that the origin has as its second stop', () => {
+    const form = filled()
+    form.places[0].secondStop = stop('Market Square')
+
+    expect(placeErrors(form, 1)).toEqual({ stop: 'same' })
   })
 })
 

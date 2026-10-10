@@ -1,5 +1,12 @@
-import { type RideLeg, expectedTime, isRide, walkingTime } from '@/domain/journey'
-import type { Endpoints, Place } from '@/domain/route'
+import {
+  type RideLeg,
+  expectedTime,
+  firstStopOf,
+  isRide,
+  lastStopOf,
+  walkingTime,
+} from '@/domain/journey'
+import { type Endpoints, type Place, walkTo } from '@/domain/route'
 import type { Duration, Instant } from '@/domain/time'
 import { type Transfer, transfersOf } from '@/domain/transfer'
 import type { Trip } from '@/domain/trip'
@@ -16,7 +23,10 @@ export function segmentsOf(trip: Trip, { origin, destination, buffer }: Endpoint
   const first = legs.findIndex(isRide)
   const last = legs.findLastIndex(isRide)
   const segments: Segment[] = [
-    { kind: 'walk', duration: origin.walk + walkingTime(legs.slice(0, first)) },
+    {
+      kind: 'walk',
+      duration: walkTo(origin, firstStopOf(trip.journey)?.id) + walkingTime(legs.slice(0, first)),
+    },
     { kind: 'buffer', duration: buffer },
   ]
 
@@ -35,7 +45,7 @@ export function segmentsOf(trip: Trip, { origin, destination, buffer }: Endpoint
 
   segments.push({
     kind: 'walk',
-    duration: walkingTime(legs.slice(last + 1)) + destination.walk,
+    duration: walkingTime(legs.slice(last + 1)) + walkTo(destination, lastStopOf(trip.journey)?.id),
   })
   return segments.filter((segment) => segment.duration > 0)
 }

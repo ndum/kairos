@@ -68,5 +68,17 @@ export const expectedTime = (event: StopEvent): Instant => event.expectedAt ?? e
 
 export const delayOf = (event: StopEvent): Duration => expectedTime(event) - event.scheduledAt
 
+/** The stop a journey starts at, where the user arrives on foot. */
+export function firstStopOf(journey: Journey): StopRef | undefined {
+  const leg = journey.legs[0]
+  return leg?.kind === 'walk' ? leg.from : leg?.departure.stop
+}
+
+/** The stop a journey ends at, where the user walks on from. */
+export function lastStopOf(journey: Journey): StopRef | undefined {
+  const leg = journey.legs.at(-1)
+  return leg?.kind === 'walk' ? leg.to : leg?.arrival.stop
+}
+
 export const walkingTime = (legs: readonly Leg[]): Duration =>
   legs.reduce((total, leg) => (leg.kind === 'walk' ? total + leg.duration : total), 0)

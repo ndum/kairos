@@ -66,6 +66,14 @@ const inMinutes = (duration: Duration): number => Math.round(duration / MINUTE)
           <p class="text-sm text-ink-subtle">
             {{ t('routes.walk', { minutes: inMinutes(place.walk) }) }}
           </p>
+          <template v-if="place.secondStop">
+            <p class="truncate text-ink-muted">
+              {{ t('routes.orStop', { stop: place.secondStop.stop.name }) }}
+            </p>
+            <p class="text-sm text-ink-subtle">
+              {{ t('routes.walk', { minutes: inMinutes(place.secondStop.walk) }) }}
+            </p>
+          </template>
         </div>
       </li>
     </ol>

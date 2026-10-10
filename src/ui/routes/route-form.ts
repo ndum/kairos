@@ -18,6 +18,10 @@ export interface PlaceForm {
   stop: StopRef | null
   /** Minutes on foot between the place and its stop. */
   walk: number
+  /** Another stop nearby, which Kairos also considers. */
+  secondStop: StopRef | null
+  /** Minutes on foot between the place and its second stop. */
+  secondWalk: number
   /** Position of the place itself, which stays on the device. */
   coordinates?: Coordinates
 }
@@ -45,6 +49,8 @@ export const emptyPlace = (): PlaceForm => ({
   name: '',
   stop: null,
   walk: DEFAULT_WALK,
+  secondStop: null,
+  secondWalk: DEFAULT_WALK,
 })
 
 const scheduleFormOf = (schedule: Schedule = []): ScheduleDayForm[] =>
@@ -69,6 +75,8 @@ const placeFormOf = (place: Place): PlaceForm => ({
   name: place.name,
   stop: place.stop,
   walk: Math.round(place.walk / MINUTE),
+  secondStop: place.secondStop?.stop ?? null,
+  secondWalk: place.secondStop ? Math.round(place.secondStop.walk / MINUTE) : DEFAULT_WALK,
   ...(place.coordinates && { coordinates: place.coordinates }),
 })
 
@@ -86,6 +94,9 @@ function placeOf(form: PlaceForm): Place {
     name: form.name,
     stop: form.stop,
     walk: minutes(form.walk),
+    ...(form.secondStop && {
+      secondStop: { stop: form.secondStop, walk: minutes(form.secondWalk) },
+    }),
     ...(form.coordinates && { coordinates: form.coordinates }),
   }
 }
@@ -133,18 +144,29 @@ function nameErrorOf(name: string): NameError | undefined {
 export interface PlaceErrors {
   readonly name?: NameError
   readonly stop?: 'missing' | 'same'
+  /** The second stop is a stop the route has already. */
+  readonly secondStop?: 'same'
 }
 
+const stopIds = (place: PlaceForm): (string | undefined)[] => [place.stop?.id, place.secondStop?.id]
+
+/** The destination reports stops that the origin has already, so each clash shows once. */
 export function placeErrors(form: RouteForm, index: 0 | 1): PlaceErrors {
   const place = form.places[index]
-  const other = form.places[index === 0 ? 1 : 0]
+  const taken = index === 1 ? stopIds(form.places[0]).filter((id) => id !== undefined) : []
   const name = nameErrorOf(place.name)
 
   let stop: PlaceErrors['stop']
   if (!place.stop) stop = 'missing'
-  else if (index === 1 && place.stop.id === other.stop?.id) stop = 'same'
+  else if (taken.includes(place.stop.id)) stop = 'same'
 
-  return { ...(name && { name }), ...(stop && { stop }) }
+  const second = place.secondStop?.id
+  const secondStop =
+    second !== undefined && (second === place.stop?.id || taken.includes(second))
+      ? ('same' as const)
+      : undefined
+
+  return { ...(name && { name }), ...(stop && { stop }), ...(secondStop && { secondStop }) }
 }
 
 export const nameError = (form: RouteForm): NameError | undefined => nameErrorOf(form.name)

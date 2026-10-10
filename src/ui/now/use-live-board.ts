@@ -3,9 +3,17 @@ import { type Ref, computed, onScopeDispose, ref, shallowRef, watch } from 'vue'
 
 import { buildBoard, nextLeaveAt } from '@/application/board'
 import type { MonitorSnapshot, MonitorTarget } from '@/application/trip-monitor'
-import { type Direction, type Endpoints, type Route, endpoints } from '@/domain/route'
+import {
+  type Direction,
+  type Endpoints,
+  type Place,
+  type Route,
+  endpoints,
+  stopPairs,
+  stopsOf,
+} from '@/domain/route'
 import { type ScheduleTarget, scheduleTarget } from '@/domain/schedule'
-import type { Instant } from '@/domain/time'
+import type { Duration, Instant } from '@/domain/time'
 
 import { useServices } from '../services'
 
@@ -20,11 +28,14 @@ function windowOf(
   late: boolean,
 ): Pick<MonitorTarget, 'at' | 'arriveBy'> {
   if (target?.kind === 'arrive' && !late) {
-    return { at: target.by - ends.destination.walk, arriveBy: true }
+    return { at: target.by - shortestWalk(ends.destination), arriveBy: true }
   }
-  if (target?.kind === 'return') return { at: target.from + ends.origin.walk }
+  if (target?.kind === 'return') return { at: target.from + shortestWalk(ends.origin) }
   return {}
 }
+
+/** One time is asked for all stops of a place, so the shortest walk leaves none out. */
+const shortestWalk = (place: Place): Duration => Math.min(...stopsOf(place).map(({ walk }) => walk))
 
 const keyOf = (target: ScheduleTarget | null): string => {
   if (target === null) return ''
@@ -58,8 +69,7 @@ export function useLiveBoard(route: Ref<Route>, direction: Ref<Direction>, now: 
       const current = ends.value
       const goal = target.value
       monitor.watch({
-        from: current.origin.stop,
-        to: current.destination.stop,
+        pairs: stopPairs(current),
         nextLeaveAt: (journeys, at) =>
           nextLeaveAt(buildBoard(journeys, current, lines.value, at, goal)),
         ...windowOf(goal, current, late.value),

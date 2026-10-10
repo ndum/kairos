@@ -71,6 +71,25 @@ describe('CompressedRouteCodec', () => {
     expect(decoded[1]).not.toHaveProperty('schedule')
   })
 
+  it('keeps the second stop of a place and leaves it out of places without one', async () => {
+    const tram = {
+      stop: {
+        id: '8589334',
+        name: 'Liestal, Bahnhof',
+        coordinates: { latitude: 47.4842211, longitude: 7.7322013 },
+      },
+      walk: minutes(4),
+    }
+    const withTram = route('tram', 'Tram', [{ ...home, secondStop: tram }, office])
+    const [decoded] = await codec.decode(await codec.encode([withTram]))
+
+    expect(decoded?.places[0].secondStop).toEqual({
+      ...tram,
+      stop: { ...tram.stop, coordinates: { latitude: 47.48422, longitude: 7.7322 } },
+    })
+    expect(decoded?.places[1]).not.toHaveProperty('secondStop')
+  })
+
   it('reads codes of version 1 and keeps the larger reserve as the buffer', async () => {
     const code = await encodeRaw(
       JSON.stringify([

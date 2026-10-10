@@ -217,7 +217,8 @@
     "removed": "“{name}” deleted.",
     "undo": "Undo",
     "saved": "“{name}” saved.",
-    "notSaved": "This device does not let Kairos store data right now. Your routes are kept only until you close Kairos."
+    "notSaved": "This device does not let Kairos store data right now. Your routes are kept only until you close Kairos.",
+    "orStop": "or {stop}"
   },
   "editor": {
     "newTitle": "New route",
@@ -288,6 +289,16 @@
         "failed": "The stops nearby could not be loaded.",
         "retry": "Try again",
         "none": "There is no stop nearby. Search for it by its name."
+      },
+      "second": {
+        "add": "Add a second stop",
+        "stop": "Second stop",
+        "hint": "A bus stop next to the station, for example. Kairos takes the connection that gets you there first.",
+        "walk": {
+          "origin": "Walk to the second stop",
+          "destination": "Walk from the second stop"
+        },
+        "remove": "Remove the second stop"
       }
     },
     "errors": {
@@ -295,7 +306,8 @@
       "nameTooLong": "{max} characters at most.",
       "stopMissing": "Choose a stop from the list.",
       "stopSame": "Choose a stop other than the one at the start.",
-      "returnBeforeArrival": "The way back starts before the arrival."
+      "returnBeforeArrival": "The way back starts before the arrival.",
+      "secondStopSame": "This stop is already part of the route."
     },
     "lines": {
       "label": "Connection",

@@ -211,6 +211,30 @@ test('keeps the schedule closed in the assistant until the user opens it', async
   ])
 })
 
+test('adds a second stop to a place', async () => {
+  const commute = route('commute', 'Commute', [home, office])
+  const screen = await renderWithApp(RouteEditorView, {
+    path: '/routes/commute',
+    props: { id: 'commute' },
+    routes: [commute],
+    timetable: { ...timetable, searchStops: () => Promise.resolve([stop('Riverside, Bus Stop')]) },
+  })
+  const start = screen.getByRole('region', { name: 'Start' })
+
+  await start.getByRole('button', { name: 'Zweite Haltestelle hinzufügen' }).click()
+  await userEvent.fill(start.getByRole('combobox', { name: 'Zweite Haltestelle' }), 'Bus')
+  await screen.getByRole('option', { name: 'Riverside, Bus Stop' }).click()
+  await start
+    .getByRole('button', { name: 'Fussweg zur zweiten Haltestelle: eine Minute weniger' })
+    .click()
+  await screen.getByRole('button', { name: 'Route speichern' }).click()
+
+  expect(screen.repository.routes[0]?.places[0].secondStop).toEqual({
+    stop: stop('Riverside, Bus Stop'),
+    walk: minutes(4),
+  })
+})
+
 test('shows every missing detail of the route being edited', async () => {
   const commute = route('commute', 'Commute', [home, office])
   const screen = await renderWithApp(RouteEditorView, {

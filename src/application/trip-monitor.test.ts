@@ -10,7 +10,8 @@ import { JOURNEY_LIMIT, type MonitorTarget, TripMonitor, cacheKey } from './trip
 
 const from = stop('Riverside')
 const to = stop('Market Square')
-const key = cacheKey(from, to)
+const pairs = [{ from, to }]
+const key = cacheKey(pairs)
 
 const firstBatch: Journey[] = [morningCommute('07:05')]
 const secondBatch: Journey[] = [morningCommute('07:29')]
@@ -23,7 +24,7 @@ describe('TripMonitor', () => {
   let monitor: TripMonitor
   let leaveIn = 10 * MINUTE
 
-  const target: MonitorTarget = { from, to, nextLeaveAt: (_journeys, now) => now + leaveIn }
+  const target: MonitorTarget = { pairs, nextLeaveAt: (_journeys, now) => now + leaveIn }
 
   beforeEach(() => {
     clock = new FakeClock(at('06:40'))
@@ -66,7 +67,7 @@ describe('TripMonitor', () => {
       { from, to, at: at('17:00'), limit: JOURNEY_LIMIT },
       expect.any(AbortSignal),
     )
-    expect(cache.read(cacheKey(from, to, at('17:00')))?.journeys).toEqual(firstBatch)
+    expect(cache.read(cacheKey(pairs, at('17:00')))?.journeys).toEqual(firstBatch)
     expect(cache.read(key)).toBeNull()
   })
 
@@ -78,8 +79,33 @@ describe('TripMonitor', () => {
       { from, to, at: at('07:55'), arriveBy: true, limit: JOURNEY_LIMIT },
       expect.any(AbortSignal),
     )
-    expect(cache.read(cacheKey(from, to, at('07:55'), true))?.journeys).toEqual(firstBatch)
-    expect(cache.read(cacheKey(from, to, at('07:55')))).toBeNull()
+    expect(cache.read(cacheKey(pairs, at('07:55'), true))?.journeys).toEqual(firstBatch)
+    expect(cache.read(cacheKey(pairs, at('07:55')))).toBeNull()
+  })
+
+  it('asks for every pair of stops and puts their journeys together', async () => {
+    const bus = stop('Riverside, Bus Stop')
+    findJourneys.mockResolvedValueOnce(firstBatch).mockResolvedValueOnce(secondBatch)
+    monitor.watch({
+      ...target,
+      pairs: [
+        { from, to },
+        { from: bus, to },
+      ],
+    })
+    await settle()
+
+    expect(findJourneys).toHaveBeenCalledWith(
+      { from: bus, to, at: at('06:40'), limit: JOURNEY_LIMIT },
+      expect.any(AbortSignal),
+    )
+    expect(monitor.snapshot.journeys).toEqual([...firstBatch, ...secondBatch])
+    expect(
+      cacheKey([
+        { from, to },
+        { from: bus, to },
+      ]),
+    ).not.toBe(key)
   })
 
   it('asks from now on once the later time has come', async () => {
@@ -205,7 +231,7 @@ describe('TripMonitor', () => {
     })
 
     monitor.watch(target)
-    monitor.watch({ ...target, to: stop('Old Town') })
+    monitor.watch({ ...target, pairs: [{ from, to: stop('Old Town') }] })
     await settle()
 
     expect(firstSignal?.aborted).toBe(true)

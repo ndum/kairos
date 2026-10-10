@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { busLine, home, office, trainLine } from '@/test/builders'
+import { busLine, home, office, stop, trainLine } from '@/test/builders'
 
 import type { Route } from './route'
 import {
@@ -54,6 +54,28 @@ describe('isValidPlace', () => {
     expect(isValidPlace({ ...home, walk: minutes(-1) })).toBe(false)
     expect(isValidPlace({ ...home, walk: minutes(61) })).toBe(false)
     expect(isValidPlace({ ...home, walk: Number.NaN })).toBe(false)
+  })
+})
+
+describe('second stops', () => {
+  const second = (name: string, walkMinutes = 3) => ({
+    stop: stop(name),
+    walk: minutes(walkMinutes),
+  })
+
+  it('accepts a second stop with a walk in range', () => {
+    expect(isValidPlace({ ...home, secondStop: second('Riverside, Bus Stop') })).toBe(true)
+    expect(isValidPlace({ ...home, secondStop: second('Riverside, Bus Stop', 61) })).toBe(false)
+  })
+
+  it('rejects a second stop that is the main stop again', () => {
+    expect(isValidPlace({ ...home, secondStop: second('Riverside') })).toBe(false)
+  })
+
+  it('rejects a stop that serves both places', () => {
+    const shared = { ...office, secondStop: second('Riverside') }
+
+    expect(hasDistinctStops({ places: [home, shared] })).toBe(false)
   })
 })
 

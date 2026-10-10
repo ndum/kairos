@@ -1,5 +1,5 @@
 import { lineKey } from './line-preference'
-import type { Place, PreferredLine, Route } from './route'
+import { type Place, type PreferredLine, type Route, stopsOf } from './route'
 import { isValidSchedule } from './schedule'
 import { type Duration, MINUTE } from './time'
 
@@ -18,10 +18,16 @@ export function isValidName(name: string): boolean {
 }
 
 export const isValidPlace = (place: Place): boolean =>
-  isValidName(place.name) && place.stop.id !== '' && inRange(place.walk, WALK_MAX)
+  isValidName(place.name) &&
+  stopsOf(place).every(({ stop, walk }) => stop.id !== '' && inRange(walk, WALK_MAX)) &&
+  place.secondStop?.stop.id !== place.stop.id
 
-export const hasDistinctStops = (route: Pick<Route, 'places'>): boolean =>
-  route.places[0].stop.id !== route.places[1].stop.id
+/** No stop serves both places, or a trip could start where it ends. */
+export const hasDistinctStops = (route: Pick<Route, 'places'>): boolean => {
+  const [first, second] = route.places
+  const ids = new Set(stopsOf(first).map(({ stop }) => stop.id))
+  return stopsOf(second).every(({ stop }) => !ids.has(stop.id))
+}
 
 export const isValidRoute = (route: Route): boolean =>
   isValidName(route.name) &&

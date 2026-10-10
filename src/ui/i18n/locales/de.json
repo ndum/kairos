@@ -217,7 +217,8 @@
     "removed": "«{name}» gelöscht.",
     "undo": "Rückgängig",
     "saved": "«{name}» gespeichert.",
-    "notSaved": "Dieses Gerät lässt Kairos gerade keine Daten speichern. Deine Routen bleiben nur erhalten, bis du Kairos schliesst."
+    "notSaved": "Dieses Gerät lässt Kairos gerade keine Daten speichern. Deine Routen bleiben nur erhalten, bis du Kairos schliesst.",
+    "orStop": "oder {stop}"
   },
   "editor": {
     "newTitle": "Neue Route",
@@ -288,6 +289,16 @@
         "failed": "Die Haltestellen in der Nähe konnten nicht geladen werden.",
         "retry": "Erneut versuchen",
         "none": "In der Nähe gibt es keine Haltestelle. Suche sie nach ihrem Namen."
+      },
+      "second": {
+        "add": "Zweite Haltestelle hinzufügen",
+        "stop": "Zweite Haltestelle",
+        "hint": "Zum Beispiel eine Bushaltestelle neben dem Bahnhof. Kairos nimmt jeweils die Verbindung, mit der du zuerst ankommst.",
+        "walk": {
+          "origin": "Fussweg zur zweiten Haltestelle",
+          "destination": "Fussweg ab der zweiten Haltestelle"
+        },
+        "remove": "Zweite Haltestelle entfernen"
       }
     },
     "errors": {
@@ -295,7 +306,8 @@
       "nameTooLong": "Höchstens {max} Zeichen.",
       "stopMissing": "Wähle eine Haltestelle aus der Liste.",
       "stopSame": "Wähle eine andere Haltestelle als beim Start.",
-      "returnBeforeArrival": "Der Rückweg beginnt vor der Ankunft."
+      "returnBeforeArrival": "Der Rückweg beginnt vor der Ankunft.",
+      "secondStopSame": "Diese Haltestelle gehört schon zur Route."
     },
     "lines": {
       "label": "Verbindung",

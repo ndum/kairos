@@ -2,7 +2,7 @@ import * as v from 'valibot'
 
 import { InvalidShareCodeError, type RouteCodec } from '@/application/ports/route-codec'
 import type { TransportMode } from '@/domain/journey'
-import type { Place, PreferredLine, Route } from '@/domain/route'
+import type { Place, PlaceStop, PreferredLine, Route, StopRef } from '@/domain/route'
 import { MINUTES_PER_DAY, WEEKDAYS } from '@/domain/schedule'
 import { MINUTE } from '@/domain/time'
 
@@ -11,11 +11,12 @@ import { MINUTE } from '@/domain/time'
 //
 //   [version, route, ...]
 //   route = [id, name, place, place, [[line, mode], ...], buffer minutes, schedule]
-//   place = [name, stop id, stop name, walk minutes, latitude, longitude]
+//   place = [name, stop id, stop name, walk minutes, latitude, longitude, second stop]
+//   second stop = [stop id, stop name, walk minutes, latitude, longitude]
 //   schedule = [[weekday, arrive by, return from], ...], in minutes since midnight or null
 //
-// The schedule was added later and is left out when a route has none, so older codes stay
-// valid and older versions of the app ignore it.
+// The second stop and the schedule were added later and are left out when there are none, so
+// older codes stay valid and older versions of the app ignore them.
 //
 // Codes of version 1 have no buffer on the route but a reserve in every place, after the walk
 // minutes. They are still read, and the larger reserve becomes the buffer.
@@ -33,7 +34,16 @@ const Degrees = v.nullable(v.number())
 /** A code holds at most this many routes. */
 const MAX_ROUTES = 50
 
-const PlaceSchema = v.tuple([Text, Text, Text, Minutes, Degrees, Degrees])
+const SecondStopSchema = v.tuple([Text, Text, Minutes, Degrees, Degrees])
+const PlaceSchema = v.tuple([
+  Text,
+  Text,
+  Text,
+  Minutes,
+  Degrees,
+  Degrees,
+  v.optional(SecondStopSchema),
+])
 const LineSchema = v.tuple([
   Text,
   v.pipe(v.number(), v.integer(), v.minValue(0), v.maxValue(MODES.length - 1)),
@@ -71,16 +81,30 @@ type CompactRouteV1 = v.InferOutput<typeof RouteV1Schema>
 
 const round = (degrees: number): number => Math.round(degrees * 1e5) / 1e5
 
-function compactPlace({ name, stop, walk }: Place): CompactPlace {
-  const position = stop.coordinates
+type CompactStop = v.InferOutput<typeof SecondStopSchema>
+
+const positionOf = (stop: StopRef): [number | null, number | null] =>
+  stop.coordinates
+    ? [round(stop.coordinates.latitude), round(stop.coordinates.longitude)]
+    : [null, null]
+
+const compactStop = ({ stop, walk }: PlaceStop): CompactStop => [
+  stop.id,
+  stop.name,
+  Math.round(walk / MINUTE),
+  ...positionOf(stop),
+]
+
+function compactPlace({ name, stop, walk, secondStop }: Place): CompactPlace {
+  // JSON would write a missing second stop as null, so the item is left out instead.
   return [
     name,
     stop.id,
     stop.name,
     Math.round(walk / MINUTE),
-    position ? round(position.latitude) : null,
-    position ? round(position.longitude) : null,
-  ]
+    ...positionOf(stop),
+    ...(secondStop ? [compactStop(secondStop)] : []),
+  ] as CompactPlace
 }
 
 function compact(route: Route): CompactRoute {
@@ -99,19 +123,34 @@ function compact(route: Route): CompactRoute {
 }
 
 const placeFromV1 = ([name, id, stopName, walk, , latitude, longitude]: CompactPlaceV1) =>
-  [name, id, stopName, walk, latitude, longitude] satisfies CompactPlace
+  [name, id, stopName, walk, latitude, longitude, undefined] satisfies CompactPlace
 
 function fromV1([id, name, first, second, lines]: CompactRouteV1): CompactRoute {
   const buffer = Math.max(first[4], second[4])
   return [id, name, placeFromV1(first), placeFromV1(second), lines, buffer, undefined]
 }
 
-function expandPlace([name, id, stopName, walk, latitude, longitude]: CompactPlace): Place {
+function expandStop(
+  id: string,
+  name: string,
+  latitude: number | null,
+  longitude: number | null,
+): StopRef {
   const coordinates = latitude !== null && longitude !== null ? { latitude, longitude } : undefined
+  return { id, name, ...(coordinates && { coordinates }) }
+}
+
+function expandPlace([name, id, stopName, walk, latitude, longitude, second]: CompactPlace): Place {
   return {
     name,
-    stop: { id, name: stopName, ...(coordinates && { coordinates }) },
+    stop: expandStop(id, stopName, latitude, longitude),
     walk: walk * MINUTE,
+    ...(second && {
+      secondStop: {
+        stop: expandStop(second[0], second[1], second[3], second[4]),
+        walk: second[2] * MINUTE,
+      },
+    }),
   }
 }
 

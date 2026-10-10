@@ -6,6 +6,8 @@ const PlaceSchema = v.object({
   name: v.string(),
   stop: StopSchema,
   walk: v.number(),
+  // Added in 1.3 without a new version: older data simply has no second stop.
+  secondStop: v.optional(v.object({ stop: StopSchema, walk: v.number() })),
   coordinates: v.optional(CoordinatesSchema),
 })
 
