@@ -105,6 +105,11 @@
     "arrivalAt": "Ankunft {place}",
     "opposite": {
       "next": "Nächste: losgehen {leave}, an {arrival}"
+    },
+    "tab": {
+      "minutes": "Losgehen in {minutes} Min.",
+      "now": "Jetzt losgehen",
+      "at": "Losgehen um {time}"
     }
   },
   "plan": {

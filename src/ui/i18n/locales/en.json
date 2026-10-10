@@ -105,6 +105,11 @@
     "arrivalAt": "Arrival at {place}",
     "opposite": {
       "next": "Next: leave at {leave}, arrives {arrival}"
+    },
+    "tab": {
+      "minutes": "Leave in {minutes} min",
+      "now": "Leave now",
+      "at": "Leave at {time}"
     }
   },
   "plan": {
