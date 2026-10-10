@@ -18,6 +18,9 @@ __screenshots__/
 .env.local
 .env.*.local
 
+# Architecture decision records, kept on the maintainer's machine
+docs/adr/
+
 # Editors and operating systems
 .vscode/*
 !.vscode/extensions.json
