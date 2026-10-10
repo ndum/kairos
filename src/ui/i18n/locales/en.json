@@ -124,6 +124,8 @@
     "pinned": "Pinned",
     "details": "Details",
     "pin": "Pin",
+    "prefer": "Prefer these lines",
+    "preferredToast": "“{route}” now prefers {lines}.",
     "unpin": "Unpin",
     "pinnedToast": "Trip pinned. Its countdown appears under “Now”.",
     "sheet": {
@@ -163,6 +165,8 @@
     },
     "steps": "Steps",
     "step": "Step {current} of {total}",
+    "stepNumber": "Step {number}:",
+    "missingStops": "First choose a stop for the start and the destination.",
     "cancel": "Cancel",
     "back": "Back",
     "next": "Next",
@@ -170,12 +174,12 @@
     "origin": {
       "label": "Start",
       "title": "Where do you start?",
-      "text": "At home, for example. Choose the stop where you get on."
+      "text": "At home, for example. With the address, Kairos suggests the stops nearby."
     },
     "destination": {
       "label": "Destination",
       "title": "Where are you going?",
-      "text": "To work or to school, for example. Choose the stop where you get off."
+      "text": "To work or to school, for example. With the address or the name of the company, Kairos finds the stops nearby."
     },
     "place": {
       "name": "Name of the place",
@@ -194,16 +198,27 @@
         "origin": "From this place to the stop. On the way back it counts the other way round.",
         "destination": "From the stop to this place. On the way back it counts the other way round."
       },
+      "where": {
+        "label": "Address or company",
+        "hint": "Kairos suggests the stops nearby. The position stays on this device, only this search sends it to the timetable, rounded to about 100 m.",
+        "placeholder": "Messeplatz 1, Basel"
+      },
       "position": {
-        "label": "Exact position",
-        "hint": "Optional. Helps to choose the direction by location when the place is further from its stop. Stays on this device.",
         "set": "Use current location",
-        "update": "Update location",
-        "remove": "Remove location",
-        "found": "Location saved.",
+        "remove": "Remove the position",
+        "found": "Location taken over.",
         "denied": "No access to your location.",
         "unavailable": "Your location is not available right now.",
-        "removed": "Location removed."
+        "removed": "Position removed."
+      },
+      "nearby": {
+        "label": "Stops nearby",
+        "detail": "{distance}, about {minutes} min on foot",
+        "other": "Another stop",
+        "loading": "Kairos is looking for the stops nearby …",
+        "failed": "The stops nearby could not be loaded.",
+        "retry": "Try again",
+        "none": "There is no stop nearby. Search for it by its name."
       }
     },
     "errors": {
@@ -213,9 +228,21 @@
       "stopSame": "Choose a stop other than the one at the start."
     },
     "lines": {
-      "label": "Lines",
-      "title": "Which lines do you take?",
-      "text": "Kairos shows connections on these lines first. Others only appear when they are faster or when your line fails.",
+      "label": "Connection",
+      "title": "Which connection do you take?",
+      "text": "Kairos recommends the fastest one each time. If you prefer to always take a certain one, choose it here.",
+      "choice": "Connections",
+      "recommended": "Recommended",
+      "fastest": {
+        "title": "Always the fastest",
+        "text": "The connection that arrives first, on any line."
+      },
+      "variant": "{count} of {total} connections, {minutes} min on the way",
+      "then": "then",
+      "own": {
+        "title": "Choose your own lines",
+        "text": "Only connections on these lines. Others appear as a hint when they are faster or when your line fails."
+      },
       "loading": "Kairos is looking up the next connections …",
       "failed": "The connections could not be loaded. You can still save the route.",
       "retry": "Try again",
@@ -230,6 +257,11 @@
       "label": "Buffer when leaving",
       "hint": "Kairos plans this much extra time in both directions. An earlier connection that only works without the buffer appears as a hint."
     }
+  },
+  "placeField": {
+    "noResults": "No address and no company found.",
+    "failed": "Search is not available right now. Check your internet connection.",
+    "found": "Nothing found | One place found | {count} places found"
   },
   "stopField": {
     "noResults": "No stop found.",

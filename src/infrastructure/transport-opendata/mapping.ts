@@ -1,3 +1,4 @@
+import type { FoundPlace } from '@/application/ports/place-search'
 import { TimetableError } from '@/application/ports/timetable'
 import type { Journey, Leg, Line, StopEvent, Stopover, TransportMode } from '@/domain/journey'
 import type { StopRef } from '@/domain/route'
@@ -57,6 +58,15 @@ export function toLine(journey: NonNullable<ApiSection['journey']>): Line {
   else name = [category, number].filter(Boolean).join(' ')
 
   return { name, mode, headsign: journey.to ?? undefined }
+}
+
+/** Companies and buildings come as stations without an id. */
+export function toFoundPlace(station: ApiStation): FoundPlace[] {
+  const name = station.name?.trim()
+  const latitude = station.coordinate?.x
+  const longitude = station.coordinate?.y
+  if (!name || typeof latitude !== 'number' || typeof longitude !== 'number') return []
+  return [{ name, kind: 'poi', coordinates: { latitude, longitude } }]
 }
 
 export function toStop(station: ApiStation): StopRef {

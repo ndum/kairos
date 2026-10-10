@@ -4,7 +4,9 @@ import { createMemoryHistory } from 'vue-router'
 import { render } from 'vitest-browser-vue'
 
 import type { PinnedTrip } from '@/application/pinned-trip'
+import { PlaceFinder } from '@/application/place-finder'
 import type { LocationPort, LocationResult } from '@/application/ports/location'
+import type { PlaceSearchPort } from '@/application/ports/place-search'
 import type { TimetablePort } from '@/application/ports/timetable'
 import { RouteLibrary } from '@/application/route-library'
 import { StopSearch } from '@/application/stop-search'
@@ -32,6 +34,10 @@ export interface RenderOptions {
   /** Routes stored before the app starts. */
   readonly routes?: Route[]
   readonly timetable?: Partial<TimetablePort>
+  /** Street addresses found by the place search, none by default. */
+  readonly addresses?: PlaceSearchPort
+  /** Companies and buildings found by the place search, none by default. */
+  readonly companies?: PlaceSearchPort
   /** Time of the app clock, 07:00 on Monday, 12 October 2026 by default. */
   readonly now?: number
   /** Position of the device, unknown by default. */
@@ -40,9 +46,12 @@ export interface RenderOptions {
   readonly pinned?: PinnedTrip
 }
 
+const nothingFound: PlaceSearchPort = { searchPlaces: () => Promise.resolve([]) }
+
 const emptyTimetable: TimetablePort = {
   findJourneys: () => Promise.resolve([]),
   searchStops: () => Promise.resolve([]),
+  stopsNear: () => Promise.resolve([]),
 }
 
 /** Services with in-memory adapters and a clock that only moves when a test moves it. */
@@ -58,6 +67,11 @@ export function testServices(options: RenderOptions = {}) {
     timetable,
     routes: new RouteLibrary({ repository, createId: () => `route-${nextId++}` }),
     stops: new StopSearch(timetable),
+    places: new PlaceFinder({
+      addresses: options.addresses ?? nothingFound,
+      companies: options.companies ?? nothingFound,
+      timetable,
+    }),
     codec: new CompressedRouteCodec(),
     location: {
       current: () => Promise.resolve(options.location ?? { kind: 'unavailable' }),

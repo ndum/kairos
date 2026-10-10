@@ -16,6 +16,7 @@ import EmptyState from '../components/EmptyState.vue'
 import GlassCard from '../components/GlassCard.vue'
 import SegmentedControl from '../components/SegmentedControl.vue'
 import { useDialog } from '../composables/use-dialog'
+import { usePreferLines } from '../composables/use-prefer-lines'
 import { useNow } from '../composables/use-now'
 import RouteSwitcher from '../now/RouteSwitcher.vue'
 import { useRouteChoice } from '../now/use-route-choice'
@@ -110,6 +111,12 @@ function pin(trip: Trip): void {
   pins.pin(route, direction.value, trip)
   toasts.show(t('plan.pinnedToast'))
 }
+
+const { prefers, prefer } = usePreferLines()
+const canPrefer = computed(() => {
+  const route = choice.route.value
+  return !!route && !!selected.value && !prefers(route, selected.value)
+})
 </script>
 
 <template>
@@ -211,8 +218,10 @@ function pin(trip: Trip): void {
       :trip="selected"
       :ends
       :pinned="pins.isPinned(selected)"
+      :can-prefer
       @pin="pin(selected)"
       @unpin="pins.unpin"
+      @prefer="choice.route.value && prefer(choice.route.value, selected)"
     />
   </div>
 </template>

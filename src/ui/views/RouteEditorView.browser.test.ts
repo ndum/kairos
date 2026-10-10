@@ -31,6 +31,10 @@ test('creates a route in three steps', async () => {
   const screen = await renderWithApp(RouteEditorView, { path: '/routes/new', timetable })
 
   await expect.element(screen.getByRole('heading', { name: 'Wo startest du?' })).toBeVisible()
+  await expect
+    .element(screen.getByRole('button', { name: 'Schritt 1: Start' }))
+    .toHaveAttribute('aria-current', 'step')
+  await expect.element(screen.getByRole('button', { name: 'Schritt 3: Verbindung' })).toBeDisabled()
   await choosePlace(screen, 'Zuhause', 'River', 'Riverside')
   for (let step = 0; step < 3; step++) {
     await screen.getByRole('button', { name: 'Fussweg zur Haltestelle: eine Minute mehr' }).click()
@@ -42,14 +46,10 @@ test('creates a route in three steps', async () => {
   await screen.getByRole('button', { name: 'Weiter' }).click()
 
   await expect
-    .element(screen.getByRole('heading', { name: 'Welche Linien nimmst du?' }))
+    .element(screen.getByRole('heading', { name: 'Welche Verbindung nimmst du?' }))
     .toBeVisible()
-  await expect
-    .element(screen.getByText('Ohne Auswahl berücksichtigt Kairos alle Linien.'))
-    .toBeVisible()
-  await screen.getByRole('button', { name: 'S1 in einer Verbindung' }).click()
-  await expect.element(screen.getByText(/Keine der nächsten Verbindungen/)).toBeVisible()
-  await screen.getByRole('button', { name: '20 in einer Verbindung' }).click()
+  await expect.element(screen.getByRole('radio', { name: /Immer die schnellste/ })).toBeChecked()
+  await screen.getByRole('radio', { name: /S1\s*dann\s*20/ }).click()
   await expect.element(screen.getByText('Passt zu 1 von 2 Verbindungen.')).toBeVisible()
   await screen.getByRole('button', { name: 'Puffer beim Losgehen: eine Minute mehr' }).click()
   await expect
@@ -75,6 +75,21 @@ test('creates a route in three steps', async () => {
   await expect.poll(() => screen.router.currentRoute.value.name).toBe('routes')
 })
 
+test('lets the user pick own lines one by one', async () => {
+  const screen = await renderWithApp(RouteEditorView, { path: '/routes/new', timetable })
+
+  await choosePlace(screen, 'Zuhause', 'River', 'Riverside')
+  await screen.getByRole('button', { name: 'Weiter' }).click()
+  await choosePlace(screen, 'Arbeit', 'Market', 'Market Square')
+  await screen.getByRole('button', { name: 'Weiter' }).click()
+
+  await screen.getByRole('radio', { name: /Eigene Linien wählen/ }).click()
+  await screen.getByRole('button', { name: 'S1 in einer Verbindung' }).click()
+
+  await expect.element(screen.getByText(/Keine der nächsten Verbindungen/)).toBeVisible()
+  await expect.element(screen.getByRole('radio', { name: /Eigene Linien wählen/ })).toBeChecked()
+})
+
 test('asks for the missing details before moving on', async () => {
   const screen = await renderWithApp(RouteEditorView, { path: '/routes/new', timetable })
 
@@ -86,7 +101,7 @@ test('asks for the missing details before moving on', async () => {
   await expect.element(screen.getByRole('heading', { name: 'Wo startest du?' })).toBeVisible()
 })
 
-test('edits an existing route and keeps its id', async () => {
+test('edits an existing route on one page and keeps its id', async () => {
   const commute = route('commute', 'Commute', [home, office], [busLine('20')])
   const screen = await renderWithApp(RouteEditorView, {
     path: '/routes/commute',
@@ -97,13 +112,40 @@ test('edits an existing route and keeps its id', async () => {
 
   await expect.element(screen.getByRole('heading', { name: 'Route bearbeiten' })).toBeVisible()
   await expect
-    .element(screen.getByRole('combobox', { name: 'Haltestelle' }))
+    .element(
+      screen.getByRole('region', { name: 'Start' }).getByRole('combobox', { name: 'Haltestelle' }),
+    )
     .toHaveValue('Riverside')
-  await screen.getByRole('button', { name: 'Linien' }).click()
+  await expect
+    .element(
+      screen.getByRole('region', { name: 'Ziel' }).getByRole('combobox', { name: 'Haltestelle' }),
+    )
+    .toHaveValue('Market Square')
   await userEvent.fill(screen.getByRole('textbox', { name: 'Name der Route' }), 'Work')
   await screen.getByRole('button', { name: 'Route speichern' }).click()
 
   expect(screen.repository.routes).toEqual([{ ...commute, name: 'Work' }])
+})
+
+test('shows every missing detail of the route being edited', async () => {
+  const commute = route('commute', 'Commute', [home, office])
+  const screen = await renderWithApp(RouteEditorView, {
+    path: '/routes/commute',
+    props: { id: 'commute' },
+    routes: [commute],
+    timetable,
+  })
+
+  await userEvent.fill(screen.getByRole('textbox', { name: 'Name der Route' }), ' ')
+  await userEvent.fill(
+    screen.getByRole('region', { name: 'Ziel' }).getByRole('textbox', { name: 'Name des Ortes' }),
+    '',
+  )
+  await screen.getByRole('button', { name: 'Route speichern' }).click()
+
+  await expect.element(screen.getByText('Gib einen Namen ein.').first()).toBeVisible()
+  expect(screen.getByText('Gib einen Namen ein.').elements()).toHaveLength(2)
+  expect(screen.repository.routes).toEqual([commute])
 })
 
 test('explains when the route to edit no longer exists', async () => {

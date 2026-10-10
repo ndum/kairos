@@ -2,6 +2,7 @@ import type { Journey } from '@/domain/journey'
 import { type LineUsage, combineLineUsage, linesUsedBy } from '@/domain/line-preference'
 import type { StopRef } from '@/domain/route'
 import type { Instant } from '@/domain/time'
+import { type Variant, variantsOf } from '@/domain/variants'
 
 import type { TimetablePort } from './ports/timetable'
 
@@ -13,9 +14,11 @@ export interface LineOptions {
   readonly journeys: readonly Journey[]
   /** Lines in the order they are ridden on the way out, the ones only used back follow. */
   readonly lines: readonly LineUsage[]
+  /** The ways from the first stop to the second, the fastest first. */
+  readonly variants: readonly Variant[]
 }
 
-/** Suggests lines to prefer on a route, based on the next journeys between its stops. */
+/** Suggests lines and variants for a route, based on the next journeys between its stops. */
 export async function findLineOptions(
   timetable: TimetablePort,
   [first, second]: readonly [StopRef, StopRef],
@@ -29,5 +32,6 @@ export async function findLineOptions(
   return {
     journeys: [...outbound, ...back],
     lines: combineLineUsage(linesUsedBy(outbound), linesUsedBy(back)),
+    variants: variantsOf(outbound),
   }
 }

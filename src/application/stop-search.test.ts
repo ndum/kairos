@@ -9,7 +9,10 @@ function setup(cacheSize?: number) {
   const searchStops = vi
     .fn<TimetablePort['searchStops']>()
     .mockImplementation((text) => Promise.resolve([stop(`${text} Station`)]))
-  const search = new StopSearch({ findJourneys: vi.fn(), searchStops }, { cacheSize })
+  const search = new StopSearch(
+    { findJourneys: vi.fn(), searchStops, stopsNear: vi.fn() },
+    { cacheSize },
+  )
   return { search, searchStops }
 }
 

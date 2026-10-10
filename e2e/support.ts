@@ -5,17 +5,21 @@ import { type Page, test as base, expect as expectBase } from '@playwright/test'
 export { expect } from '@playwright/test'
 
 /**
- * Requests to the Transport API get an empty answer unless a test answers them itself, so no
- * test depends on the real timetable. Handlers registered later take precedence.
+ * Requests to the Transport API and the address search get an empty answer unless a test
+ * answers them itself, so no test depends on the real services. Handlers registered later
+ * take precedence.
  */
-export const test = base.extend<{ quietTimetable: undefined; policyGuard: undefined }>({
-  quietTimetable: [
+export const test = base.extend<{ quietServices: undefined; policyGuard: undefined }>({
+  quietServices: [
     async ({ page }, use) => {
       await page.route('https://transport.opendata.ch/**', (route) =>
         route.fulfill({
           contentType: 'application/json',
           body: '{"connections":[],"stations":[]}',
         }),
+      )
+      await page.route('https://api3.geo.admin.ch/**', (route) =>
+        route.fulfill({ contentType: 'application/json', body: '{"results":[]}' }),
       )
       await use(undefined)
     },

@@ -26,6 +26,7 @@ import type { Trip } from '@/domain/trip'
 import { urgencyOf } from '@/domain/urgency'
 
 import { useDialog } from '../composables/use-dialog'
+import { usePreferLines } from '../composables/use-prefer-lines'
 import { usePinStore } from '../stores/pin'
 import { useSceneStore } from '../stores/scene'
 import { useToastStore } from '../stores/toasts'
@@ -102,6 +103,9 @@ function pin({ trip, direction }: { trip: Trip; direction: Direction }): void {
   pins.pin(props.route, direction, trip)
   toasts.show(t('plan.pinnedToast'))
 }
+
+const { prefers, prefer } = usePreferLines()
+const canPrefer = computed(() => !!selected.value && !prefers(props.route, selected.value.trip))
 </script>
 
 <template>
@@ -150,8 +154,10 @@ function pin({ trip, direction }: { trip: Trip; direction: Direction }): void {
     :trip="selected.trip"
     :ends="selected.ends"
     :pinned="pins.isPinned(selected.trip)"
+    :can-prefer
     @pin="pin(selected)"
     @unpin="pins.unpin"
+    @prefer="prefer(route, selected.trip)"
   />
 </template>
 

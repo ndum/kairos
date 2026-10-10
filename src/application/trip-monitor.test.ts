@@ -32,7 +32,7 @@ describe('TripMonitor', () => {
     findJourneys = vi.fn<TimetablePort['findJourneys']>().mockResolvedValue(firstBatch)
     leaveIn = 10 * MINUTE
     monitor = new TripMonitor({
-      timetable: { findJourneys, searchStops: vi.fn() },
+      timetable: { findJourneys, searchStops: vi.fn(), stopsNear: vi.fn() },
       cache,
       clock,
       scheduler,

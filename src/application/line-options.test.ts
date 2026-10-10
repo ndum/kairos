@@ -21,7 +21,7 @@ describe('findLineOptions', () => {
     const signal = new AbortController().signal
 
     const options = await findLineOptions(
-      { findJourneys, searchStops: vi.fn() },
+      { findJourneys, searchStops: vi.fn(), stopsNear: vi.fn() },
       [home.stop, office.stop],
       at('07:00'),
       signal,
@@ -40,6 +40,16 @@ describe('findLineOptions', () => {
       { name: 'S1', mode: 'train', journeys: 1 },
       { name: '20', mode: 'bus', journeys: 2 },
       { name: 'S2', mode: 'train', journeys: 1 },
+    ])
+    expect(options.variants).toEqual([
+      {
+        lines: [
+          { name: 'S1', mode: 'train' },
+          { name: '20', mode: 'bus' },
+        ],
+        journeys: 1,
+        duration: 18 * 60_000,
+      },
     ])
   })
 })
