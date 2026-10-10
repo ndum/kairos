@@ -1,7 +1,8 @@
 {
   "app": {
     "name": "Kairos",
-    "tagline": "Wann du losmusst, auf die Minute."
+    "tagline": "Wann du losmusst, auf die Minute.",
+    "skip": "Zum Inhalt springen"
   },
   "nav": {
     "label": "Hauptnavigation",
@@ -279,6 +280,10 @@
     "language": {
       "label": "Sprache",
       "auto": "Automatisch"
+    },
+    "motion": {
+      "label": "Bewegung reduzieren",
+      "hint": "Die Landschaft bleibt still, Übergänge und Animationen entfallen."
     },
     "location": {
       "label": "Richtung nach Standort",
