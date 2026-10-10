@@ -194,16 +194,27 @@
         "origin": "From this place to the stop. On the way back it counts the other way round.",
         "destination": "From the stop to this place. On the way back it counts the other way round."
       },
+      "where": {
+        "label": "Address or company",
+        "hint": "Kairos suggests the stops nearby. Where the place lies stays on this device.",
+        "placeholder": "For example Messeplatz 1, Basel"
+      },
       "position": {
-        "label": "Exact position",
-        "hint": "Optional. Helps to choose the direction by location when the place is further from its stop. Stays on this device.",
         "set": "Use current location",
-        "update": "Update location",
-        "remove": "Remove location",
-        "found": "Location saved.",
+        "remove": "Remove the position",
+        "found": "Location taken over.",
         "denied": "No access to your location.",
         "unavailable": "Your location is not available right now.",
-        "removed": "Location removed."
+        "removed": "Position removed."
+      },
+      "nearby": {
+        "label": "Stops nearby",
+        "detail": "{distance}, about {minutes} min on foot",
+        "other": "Another stop",
+        "loading": "Kairos is looking for the stops nearby …",
+        "failed": "The stops nearby could not be loaded.",
+        "retry": "Try again",
+        "none": "There is no stop nearby. Search for it by its name."
       }
     },
     "errors": {
@@ -230,6 +241,11 @@
       "label": "Buffer when leaving",
       "hint": "Kairos plans this much extra time in both directions. An earlier connection that only works without the buffer appears as a hint."
     }
+  },
+  "placeField": {
+    "noResults": "No address and no company found.",
+    "failed": "Search is not available right now. Check your internet connection.",
+    "found": "Nothing found | One place found | {count} places found"
   },
   "stopField": {
     "noResults": "No stop found.",
