@@ -12,6 +12,7 @@ test-results/
 blob-report/
 .lighthouseci/
 __screenshots__/
+.vitest/
 
 # Local environment
 .env.local

@@ -1,0 +1,41 @@
+import { lineKey } from './line-preference'
+import type { Place, PreferredLine, Route } from './route'
+import { type Duration, MINUTE } from './time'
+
+export const NAME_MAX_LENGTH = 40
+export const WALK_MAX: Duration = 60 * MINUTE
+export const RESERVE_MAX: Duration = 30 * MINUTE
+
+const inRange = (value: Duration, max: Duration): boolean => value >= 0 && value <= max
+
+/** Names of routes and places must not be blank, and short enough for a phone screen. */
+export function isValidName(name: string): boolean {
+  const length = name.trim().length
+  return length > 0 && length <= NAME_MAX_LENGTH
+}
+
+export const isValidPlace = (place: Place): boolean =>
+  isValidName(place.name) &&
+  place.stop.id !== '' &&
+  inRange(place.walk, WALK_MAX) &&
+  inRange(place.reserve, RESERVE_MAX)
+
+export const hasDistinctStops = (route: Pick<Route, 'places'>): boolean =>
+  route.places[0].stop.id !== route.places[1].stop.id
+
+export const isValidRoute = (route: Route): boolean =>
+  isValidName(route.name) && route.places.every(isValidPlace) && hasDistinctStops(route)
+
+/** Trims line names and drops blanks and duplicates, keeping the first spelling. */
+export function normalizeLines(lines: readonly PreferredLine[]): PreferredLine[] {
+  const seen = new Set<string>()
+  const result: PreferredLine[] = []
+  for (const line of lines) {
+    const name = line.name.trim()
+    const key = lineKey(name)
+    if (name === '' || seen.has(key)) continue
+    seen.add(key)
+    result.push({ name, mode: line.mode })
+  }
+  return result
+}

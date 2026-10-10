@@ -12,6 +12,6 @@ const { t } = useI18n()
     :icon="IconRoute"
     :title="t('now.empty.title')"
     :text="t('now.empty.text')"
-    :action="{ label: t('now.empty.action'), to: { name: 'routes' } }"
+    :action="{ label: t('now.empty.action'), to: { name: 'route-new' } }"
   />
 </template>

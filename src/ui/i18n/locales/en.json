@@ -24,10 +24,97 @@
     }
   },
   "routes": {
+    "title": "Routes",
+    "add": "New route",
     "empty": {
       "title": "Your routes will appear here",
-      "text": "A route connects two places, each with its stop, walking time and reserve."
+      "text": "A route connects two places, each with its stop, walking time and reserve.",
+      "action": "Add a route"
+    },
+    "lines": "Lines",
+    "allLines": "All lines",
+    "walk": "{minutes} min walk",
+    "reserve": "{minutes} min reserve",
+    "edit": "Edit",
+    "editNamed": "Edit “{name}”",
+    "remove": "Delete",
+    "removeNamed": "Delete “{name}”",
+    "moveUp": "Move “{name}” up",
+    "moveDown": "Move “{name}” down",
+    "removed": "“{name}” deleted.",
+    "undo": "Undo",
+    "saved": "“{name}” saved.",
+    "notSaved": "This device does not let Kairos store data right now. Your routes are kept only until you close Kairos."
+  },
+  "editor": {
+    "newTitle": "New route",
+    "editTitle": "Edit route",
+    "notFound": {
+      "title": "Route not found",
+      "text": "This route no longer exists. It may have been deleted in another window.",
+      "action": "Go to routes"
+    },
+    "steps": "Steps",
+    "step": "Step {current} of {total}",
+    "cancel": "Cancel",
+    "back": "Back",
+    "next": "Next",
+    "save": "Save route",
+    "origin": {
+      "label": "Start",
+      "title": "Where do you start?",
+      "text": "At home, for example. Choose the stop where you get on."
+    },
+    "destination": {
+      "label": "Destination",
+      "title": "Where are you going?",
+      "text": "To work or to school, for example. Choose the stop where you get off."
+    },
+    "place": {
+      "name": "Name of the place",
+      "suggestions": {
+        "home": "Home",
+        "work": "Work",
+        "school": "School"
+      },
+      "stop": "Stop",
+      "stopPlaceholder": "Name of the stop",
+      "walk": "Walk",
+      "walkHint": "Minutes between the place and the stop.",
+      "reserve": "Reserve",
+      "reserveHint": "Extra minutes, so you do not have to run."
+    },
+    "errors": {
+      "nameMissing": "Enter a name.",
+      "nameTooLong": "{max} characters at most.",
+      "stopMissing": "Choose a stop from the list.",
+      "stopSame": "Choose a different stop than at the start."
+    },
+    "lines": {
+      "label": "Lines",
+      "title": "Which lines do you take?",
+      "text": "Kairos shows connections on these lines first. Others only appear when they are faster or when your line fails.",
+      "loading": "Kairos is looking up the next connections …",
+      "failed": "The connections could not be loaded. You can still save the route.",
+      "retry": "Try again",
+      "none": "No connections are running right now. Without a choice, Kairos considers all lines.",
+      "all": "Without a choice, Kairos considers all lines.",
+      "coverage": "Matches {count} of {total} connections.",
+      "uncovered": "None of the next connections runs on these lines only. Also choose the lines you change to, such as the bus after the train.",
+      "journeys": "in no connection | in one connection | in {count} connections",
+      "name": "Name of the route"
     }
+  },
+  "stopField": {
+    "noResults": "No stop found.",
+    "failed": "Search is not available right now. Check your internet connection.",
+    "found": "No stops found | One stop found | {count} stops found"
+  },
+  "field": {
+    "inMinutes": "in minutes",
+    "minutesShort": "min",
+    "lessMinutes": "{label}: one minute less",
+    "moreMinutes": "{label}: one minute more"
   },
   "credit": "Timetable data: opentransportdata.swiss"
 }

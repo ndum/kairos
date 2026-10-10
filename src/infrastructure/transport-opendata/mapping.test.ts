@@ -161,6 +161,10 @@ describe('toLine', () => {
       { name: '19', mode: 'bus' },
     ],
     [
+      { category: 'BN', number: 'M15' },
+      { name: 'M15', mode: 'bus' },
+    ],
+    [
       { category: 'T', number: '9' },
       { name: '9', mode: 'tram' },
     ],

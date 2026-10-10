@@ -29,6 +29,29 @@ test.describe('in English', () => {
   })
 })
 
+test.describe('with motion allowed', () => {
+  test.use({ reducedMotion: 'no-preference' })
+
+  test('animates the scene', async ({ page }) => {
+    await page.goto('/')
+
+    await expect.poll(() => page.evaluate(() => document.getAnimations().length)).toBeGreaterThan(0)
+  })
+})
+
+test.describe('with reduced motion', () => {
+  test('keeps the scene still', async ({ page }) => {
+    await page.goto('/')
+    await expect(page.getByRole('heading', { name: 'Noch keine Route' })).toBeVisible()
+
+    const running = await page.evaluate(
+      () =>
+        document.getAnimations().filter((animation) => animation.playState === 'running').length,
+    )
+    expect(running).toBe(0)
+  })
+})
+
 test.describe('at night', () => {
   test.use({ colorScheme: 'dark' })
 

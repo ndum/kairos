@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 
 import BrandMark from '../components/BrandMark.vue'
 import { NAVIGATION } from './navigation'
 
 const { t } = useI18n()
+const route = useRoute()
 </script>
 
 <template>
@@ -25,6 +27,7 @@ const { t } = useI18n()
         v-for="item in NAVIGATION"
         :key="item.name"
         :to="{ name: item.name }"
+        :aria-current="route.meta.section === item.name ? 'page' : undefined"
         class="desktop-tab flex h-full items-center gap-2 rounded-full px-4 font-semibold text-ink-muted"
       >
         <component :is="item.icon" aria-hidden="true" />
@@ -48,7 +51,7 @@ const { t } = useI18n()
   color: var(--color-ink);
 }
 
-.desktop-tab.router-link-exact-active {
+.desktop-tab[aria-current='page'] {
   background: var(--color-glass);
   color: var(--color-ink);
   box-shadow:

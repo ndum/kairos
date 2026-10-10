@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
+import { randomId } from './random-id'
 import { systemClock } from './system-clock'
 import { timerScheduler } from './timer-scheduler'
 
@@ -37,5 +38,14 @@ describe('timerScheduler', () => {
     vi.advanceTimersByTime(1000)
 
     expect(task).not.toHaveBeenCalled()
+  })
+})
+
+describe('randomId', () => {
+  it('creates short ids from an unambiguous alphabet', () => {
+    const ids = Array.from({ length: 200 }, randomId)
+
+    expect(ids.every((id) => /^[0-9a-hjkmnp-tv-z]{12}$/.test(id))).toBe(true)
+    expect(new Set(ids).size).toBe(ids.length)
   })
 })

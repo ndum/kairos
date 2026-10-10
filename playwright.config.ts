@@ -16,6 +16,9 @@ export default defineConfig({
     baseURL: `http://localhost:${port}`,
     locale: 'de-CH',
     timezoneId: 'Europe/Zurich',
+    // Without animations, actions do not wait for moving elements. The animated scene has
+    // its own test in app-shell.spec.ts.
+    reducedMotion: 'reduce',
     trace: 'on-first-retry',
   },
   projects: [

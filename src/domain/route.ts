@@ -1,4 +1,5 @@
 import type { Coordinates } from './geo'
+import type { Line } from './journey'
 import type { Duration } from './time'
 
 export interface StopRef {
@@ -19,12 +20,15 @@ export interface Place {
   readonly coordinates?: Coordinates
 }
 
+/** A line the user likes to take. Lines are matched by name, the mode sets their colour. */
+export type PreferredLine = Pick<Line, 'name' | 'mode'>
+
 export interface Route {
   readonly id: string
   readonly name: string
   readonly places: readonly [Place, Place]
-  /** Line names such as "S1" or "20". An empty list accepts every line. */
-  readonly preferredLines: readonly string[]
+  /** Lines such as the S1 or bus 20. An empty list accepts every line. */
+  readonly preferredLines: readonly PreferredLine[]
 }
 
 /** Outbound travels from the first place to the second, return the other way round. */

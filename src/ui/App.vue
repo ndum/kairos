@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 
+import ToastHost from './components/ToastHost.vue'
 import { useAppearance } from './composables/use-appearance'
 import AppTabBar from './layout/AppTabBar.vue'
 import AppTopBar from './layout/AppTopBar.vue'
@@ -21,6 +22,7 @@ const { still } = useAppearance()
     <p class="credit">{{ t('credit') }}</p>
   </div>
 
+  <ToastHost />
   <AppTabBar />
 </template>
 
