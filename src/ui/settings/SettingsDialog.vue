@@ -31,7 +31,8 @@ const useLocation = useLocationPreference()
 const keepAwake = useAwakePreference()
 const showWeather = useWeatherPreference()
 const canKeepAwake = 'wakeLock' in navigator
-const locationError = ref<string>()
+// The kind of problem, not its text, so the hint follows a change of language.
+const locationError = ref<'denied' | 'unavailable'>()
 let locationRequest = 0
 
 const VERSION = __APP_VERSION__
@@ -51,7 +52,7 @@ async function setLocation(enabled: boolean): Promise<void> {
   // The user may have switched again while the browser was still looking.
   if (request !== locationRequest || result.kind === 'found') return
   if (result.kind === 'denied') useLocation.value = false
-  locationError.value = t(`settings.location.${result.kind}`)
+  locationError.value = result.kind
 }
 
 const themes = computed(
@@ -109,7 +110,7 @@ const languages = computed(
           :model-value="useLocation"
           :label="t('settings.location.label')"
           :hint="t('settings.location.hint')"
-          :error="locationError"
+          :error="locationError && t(`settings.location.${locationError}`)"
           :icon="IconMapPin"
           :tone="2"
           @update:model-value="setLocation"
