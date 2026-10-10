@@ -9,8 +9,23 @@
     />
     <meta name="theme-color" content="#5d6cd0" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#03051a" media="(prefers-color-scheme: dark)" />
+    <meta name="apple-mobile-web-app-title" content="Kairos" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>Kairos</title>
+    <script>
+      // Applies the saved theme before the first paint to avoid a flash of the wrong one.
+      try {
+        const theme = localStorage.getItem('kairos:theme')
+        const dark =
+          theme === 'dark' ||
+          ((theme === null || theme === 'auto') &&
+            matchMedia('(prefers-color-scheme: dark)').matches)
+        document.documentElement.classList.toggle('dark', dark)
+      } catch {
+        // Storage is blocked; the app applies the system theme once it starts.
+      }
+    </script>
   </head>
   <body>
     <div id="app"></div>

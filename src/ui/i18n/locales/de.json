@@ -1,0 +1,33 @@
+{
+  "app": {
+    "name": "Kairos",
+    "tagline": "Wann du losmusst, auf die Minute."
+  },
+  "nav": {
+    "label": "Hauptnavigation",
+    "now": "Jetzt",
+    "plan": "Planen",
+    "routes": "Routen"
+  },
+  "now": {
+    "empty": {
+      "title": "Noch keine Route",
+      "text": "Lege eine Route zwischen zwei Orten an, zum Beispiel von zuhause zur Arbeit. Kairos zeigt dir dann, wann du losgehen musst.",
+      "action": "Route anlegen"
+    }
+  },
+  "plan": {
+    "empty": {
+      "title": "Zuerst eine Route anlegen",
+      "text": "Sobald du eine Route eingerichtet hast, planst du hier Fahrten nach Ankunfts- oder Abfahrtszeit.",
+      "action": "Zu den Routen"
+    }
+  },
+  "routes": {
+    "empty": {
+      "title": "Hier entstehen deine Routen",
+      "text": "Eine Route verbindet zwei Orte, jeweils mit Haltestelle, Fussweg und Reserve."
+    }
+  },
+  "credit": "Fahrplandaten: opentransportdata.swiss"
+}

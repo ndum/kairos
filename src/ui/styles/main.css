@@ -1,11 +1,196 @@
 @import 'tailwindcss';
+@import '@fontsource-variable/geist/wght.css';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Design tokens of the "Alpenglühen" look: a dawn sky over the Bernese Alps in the light
+ * theme and a night sky in the dark theme. Colour carries meaning only for urgency
+ * (go, soon, late) and transport modes (train, bus, walk).
+ */
+@theme {
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --color-scene-sky-1: #5d6cd0;
+  --color-scene-sky-2: #a7a3e2;
+  --color-scene-sky-3: #efb8c0;
+  --color-scene-sky-4: #ffdcc3;
+  --color-scene-sun: rgb(255 196 160 / 0.9);
+  --color-scene-moon: rgb(236 240 255 / 0);
+  --color-scene-glow: rgb(255 166 176 / 0.85);
+  --color-scene-snow: #fff5f2;
+  --color-scene-ridge-far: #9995c5;
+  --color-scene-ridge-mid: #6e6da6;
+  --color-scene-ridge-near: #4a4982;
+  --color-scene-ground: #2e2d5f;
+  --color-scene-rail: rgb(255 255 255 / 0.62);
+  --color-scene-wire: rgb(255 255 255 / 0.5);
+  --color-scene-platform: rgb(255 255 255 / 0.4);
+  --color-scene-sign: #1d2a72;
+  --color-scene-cloud: rgb(255 255 255 / 0.55);
+  --color-scene-star: rgb(255 255 255 / 0);
+  --color-scene-beam: rgb(255 240 205 / 0);
+  --color-train-body: #fbfbff;
+  --color-train-shade: #dfe1f2;
+  --color-train-door: #eceefa;
+  --color-train-window: #272a5c;
+  --color-train-bogie: #22234d;
+
+  --color-ink: #14163a;
+  --color-ink-muted: #3f4171;
+  --color-ink-subtle: #5c5e93;
+  --color-glass: rgb(255 255 255 / 0.56);
+  --color-glass-deep: rgb(255 255 255 / 0.32);
+  --color-glass-soft: rgb(255 255 255 / 0.42);
+  --color-edge: rgb(255 255 255 / 0.95);
+  --color-edge-faint: rgb(255 255 255 / 0.2);
+  --color-highlight: rgb(255 255 255 / 0.6);
+  --color-hairline: rgb(20 22 58 / 0.1);
+  --color-spotlight: rgb(255 255 255 / 0.3);
+
+  --color-train: #3f52d4;
+  --color-bus: #0d977a;
+  --color-walk: #7f82b2;
+  --color-buffer: rgb(20 22 58 / 0.12);
+  --color-on-vehicle: #ffffff;
+
+  --color-go: #15854e;
+  --color-go-soft: rgb(21 133 78 / 0.13);
+  --color-soon: #b46600;
+  --color-soon-soft: rgb(180 102 0 / 0.14);
+  --color-late: #d23539;
+  --color-late-soft: rgb(210 53 57 / 0.13);
+
+  --shadow-glass:
+    0 1px 2px rgb(34 30 92 / 0.08), 0 16px 36px -12px rgb(34 30 92 / 0.3),
+    0 44px 90px -34px rgb(34 30 92 / 0.38);
+
+  --radius-card: clamp(1.5rem, 1.7vw, 2.625rem);
+  --radius-inner: clamp(0.875rem, 1vw, 1.5rem);
+}
+
+.dark {
+  --color-scene-sky-1: #03051a;
+  --color-scene-sky-2: #0c1140;
+  --color-scene-sky-3: #211c58;
+  --color-scene-sky-4: #382866;
+  --color-scene-sun: rgb(160 172 255 / 0.28);
+  --color-scene-moon: rgb(236 240 255 / 0.95);
+  --color-scene-glow: rgb(150 165 255 / 0.45);
+  --color-scene-snow: #a9b2e6;
+  --color-scene-ridge-far: #22275a;
+  --color-scene-ridge-mid: #171a44;
+  --color-scene-ridge-near: #0f112e;
+  --color-scene-ground: #08091c;
+  --color-scene-rail: rgb(165 175 255 / 0.42);
+  --color-scene-wire: rgb(165 175 255 / 0.3);
+  --color-scene-platform: rgb(165 175 255 / 0.2);
+  --color-scene-sign: #2b3a9c;
+  --color-scene-cloud: rgb(140 150 230 / 0.1);
+  --color-scene-star: rgb(255 255 255 / 0.95);
+  --color-scene-beam: rgb(255 236 190 / 0.5);
+  --color-train-body: #d6dbf6;
+  --color-train-shade: #b3b9e1;
+  --color-train-door: #c6ccef;
+  --color-train-window: #ffd37c;
+  --color-train-bogie: #04051a;
+
+  --color-ink: #f2f2ff;
+  --color-ink-muted: #babde8;
+  --color-ink-subtle: #9093c6;
+  --color-glass: rgb(36 38 92 / 0.5);
+  --color-glass-deep: rgb(14 15 46 / 0.62);
+  --color-glass-soft: rgb(255 255 255 / 0.06);
+  --color-edge: rgb(255 255 255 / 0.34);
+  --color-edge-faint: rgb(255 255 255 / 0.05);
+  --color-highlight: rgb(255 255 255 / 0.12);
+  --color-hairline: rgb(255 255 255 / 0.09);
+  --color-spotlight: rgb(150 165 255 / 0.14);
+
+  --color-train: #8e9bff;
+  --color-bus: #3ad8ad;
+  --color-walk: #9a9dcf;
+  --color-buffer: rgb(255 255 255 / 0.12);
+  --color-on-vehicle: #0b0c2b;
+
+  --color-go: #62df99;
+  --color-go-soft: rgb(98 223 153 / 0.12);
+  --color-soon: #ffc447;
+  --color-soon-soft: rgb(255 196 71 / 0.13);
+  --color-late: #ff7272;
+  --color-late-soft: rgb(255 114 114 / 0.14);
+
+  --shadow-glass:
+    0 1px 2px rgb(0 0 0 / 0.3), 0 16px 36px -12px rgb(0 0 0 / 0.55),
+    0 44px 90px -34px rgb(0 0 0 / 0.7);
+
+  color-scheme: dark;
+}
 
 @layer base {
   html {
-    color-scheme: light dark;
+    color-scheme: light;
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
-    @apply bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100;
+    @apply bg-scene-sky-2 font-sans text-ink antialiased;
   }
+
+  :focus-visible {
+    outline: 2px solid var(--color-train);
+    outline-offset: 3px;
+  }
+}
+
+/* Frosted glass with a fine gradient edge, used for cards and controls. */
+@utility glass {
+  position: relative;
+  isolation: isolate;
+  background: linear-gradient(165deg, var(--color-glass), var(--color-glass-deep));
+  box-shadow:
+    var(--shadow-glass),
+    inset 0 1px 0 var(--color-highlight);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  backdrop-filter: blur(30px) saturate(180%);
+
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(
+      150deg,
+      var(--color-edge),
+      var(--color-edge-faint) 38%,
+      var(--color-edge-faint) 64%,
+      color-mix(in srgb, var(--color-edge) 55%, transparent)
+    );
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
+/* Applies when the user asks for less motion in the system or in the app. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
 }
