@@ -57,7 +57,8 @@
       "time": "Direction by time of day",
       "locating": "Finding your location …",
       "denied": "No access to the location, direction by time of day",
-      "unavailable": "Location not found, direction by time of day"
+      "unavailable": "Location not found, direction by time of day",
+      "schedule": "Direction by schedule"
     },
     "swap": "Switch direction",
     "journey": {
@@ -87,7 +88,8 @@
       "details": "Show details",
       "times": "departs {departure}, arrives {arrival}",
       "leave": "leave",
-      "arrival": "arrives {time}"
+      "arrival": "arrives {time}",
+      "earlier": "Earlier"
     },
     "live": {
       "loading": "Loading",
@@ -105,6 +107,11 @@
     "arrivalAt": "Arrival at {place}",
     "opposite": {
       "next": "Next: leave at {leave}, arrives {arrival}"
+    },
+    "schedule": {
+      "inTime": "In time for {time}",
+      "late": "Too late for {time}",
+      "returnFrom": "Way back from {time}"
     }
   },
   "plan": {
@@ -241,7 +248,8 @@
       "nameMissing": "Enter a name.",
       "nameTooLong": "{max} characters at most.",
       "stopMissing": "Choose a stop from the list.",
-      "stopSame": "Choose a stop other than the one at the start."
+      "stopSame": "Choose a stop other than the one at the start.",
+      "returnBeforeArrival": "The way back starts before the arrival."
     },
     "lines": {
       "label": "Connection",
@@ -279,6 +287,15 @@
       "now": "Go to “Now”",
       "another": "Add another route",
       "routes": "Go to routes"
+    },
+    "schedule": {
+      "label": "Schedule",
+      "hint": "For fixed times, at school for example. On these days, Kairos shows the last connection that gets you there in time, and from the time of the way back the connections back. Empty fields leave a day as usual.",
+      "arriveBy": "Arrive by",
+      "returnFrom": "Way back from",
+      "arriveByOn": "{day}: arrive by",
+      "returnFromOn": "{day}: way back from",
+      "copyMonday": "Use Monday for Tuesday to Friday"
     }
   },
   "placeField": {

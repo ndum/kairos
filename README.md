@@ -13,7 +13,7 @@ The board is the heart of the app. It shows the next connection of your route wi
 
 Everything on the board is live. Delays of two minutes or more move the leave time, changed platforms stand out, and a trip on other lines that arrives earlier shows up as a hint. Every trip opens its details with the stops in between, the platforms, the train number and the operator. From there you can pin the trip, which then gets a countdown of its own, or let the route prefer its lines. The planner finds connections for a given departure or arrival time.
 
-A route connects two places, for example home and work. You find a place by its address, by the name of a company or with your current position, and Kairos suggests the stops nearby with an estimate of the walk to each. In the last step you decide whether Kairos always takes the fastest connection, which is the default, or sticks to one of the usual variants or to lines of your choice. Once saved, a new route goes straight to the board, or you add the next one right away. Routes can be shared with a link or a QR code, which never carry the positions of the places.
+A route connects two places, for example home and work. You find a place by its address, by the name of a company or with your current position, and Kairos suggests the stops nearby with an estimate of the walk to each. In the last step you decide whether Kairos always takes the fastest connection, which is the default, or sticks to one of the usual variants or to lines of your choice. For school or work with fixed times, a schedule per weekday tells Kairos by when you have to be there and from when you head back. On those days the board counts down to the last connection that still gets you there in time, lists the earlier ones as a fallback and switches to the way back at the end of the day. Once saved, a new route goes straight to the board, or you add the next one right away. Routes can be shared with a link or a QR code, which never carry the positions of the places.
 
 With access to the location, Kairos opens the board in the direction that starts where you are, and the board tells you whether the location or the time of day decided. The app installs on the iPhone Home Screen and on the desktop, starts offline with the last data it has, can keep the screen awake and comes in German and English, light and dark, built to WCAG 2.2 AA.
 
@@ -54,6 +54,8 @@ flowchart TD
     reach -- only without it --> tight[Hint above the countdown]
     reach -- no --> missed[Left out]
 ```
+
+A schedule changes the starting point. With a time to arrive by, Kairos asks the timetable for the connections that arrive by then and counts down to the last one that is still reachable with the buffer, so you leave as late as possible. Once none is left, the board shows the next connections and says that they arrive too late. With a time for the way back, the board starts with the first connection you can reach after it. The schedule also picks the direction of the board: the way there until an hour after the arrival time, then the way back. The location of the device, if allowed, still comes first.
 
 ## Architecture
 

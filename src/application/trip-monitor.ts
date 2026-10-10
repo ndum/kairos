@@ -31,6 +31,8 @@ export interface MonitorTarget {
   readonly nextLeaveAt: (journeys: readonly Journey[], now: Instant) => Instant | null
   /** Asks for journeys from this time instead of now, for example for a trip planned later. */
   readonly at?: Instant
+  /** Asks for the journeys that arrive by the time instead of those that leave after it. */
+  readonly arriveBy?: boolean
 }
 
 export interface TripMonitorDependencies {
@@ -51,8 +53,10 @@ const INITIAL: MonitorSnapshot = {
   nextRefreshAt: null,
 }
 
-export const cacheKey = (from: StopRef, to: StopRef, at?: Instant): string =>
-  at === undefined ? `${from.id}>${to.id}` : `${from.id}>${to.id}@${at}`
+export function cacheKey(from: StopRef, to: StopRef, at?: Instant, arriveBy = false): string {
+  if (at === undefined) return `${from.id}>${to.id}`
+  return `${from.id}>${to.id}${arriveBy ? '<' : '@'}${at}`
+}
 
 /**
  * Keeps the journeys of one connection up to date. Refreshes adapt to how soon the user has
@@ -96,7 +100,7 @@ export class TripMonitor {
   watch(target: MonitorTarget): void {
     this.#cancel()
     this.#target = target
-    this.#key = cacheKey(target.from, target.to, target.at)
+    this.#key = cacheKey(target.from, target.to, target.at, target.arriveBy)
     this.#failures = 0
 
     const cached = this.#deps.cache.read(this.#key)
@@ -131,6 +135,7 @@ export class TripMonitor {
           from: target.from,
           to: target.to,
           at: Math.max(now, target.at ?? now),
+          ...(target.arriveBy && { arriveBy: true }),
           limit: JOURNEY_LIMIT,
         },
         request.signal,

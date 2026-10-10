@@ -70,6 +70,18 @@ describe('TripMonitor', () => {
     expect(cache.read(key)).toBeNull()
   })
 
+  it('asks for the journeys that arrive by a time and keeps them apart', async () => {
+    monitor.watch({ ...target, at: at('07:55'), arriveBy: true })
+    await settle()
+
+    expect(findJourneys).toHaveBeenCalledWith(
+      { from, to, at: at('07:55'), arriveBy: true, limit: JOURNEY_LIMIT },
+      expect.any(AbortSignal),
+    )
+    expect(cache.read(cacheKey(from, to, at('07:55'), true))?.journeys).toEqual(firstBatch)
+    expect(cache.read(cacheKey(from, to, at('07:55')))).toBeNull()
+  })
+
   it('asks from now on once the later time has come', async () => {
     monitor.watch({ ...target, at: at('06:00') })
     await settle()
