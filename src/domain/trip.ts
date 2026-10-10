@@ -1,5 +1,13 @@
-import { type Journey, delayOf, expectedTime, isRide, walkingTime } from './journey'
-import type { Endpoints } from './route'
+import {
+  type Journey,
+  delayOf,
+  expectedTime,
+  firstStopOf,
+  isRide,
+  lastStopOf,
+  walkingTime,
+} from './journey'
+import { type Endpoints, walkTo } from './route'
 import { type Duration, type Instant, minutes } from './time'
 
 /**
@@ -37,8 +45,12 @@ export function planTrip(
   const reportedDelay = delayOf(firstRide.departure)
   const delay = reportedDelay >= DELAY_THRESHOLD ? reportedDelay : 0
   const departureAt = firstRide.departure.scheduledAt + delay
-  const walkToFirstRide = walkingTime(journey.legs.slice(0, firstRideIndex)) + origin.walk
-  const walkFromLastRide = walkingTime(journey.legs.slice(lastRideIndex + 1)) + destination.walk
+  // A place with two stops has a walk of its own to each of them.
+  const walkToFirstRide =
+    walkingTime(journey.legs.slice(0, firstRideIndex)) + walkTo(origin, firstStopOf(journey)?.id)
+  const walkFromLastRide =
+    walkingTime(journey.legs.slice(lastRideIndex + 1)) +
+    walkTo(destination, lastStopOf(journey)?.id)
   const latestLeaveAt = departureAt - walkToFirstRide
 
   return {

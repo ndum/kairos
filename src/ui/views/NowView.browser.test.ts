@@ -4,6 +4,7 @@ import { pinTrip } from '@/application/pinned-trip'
 import type { TimetablePort } from '@/application/ports/timetable'
 import type { Journey } from '@/domain/journey'
 import { endpoints } from '@/domain/route'
+import { minutes } from '@/domain/time'
 import { planTrip } from '@/domain/trip'
 import {
   at,
@@ -14,6 +15,7 @@ import {
   office,
   ride,
   route,
+  stop,
   trainLine,
   walk,
 } from '@/test/builders'
@@ -127,6 +129,28 @@ test('opens the details of the next trip back', async () => {
 
   const sheet = screen.getByRole('dialog', { name: 'Losgehen um 07:22' })
   await expect.element(sheet.getByText('ab Market Square')).toBeVisible()
+})
+
+test('takes the second stop of a place when its connection arrives first', async () => {
+  const bus = { stop: stop('Riverside, Bus Stop'), walk: minutes(3) }
+  const withBus = route('commute', 'Commute', [{ ...home, secondStop: bus }, office])
+  const byBus = journey(
+    ride('7', 'Riverside, Bus Stop', '07:12', 'Market Square', '07:30', { mode: 'bus' }),
+  )
+  const screen = await renderWithApp(NowView, {
+    routes: [withBus],
+    timetable: {
+      findJourneys: ({ from }) =>
+        Promise.resolve(
+          from.id === bus.stop.id ? [byBus] : from.id === home.stop.id ? morning : [],
+        ),
+    },
+  })
+  const hero = screen.getByRole('region', { name: /Home nach Office/ })
+
+  // Three minutes to the bus stop and three of buffer: leave at 07:06, arrive at 07:35.
+  await expect.element(hero).toMatchTextContent(/Losgehen in\s*6\s*Min\./)
+  await expect.element(hero.getByText('ab Riverside, Bus Stop')).toBeVisible()
 })
 
 test('warns about an earlier trip that is only reachable without the buffer', async () => {

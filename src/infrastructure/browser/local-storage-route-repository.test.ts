@@ -29,6 +29,22 @@ describe('LocalStorageRouteRepository', () => {
     expect(repository.load()).toEqual([commute, training])
   })
 
+  it('keeps the second stop of a place', () => {
+    const withBus = route('bus', 'Bus', [
+      {
+        ...home,
+        secondStop: {
+          stop: { id: 'riverside-bus', name: 'Riverside, Bus Stop' },
+          walk: minutes(3),
+        },
+      },
+      office,
+    ])
+    repository.save([withBus])
+
+    expect(repository.load()).toEqual([withBus])
+  })
+
   it('starts without routes when nothing usable is stored', () => {
     expect(repository.load()).toEqual([])
 

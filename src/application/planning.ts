@@ -1,5 +1,5 @@
 import { splitByPreference } from '@/domain/line-preference'
-import type { Endpoints } from '@/domain/route'
+import { type Endpoints, stopPairs, walkTo } from '@/domain/route'
 import { distinctByFirstDeparture, withoutSlowerTrips } from '@/domain/selection'
 import type { Instant } from '@/domain/time'
 import { type Trip, planTrip } from '@/domain/trip'
@@ -38,16 +38,19 @@ export async function planTrips(
   signal?: AbortSignal,
 ): Promise<Plan> {
   const { origin, destination, buffer } = ends
-  const between = { from: origin.stop, to: destination.stop, limit: PLAN_LIMIT }
-  const query: JourneyQuery =
-    request.mode === 'depart'
-      ? { ...between, at: request.at + origin.walk + buffer }
-      : { ...between, at: request.at - destination.walk, arriveBy: true }
+  // Every pair of stops is asked with its own walks, so a time at the place fits each.
+  const queries = stopPairs(ends).map(({ from, to }): JourneyQuery => {
+    const between = { from, to, limit: PLAN_LIMIT }
+    return request.mode === 'depart'
+      ? { ...between, at: request.at + walkTo(origin, from.id) + buffer }
+      : { ...between, at: request.at - walkTo(destination, to.id), arriveBy: true }
+  })
 
   const fits = (trip: Trip): boolean =>
     request.mode === 'depart' ? trip.leaveAt >= request.at : trip.arrivalAt <= request.at
 
-  const journeys = await timetable.findJourneys(query, signal)
+  const answers = await Promise.all(queries.map((query) => timetable.findJourneys(query, signal)))
+  const journeys = answers.flat()
   const trips = journeys
     .map((journey) => planTrip(journey, ends))
     .filter((trip) => trip !== null)

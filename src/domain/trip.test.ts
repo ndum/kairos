@@ -9,6 +9,7 @@ import {
   morningCommute,
   office,
   ride,
+  stop,
   walk,
 } from '@/test/builders'
 
@@ -24,6 +25,20 @@ describe('planTrip', () => {
       arrivalAt: at('07:28'),
       delay: 0,
     })
+  })
+
+  it('takes the walk to the second stop of a place when the journey starts there', () => {
+    const bus = { stop: stop('Riverside, Bus Stop'), walk: minutes(3) }
+    const homeWithBus = { ...home, secondStop: bus }
+    const byBus = journey(
+      ride('7', 'Riverside, Bus Stop', '07:05', 'Market Square', '07:25', { mode: 'bus' }),
+    )
+
+    expect(planTrip(byBus, ends(homeWithBus, office))).toMatchObject({
+      latestLeaveAt: at('07:02'),
+      leaveAt: at('06:59'),
+    })
+    expect(planTrip(morningCommute('07:05'), ends(homeWithBus, office))?.leaveAt).toBe(at('06:54'))
   })
 
   it('includes walks between the origin stop and the first vehicle', () => {

@@ -3,7 +3,7 @@ import { type Ref, computed, onScopeDispose, shallowRef, watch } from 'vue'
 
 import { buildBoard, nextLeaveAt } from '@/application/board'
 import type { MonitorSnapshot } from '@/application/trip-monitor'
-import { type Direction, type Route, endpoints } from '@/domain/route'
+import { type Direction, type Route, endpoints, stopPairs } from '@/domain/route'
 import type { Instant } from '@/domain/time'
 
 import { useServices } from '../services'
@@ -26,8 +26,7 @@ export function useLiveBoard(route: Ref<Route>, direction: Ref<Direction>, now: 
     ends,
     (current) => {
       monitor.watch({
-        from: current.origin.stop,
-        to: current.destination.stop,
+        pairs: stopPairs(current),
         nextLeaveAt: (journeys, at) => nextLeaveAt(buildBoard(journeys, current, lines.value, at)),
       })
     },

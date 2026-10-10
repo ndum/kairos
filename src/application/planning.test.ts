@@ -1,6 +1,17 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import { at, commute, home, journey, morningCommute, office, ride, walk } from '@/test/builders'
+import { minutes } from '@/domain/time'
+import {
+  at,
+  commute,
+  home,
+  journey,
+  morningCommute,
+  office,
+  ride,
+  stop,
+  walk,
+} from '@/test/builders'
 
 import { PLAN_LIMIT, planTrips } from './planning'
 import type { TimetablePort } from './ports/timetable'
@@ -29,6 +40,22 @@ describe('planTrips', () => {
     expect(findJourneys).toHaveBeenCalledWith(
       { from: home.stop, to: office.stop, at: at('07:01'), limit: PLAN_LIMIT },
       signal,
+    )
+  })
+
+  it('asks for every pair of stops with the walk to each of them', async () => {
+    const { timetable: source, findJourneys } = timetable()
+    const bus = { stop: stop('Riverside, Bus Stop'), walk: minutes(3) }
+
+    await planTrips(source, { ...ends, origin: { ...home, secondStop: bus } }, [], {
+      mode: 'depart',
+      at: at('06:50'),
+    })
+
+    expect(findJourneys).toHaveBeenCalledTimes(2)
+    expect(findJourneys).toHaveBeenCalledWith(
+      { from: bus.stop, to: office.stop, at: at('06:56'), limit: PLAN_LIMIT },
+      undefined,
     )
   })
 

@@ -7,7 +7,7 @@ import IconPinned from '~icons/tabler/pinned'
 import { currentJourney, type PinnedTrip } from '@/application/pinned-trip'
 import type { MonitorSnapshot } from '@/application/trip-monitor'
 import { ridesOf } from '@/domain/journey'
-import { type Route, endpoints } from '@/domain/route'
+import { type Route, endpoints, stopPairs } from '@/domain/route'
 import { type Instant, MINUTE } from '@/domain/time'
 import { planTrip } from '@/domain/trip'
 import { urgencyOf } from '@/domain/urgency'
@@ -44,8 +44,7 @@ watch(
   [() => props.pinned, ends],
   ([pinned, current]) => {
     monitor.watch({
-      from: current.origin.stop,
-      to: current.destination.stop,
+      pairs: stopPairs(current),
       at: pinned.departureAt - 5 * MINUTE,
       nextLeaveAt: (journeys) =>
         planTrip(currentJourney(pinned, journeys), current)?.leaveAt ?? null,

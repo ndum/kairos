@@ -16,7 +16,11 @@ export interface ImportItem {
 }
 
 const samePlace = (a: Place, b: Place): boolean =>
-  a.name === b.name && a.stop.id === b.stop.id && a.walk === b.walk
+  a.name === b.name &&
+  a.stop.id === b.stop.id &&
+  a.walk === b.walk &&
+  a.secondStop?.stop.id === b.secondStop?.stop.id &&
+  a.secondStop?.walk === b.secondStop?.walk
 
 function sameRoute(a: Route, b: Route): boolean {
   const lines = (route: Route): string =>
