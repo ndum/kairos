@@ -2,12 +2,14 @@
 import { computed, useId } from 'vue'
 import { useI18n } from 'vue-i18n'
 import IconArrowsExchange from '~icons/tabler/arrows-exchange'
+import IconListDetails from '~icons/tabler/list-details'
 
 import type { Board } from '@/application/board'
 import type { MonitorStatus } from '@/application/trip-monitor'
 import { ridesOf } from '@/domain/journey'
 import type { Endpoints } from '@/domain/route'
 import type { Instant } from '@/domain/time'
+import type { Trip } from '@/domain/trip'
 
 import BaseButton from '../components/BaseButton.vue'
 import GlassCard from '../components/GlassCard.vue'
@@ -23,7 +25,7 @@ const props = defineProps<{
   status: MonitorStatus
 }>()
 
-const emit = defineEmits<{ swap: [] }>()
+const emit = defineEmits<{ swap: []; details: [trip: Trip] }>()
 
 const { t } = useI18n()
 const format = useFormat()
@@ -77,10 +79,16 @@ const countdown = computed(() => (main.value ? countdownTo(main.value.leaveAt, p
       {{ status === 'loading' ? t('now.loading') : t('now.noTrips') }}
     </p>
 
-    <BaseButton class="mt-1 self-start" @click="emit('swap')">
-      <IconArrowsExchange aria-hidden="true" />
-      {{ t('now.swap') }}
-    </BaseButton>
+    <div class="mt-1 flex flex-wrap gap-2">
+      <BaseButton @click="emit('swap')">
+        <IconArrowsExchange aria-hidden="true" />
+        {{ t('now.swap') }}
+      </BaseButton>
+      <BaseButton v-if="main" variant="quiet" @click="emit('details', main)">
+        <IconListDetails aria-hidden="true" />
+        {{ t('plan.details') }}
+      </BaseButton>
+    </div>
   </GlassCard>
 </template>
 

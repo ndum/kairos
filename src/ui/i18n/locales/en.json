@@ -69,6 +69,8 @@
       "until": "to {stop}, arrives {time}",
       "transfer": "Change at {stop}",
       "transferTime": "no time to change | 1 min to change | {count} min to change",
+      "trainNumber": "Train {number}",
+      "stopovers": "no stops in between | 1 stop in between | {count} stops in between",
       "transferWithWalk": "{walk} min walk, {time}",
       "walkFrom": "{minutes} min walk from {stop}"
     },
@@ -79,6 +81,7 @@
     "upcoming": {
       "title": "Later",
       "empty": "No further connections.",
+      "details": "Show details",
       "times": "departs {departure}, arrives {arrival}"
     },
     "live": {

@@ -69,6 +69,8 @@
       "until": "bis {stop}, an {time}",
       "transfer": "Umsteigen in {stop}",
       "transferTime": "keine Zeit zum Umsteigen | 1 Min. zum Umsteigen | {count} Min. zum Umsteigen",
+      "trainNumber": "Zug {number}",
+      "stopovers": "keine Zwischenhalte | 1 Zwischenhalt | {count} Zwischenhalte",
       "transferWithWalk": "{walk} Min. Fussweg, {time}",
       "walkFrom": "{minutes} Min. Fussweg ab {stop}"
     },
@@ -79,7 +81,8 @@
     "upcoming": {
       "title": "Danach",
       "empty": "Keine weiteren Verbindungen.",
-      "times": "ab {departure}, an {arrival}"
+      "times": "ab {departure}, an {arrival}",
+      "details": "Details anzeigen"
     },
     "live": {
       "loading": "Lädt",

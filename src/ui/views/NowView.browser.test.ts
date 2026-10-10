@@ -75,6 +75,44 @@ test('shows the connection step by step and the trips after it', async () => {
   await expect.element(later).toMatchTextContent(/07:24.*07:39/)
 })
 
+test('opens the details of a later trip and pins it', async () => {
+  const screen = await renderWithApp(NowView, { routes: [commute], timetable: timetable(morning) })
+
+  await screen
+    .getByRole('region', { name: 'Danach' })
+    .getByRole('button', { name: /07:24/ })
+    .click()
+
+  const sheet = screen.getByRole('dialog', { name: 'Losgehen um 07:24' })
+  await expect.element(sheet.getByText('ab Riverside')).toBeVisible()
+  await sheet.getByRole('button', { name: 'Merken' }).click()
+
+  await expect.element(screen.getByRole('region', { name: 'Gemerkte Fahrt' })).toBeVisible()
+})
+
+test('opens the details of the next trip back', async () => {
+  // Back on the preferred lines, so the trip counts for the board.
+  const back = journey(
+    ride('20', 'Market Square', '07:30', 'Central, Bus Station', '07:35', { mode: 'bus' }),
+    walk('Central, Bus Station', 'Central', 4),
+    ride('S1', 'Central', '07:45', 'Riverside', '07:54'),
+  )
+  const screen = await renderWithApp(NowView, {
+    routes: [commute],
+    timetable: {
+      findJourneys: ({ from }) => Promise.resolve(from.id === home.stop.id ? morning : [back]),
+    },
+  })
+
+  await screen
+    .getByRole('region', { name: /Office nach Home/ })
+    .getByRole('button', { name: 'Details' })
+    .click()
+
+  const sheet = screen.getByRole('dialog', { name: 'Losgehen um 07:22' })
+  await expect.element(sheet.getByText('ab Market Square')).toBeVisible()
+})
+
 test('warns about an earlier trip that is only reachable without the buffer', async () => {
   const screen = await renderWithApp(NowView, {
     routes: [commute],
