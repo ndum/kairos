@@ -1,4 +1,4 @@
-import { afterEach, expect, test } from 'vitest'
+import { afterEach, expect, test, vi } from 'vitest'
 
 import { pinTrip } from '@/application/pinned-trip'
 import type { TimetablePort } from '@/application/ports/timetable'
@@ -18,6 +18,7 @@ import {
   walk,
 } from '@/test/builders'
 import { renderWithApp } from '@/test/render'
+import { useTitleStore } from '@/ui/stores/title'
 
 import NowView from './NowView.vue'
 
@@ -62,6 +63,30 @@ test('counts down to leaving for the next trip', async () => {
   await expect.element(hero.getByText('Genug Zeit')).toBeVisible()
   await expect.element(hero.getByText('07:20')).toBeVisible()
   await expect.element(screen.getByRole('status').filter({ hasText: /^Live$/ })).toBeInTheDocument()
+})
+
+test('puts the time until leaving into the page title and on the app icon', async () => {
+  const setAppBadge = vi.fn(() => Promise.resolve())
+  const clearAppBadge = vi.fn(() => Promise.resolve())
+  Object.defineProperty(navigator, 'setAppBadge', { configurable: true, value: setAppBadge })
+  Object.defineProperty(navigator, 'clearAppBadge', { configurable: true, value: clearAppBadge })
+  try {
+    const screen = await renderWithApp(NowView, {
+      routes: [commute],
+      timetable: timetable(morning),
+    })
+    const title = useTitleStore()
+
+    await expect.poll(() => title.status).toBe('Losgehen in 9 Min.')
+    expect(setAppBadge).toHaveBeenLastCalledWith(9)
+
+    await screen.unmount()
+    expect(title.status).toBeNull()
+    expect(clearAppBadge).toHaveBeenCalled()
+  } finally {
+    Reflect.deleteProperty(navigator, 'setAppBadge')
+    Reflect.deleteProperty(navigator, 'clearAppBadge')
+  }
 })
 
 test('shows the connection step by step and the trips after it', async () => {

@@ -11,11 +11,11 @@ Kairos tells you when to leave the house to catch your train, bus or tram. It is
 
 The board is the heart of the app. It shows the next connection of your route with a large countdown that turns from green to amber five minutes before you have to leave. Kairos always recommends the fastest connection: a trip that leaves earlier but does not arrive earlier is left out. When an earlier train is still within reach if you skip your buffer, a short hint says so. The other direction of the route is right next to it, one tap away.
 
-Everything on the board is live. Delays of two minutes or more move the leave time, changed platforms stand out, and a trip on other lines that arrives earlier shows up as a hint. Every trip opens its details with the stops in between, the platforms, the train number and the operator. From there you can pin the trip, which then gets a countdown of its own, or let the route prefer its lines. The planner finds connections for a given departure or arrival time.
+Everything on the board is live. Delays of two minutes or more move the leave time, changed platforms stand out, and a trip on other lines that arrives earlier shows up as a hint. Every trip opens its details with the stops in between, the platforms, the train number and the operator. From there you can pin the trip, which then gets a countdown of its own, let the route prefer its lines, share the trip as text or add it to your calendar with a reminder at the time to leave. The planner finds connections for a given departure or arrival time.
 
 A route connects two places, for example home and work. You find a place by its address, by the name of a company or with your current position, and Kairos suggests the stops nearby with an estimate of the walk to each. In the last step you decide whether Kairos always takes the fastest connection, which is the default, or sticks to one of the usual variants or to lines of your choice. For school or work with fixed times, a schedule per weekday tells Kairos by when you have to be there and from when you head back. On those days the board counts down to the last connection that still gets you there in time, lists the earlier ones as a fallback and switches to the way back at the end of the day. Once saved, a new route goes straight to the board, or you add the next one right away. Routes can be shared with a link or a QR code, which never carry the positions of the places.
 
-With access to the location, Kairos opens the board in the direction that starts where you are, and the board tells you whether the location or the time of day decided. The app installs on the iPhone Home Screen and on the desktop, starts offline with the last data it has, can keep the screen awake and comes in German and English, light and dark, built to WCAG 2.2 AA.
+With access to the location, Kairos opens the board in the direction that starts where you are, and the board tells you whether the location or the time of day decided. On a computer, the title of the tab or window counts down the minutes as well, and so does the icon of the installed app, even while other windows are in front. The app installs on the iPhone Home Screen and on the desktop, starts offline with the last data it has, can keep the screen awake and comes in German and English, light and dark, built to WCAG 2.2 AA.
 
 ## Screenshots
 
@@ -86,7 +86,7 @@ flowchart TB
     ui[UI<br/>Vue components, views, stores and UI-only preferences]
     application[Application<br/>use cases, trip monitor, place finder, ports]
     domain[Domain<br/>leave times, urgency, trip selection, variants, walking estimate]
-    infrastructure[Infrastructure<br/>Transport API and swisstopo adapters, storage, clock, location]
+    infrastructure[Infrastructure<br/>Transport API and swisstopo adapters, storage, clock, location, calendar files]
 
     ui --> application
     ui --> domain

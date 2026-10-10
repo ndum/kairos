@@ -112,6 +112,11 @@
       "inTime": "In time for {time}",
       "late": "Too late for {time}",
       "returnFrom": "Way back from {time}"
+    },
+    "tab": {
+      "minutes": "Leave in {minutes} min",
+      "now": "Leave now",
+      "at": "Leave at {time}"
     }
   },
   "plan": {
@@ -148,6 +153,25 @@
     "sheet": {
       "title": "Leave at {time}",
       "summary": "{leave} to {arrival}, {minutes} min, {transfers}"
+    },
+    "share": {
+      "action": "Share",
+      "calendar": "Add to calendar",
+      "copied": "Trip copied.",
+      "failed": "Sharing is not possible here.",
+      "leave": "Leave at {time}",
+      "ride": "{time} {line} from {stop}",
+      "towards": "towards {headsign}",
+      "arrival": "Arrive at {place} at {time}",
+      "reminder": "Leave for {place}",
+      "line": {
+        "train": "{name}",
+        "tram": "Tram {name}",
+        "bus": "Bus {name}",
+        "ship": "Boat {name}",
+        "cableway": "Cable car {name}",
+        "other": "{name}"
+      }
     }
   },
   "routes": {

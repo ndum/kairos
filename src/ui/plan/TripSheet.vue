@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import IconCalendarPlus from '~icons/tabler/calendar-plus'
 import IconPinned from '~icons/tabler/pinned'
 import IconPinnedOff from '~icons/tabler/pinned-off'
+import IconShare from '~icons/tabler/share-2'
 import IconStar from '~icons/tabler/star'
 
 import { ridesOf } from '@/domain/journey'
@@ -18,9 +20,11 @@ import ItineraryBar from '../now/ItineraryBar.vue'
 import { segmentsOf } from '../now/itinerary'
 import TransferRiskTag from '../now/TransferRiskTag.vue'
 import TripTimeline from '../now/TripTimeline.vue'
+import { useTripSharing } from './use-trip-sharing'
 
 // Details of a trip as a sheet: when it leaves and arrives, the bar, every step with the stops
-// in between, and buttons to pin the trip or to prefer its lines.
+// in between, and buttons to pin the trip, to prefer its lines, to share it or to add it to the
+// calendar.
 
 const open = defineModel<boolean>('open', { required: true })
 
@@ -50,6 +54,14 @@ const summary = computed(() => {
   })
 })
 const risk = computed(() => transferRiskOf(props.trip.journey))
+
+const sharing = useTripSharing()
+function share(): void {
+  void sharing.share(props.trip, props.ends)
+}
+function addToCalendar(): void {
+  sharing.addToCalendar(props.trip, props.ends)
+}
 </script>
 
 <template>
@@ -80,6 +92,14 @@ const risk = computed(() => transferRiskOf(props.trip.journey))
       <BaseButton v-if="canPrefer" @click="emit('prefer')">
         <IconStar aria-hidden="true" />
         {{ t('plan.prefer') }}
+      </BaseButton>
+      <BaseButton @click="share">
+        <IconShare aria-hidden="true" />
+        {{ t('plan.share.action') }}
+      </BaseButton>
+      <BaseButton @click="addToCalendar">
+        <IconCalendarPlus aria-hidden="true" />
+        {{ t('plan.share.calendar') }}
       </BaseButton>
     </div>
   </AppDialog>

@@ -112,6 +112,11 @@
       "inTime": "Rechtzeitig für {time}",
       "late": "Zu spät für {time}",
       "returnFrom": "Rückweg ab {time}"
+    },
+    "tab": {
+      "minutes": "Losgehen in {minutes} Min.",
+      "now": "Jetzt losgehen",
+      "at": "Losgehen um {time}"
     }
   },
   "plan": {
@@ -148,6 +153,25 @@
     "sheet": {
       "title": "Losgehen um {time}",
       "summary": "{leave} bis {arrival}, {minutes} Min., {transfers}"
+    },
+    "share": {
+      "action": "Teilen",
+      "calendar": "Zum Kalender",
+      "copied": "Fahrt kopiert.",
+      "failed": "Teilen ist hier nicht möglich.",
+      "leave": "Losgehen um {time}",
+      "ride": "{time} {line} ab {stop}",
+      "towards": "Richtung {headsign}",
+      "arrival": "Ankunft {place} um {time}",
+      "reminder": "Losgehen nach {place}",
+      "line": {
+        "train": "{name}",
+        "tram": "Tram {name}",
+        "bus": "Bus {name}",
+        "ship": "Schiff {name}",
+        "cableway": "Seilbahn {name}",
+        "other": "{name}"
+      }
     }
   },
   "routes": {

@@ -16,6 +16,7 @@ test('counts down to leaving for the next train', async ({ page }) => {
 
   // The IR 37 leaves Liestal at 07:05: 8 minutes on foot and 3 minutes of buffer before.
   await expect(hero).toContainText(/Losgehen in\s*9\s*Min\./)
+  await expect(page).toHaveTitle('Losgehen in 9 Min. – Kairos')
   await expect(hero).toContainText('Genug Zeit')
   await expect(hero).toContainText('Gleis 4')
   await expect(page.getByRole('region', { name: 'Deine Verbindung' })).toContainText(
@@ -25,6 +26,7 @@ test('counts down to leaving for the next train', async ({ page }) => {
   await page.clock.fastForward('05:00')
 
   await expect(hero).toContainText(/Losgehen in\s*4\s*Min\./)
+  await expect(page).toHaveTitle('Losgehen in 4 Min. – Kairos')
   await expect(hero).toContainText('Bald los')
 
   // Without the buffer, the IR 37 is still in reach. The S3 at 07:10 becomes the main trip.
