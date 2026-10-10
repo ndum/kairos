@@ -107,7 +107,8 @@ npm run dev:lan
 | `npm run format`        | Format all files with Prettier                           |
 | `npm run typecheck`     | Type check with vue-tsc                                  |
 | `npm test`              | Unit and component tests in watch mode                   |
-| `npm run test:coverage` | All Vitest tests with coverage                           |
+| `npm run test:coverage` | Unit tests with coverage                                 |
+| `npm run test:browser`  | Component tests in Chromium and WebKit                   |
 | `npm run test:e2e`      | End-to-end tests on an iPhone profile and desktop Chrome |
 | `npm run check:size`    | Check the JavaScript budget of the production build      |
 

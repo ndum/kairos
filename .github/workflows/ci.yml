@@ -26,8 +26,9 @@ jobs:
       - run: npm run lint
       - run: npm run format:check
       - run: npm run typecheck
-      - run: npx playwright install --with-deps chromium webkit
       - run: npm run test:coverage
+      - run: npx playwright install --with-deps chromium webkit
+      - run: npm run test:browser
       - uses: actions/upload-artifact@v7
         if: always()
         with:
