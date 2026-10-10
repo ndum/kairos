@@ -117,6 +117,28 @@
       "minutes": "Losgehen in {minutes} Min.",
       "now": "Jetzt losgehen",
       "at": "Losgehen um {time}"
+    },
+    "weather": {
+      "label": "Wetter beim Losgehen: {sky}, {temperature} Grad",
+      "sky": {
+        "clear": "klar",
+        "cloudy": "bewölkt",
+        "fog": "Nebel",
+        "drizzle": "Nieselregen",
+        "rain": "Regen",
+        "snow": "Schnee",
+        "thunder": "Gewitter"
+      },
+      "wet": {
+        "rain": {
+          "to-stop": "Gegen {time} regnet es auf dem Fussweg zur Haltestelle.",
+          "from-stop": "Gegen {time} regnet es auf dem Fussweg ab {stop}."
+        },
+        "snow": {
+          "to-stop": "Gegen {time} schneit es auf dem Fussweg zur Haltestelle.",
+          "from-stop": "Gegen {time} schneit es auf dem Fussweg ab {stop}."
+        }
+      }
     }
   },
   "plan": {
@@ -416,11 +438,16 @@
     },
     "version": "Version",
     "source": "Quellcode",
-    "privacy": "Fahrplandaten: opentransportdata.swiss. Routen und Einstellungen bleiben auf diesem Gerät."
+    "privacy": "Fahrplandaten: opentransportdata.swiss. Wetter: Open-Meteo.com. Routen und Einstellungen bleiben auf diesem Gerät.",
+    "weather": {
+      "label": "Wetter",
+      "hint": "Temperatur beim Losgehen und Regen auf den Fusswegen. Kairos fragt dafür Open-Meteo mit der ungefähren Lage der Haltestellen."
+    }
   },
   "update": {
     "available": "Eine neue Version von Kairos ist bereit.",
     "reload": "Aktualisieren"
   },
-  "credit": "Fahrplandaten: opentransportdata.swiss"
+  "credit": "Fahrplandaten: opentransportdata.swiss",
+  "creditWithWeather": "Fahrplandaten: opentransportdata.swiss. Wetter: Open-Meteo.com"
 }

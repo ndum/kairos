@@ -60,6 +60,17 @@ test('keeps the location on when the position cannot be found yet', async () => 
   expect(localStorage.getItem('kairos:location')).toBe('true')
 })
 
+test('shows the weather until the user switches it off', async () => {
+  const screen = await renderWithApp(SettingsDialog, { props: { open: true } })
+  const toggle = screen.getByRole('switch', { name: 'Wetter' })
+
+  await expect.element(toggle).toBeChecked()
+  await toggle.click()
+
+  await expect.element(toggle).not.toBeChecked()
+  expect(localStorage.getItem('kairos:weather')).toBe('false')
+})
+
 test('reduces motion in the whole app', async () => {
   const screen = await renderWithApp(SettingsDialog, { props: { open: true } })
 

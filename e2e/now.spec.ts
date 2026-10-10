@@ -1,4 +1,4 @@
-import { expect, fixture, liestalToMesseplatz, seedRoutes, test } from './support'
+import { expect, fixture, liestalToMesseplatz, seedRoutes, test, weatherFixture } from './support'
 
 test.beforeEach(async ({ page }) => {
   // The recorded connections run on Monday, 19 October 2026, from 07:00.
@@ -34,6 +34,26 @@ test('counts down to leaving for the next train', async ({ page }) => {
 
   await expect(hero).toContainText(/Losgehen in\s*3\s*Min\./)
   await expect(hero).toContainText('Ohne Puffer noch erreichbar: Abfahrt 07:05')
+})
+
+test('shows the weather when leaving and warns about rain on the walk', async ({ page }) => {
+  // Quarter hours from 06:45 in Swiss time: cloudy, then rain from 07:00.
+  const forecast = weatherFixture([
+    [1792385100, 7.2, 0, 3],
+    [1792386000, 7.4, 0.6, 61],
+    [1792386900, 7.5, 0.2, 61],
+  ])
+  await page.route('https://api.open-meteo.com/**', (route) =>
+    route.fulfill({ contentType: 'application/json', body: forecast }),
+  )
+  await page.reload()
+
+  const hero = page.getByRole('region', { name: /Zuhause nach Arbeit/ })
+  await expect(
+    hero.getByRole('img', { name: 'Wetter beim Losgehen: bewölkt, 7 Grad' }),
+  ).toBeVisible()
+  await expect(hero).toContainText('Gegen 07:00 regnet es auf dem Fussweg zur Haltestelle.')
+  await expect(page.getByText('Wetter: Open-Meteo.com')).toBeVisible()
 })
 
 test.describe('at work in the morning', () => {

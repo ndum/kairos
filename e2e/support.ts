@@ -5,9 +5,9 @@ import { type Page, test as base, expect as expectBase } from '@playwright/test'
 export { expect } from '@playwright/test'
 
 /**
- * Requests to the Transport API and the address search get an empty answer unless a test
- * answers them itself, so no test depends on the real services. Handlers registered later
- * take precedence.
+ * Requests to the Transport API, the address search and the weather service get an empty
+ * answer unless a test answers them itself, so no test depends on the real services. Handlers
+ * registered later take precedence.
  */
 export const test = base.extend<{ quietServices: undefined; policyGuard: undefined }>({
   quietServices: [
@@ -20,6 +20,9 @@ export const test = base.extend<{ quietServices: undefined; policyGuard: undefin
       )
       await page.route('https://api3.geo.admin.ch/**', (route) =>
         route.fulfill({ contentType: 'application/json', body: '{"results":[]}' }),
+      )
+      await page.route('https://api.open-meteo.com/**', (route) =>
+        route.fulfill({ contentType: 'application/json', body: weatherFixture([]) }),
       )
       await use(undefined)
     },
@@ -40,6 +43,18 @@ export const test = base.extend<{ quietServices: undefined; policyGuard: undefin
     { auto: true },
   ],
 })
+
+/** A forecast of Open-Meteo in quarter hours, given as [unix seconds, °C, mm, weather code]. */
+export const weatherFixture = (steps: readonly (readonly [number, number, number, number])[]) =>
+  JSON.stringify({
+    minutely_15: {
+      time: steps.map(([time]) => time),
+      temperature_2m: steps.map(([, temperature]) => temperature),
+      precipitation: steps.map(([, , precipitation]) => precipitation),
+      weather_code: steps.map(([, , , code]) => code),
+      is_day: steps.map(() => 1),
+    },
+  })
 
 /** A recorded response of the Transport API, so the tests neither depend on nor load it. */
 export const fixture = (name: string): string =>

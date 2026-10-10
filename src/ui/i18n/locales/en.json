@@ -117,6 +117,28 @@
       "minutes": "Leave in {minutes} min",
       "now": "Leave now",
       "at": "Leave at {time}"
+    },
+    "weather": {
+      "label": "Weather when leaving: {sky}, {temperature} degrees",
+      "sky": {
+        "clear": "clear",
+        "cloudy": "cloudy",
+        "fog": "fog",
+        "drizzle": "drizzle",
+        "rain": "rain",
+        "snow": "snow",
+        "thunder": "thunderstorm"
+      },
+      "wet": {
+        "rain": {
+          "to-stop": "Rain on the walk to the stop around {time}.",
+          "from-stop": "Rain on the walk from {stop} around {time}."
+        },
+        "snow": {
+          "to-stop": "Snow on the walk to the stop around {time}.",
+          "from-stop": "Snow on the walk from {stop} around {time}."
+        }
+      }
     }
   },
   "plan": {
@@ -416,11 +438,16 @@
     },
     "version": "Version",
     "source": "Source code",
-    "privacy": "Timetable data: opentransportdata.swiss. Routes and settings stay on this device."
+    "privacy": "Timetable data: opentransportdata.swiss. Weather: Open-Meteo.com. Routes and settings stay on this device.",
+    "weather": {
+      "label": "Weather",
+      "hint": "The temperature when leaving and rain on the walks. For this, Kairos asks Open-Meteo with the approximate position of the stops."
+    }
   },
   "update": {
     "available": "A new version of Kairos is ready.",
     "reload": "Update"
   },
-  "credit": "Timetable data: opentransportdata.swiss"
+  "credit": "Timetable data: opentransportdata.swiss",
+  "creditWithWeather": "Timetable data: opentransportdata.swiss. Weather: Open-Meteo.com"
 }

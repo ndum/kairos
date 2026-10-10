@@ -6,6 +6,7 @@ import ToastHost from './components/ToastHost.vue'
 import { useAppUpdate } from './composables/use-app-update'
 import { useAppearance } from './composables/use-appearance'
 import { focusMainHeading, usePageNavigation } from './composables/use-page-navigation'
+import { useWeatherPreference } from './composables/use-weather-preference'
 import AppTabBar from './layout/AppTabBar.vue'
 import AppTopBar from './layout/AppTopBar.vue'
 import AppScene from './scene/AppScene.vue'
@@ -14,6 +15,8 @@ import { useSceneStore } from './stores/scene'
 const { t, locale } = useI18n()
 const { still } = useAppearance()
 const scene = useSceneStore()
+// The weather has a source of its own, which is credited while it is shown.
+const showWeather = useWeatherPreference()
 useAppUpdate()
 usePageNavigation()
 
@@ -42,7 +45,7 @@ watchEffect(() => {
         <component :is="Component" :key="route.path" />
       </RouterView>
     </main>
-    <p class="credit">{{ t('credit') }}</p>
+    <p class="credit">{{ showWeather ? t('creditWithWeather') : t('credit') }}</p>
   </div>
 
   <ToastHost />
