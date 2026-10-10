@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/ndum/kairos/compare/v1.1.0...v1.1.1) (2026-10-10)
+
+
+### Documentation
+
+* name all three refresh intervals of the board ([#21](https://github.com/ndum/kairos/issues/21)) ([88c2864](https://github.com/ndum/kairos/commit/88c286451d477edac42390f062345becd8ecaad4))
+
 ## [1.1.0](https://github.com/ndum/kairos/compare/v1.0.0...v1.1.0) (2026-10-10)
 
 
