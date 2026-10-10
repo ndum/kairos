@@ -3,11 +3,20 @@ import type { Page } from '@playwright/test'
 
 import { expect, fixture, seedRoutes, test, liestalToMesseplatz } from './support'
 
-/** Checks the page against WCAG 2.2 level AA and lists each violation with its elements. */
-async function violations(page: Page): Promise<string[]> {
-  const results = await new AxeBuilder({ page })
-    .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
-    .analyze()
+/**
+ * Checks the page against WCAG 2.2 level AA and lists each violation with its elements. With a
+ * modal dialog open, only the dialog is checked: the page behind it is inert, and axe then
+ * measures the white text on the sky against the ground of the page.
+ */
+async function violations(page: Page, scope?: string): Promise<string[]> {
+  const builder = new AxeBuilder({ page }).withTags([
+    'wcag2a',
+    'wcag2aa',
+    'wcag21a',
+    'wcag21aa',
+    'wcag22aa',
+  ])
+  const results = await (scope ? builder.include(scope) : builder).analyze()
   return results.violations.map(
     ({ id, nodes }) => `${id}: ${nodes.map((node) => node.target.join(' ')).join(', ')}`,
   )
@@ -48,7 +57,7 @@ for (const colorScheme of ['light', 'dark'] as const) {
 
       await page.getByRole('button', { name: 'Details' }).first().click()
       await expect(page.getByRole('dialog')).toBeVisible()
-      expect(await violations(page)).toEqual([])
+      expect(await violations(page, 'dialog[open]')).toEqual([])
     })
 
     test('the routes, the editor and the dialogs are accessible', async ({ page }) => {
@@ -59,12 +68,12 @@ for (const colorScheme of ['light', 'dark'] as const) {
 
       await page.getByRole('button', { name: 'Teilen' }).click()
       await expect(page.getByRole('img', { name: /QR-Code/ })).toBeVisible()
-      expect(await violations(page)).toEqual([])
+      expect(await violations(page, 'dialog[open]')).toEqual([])
       await page.getByRole('button', { name: 'Schliessen' }).click()
 
       await page.getByRole('button', { name: 'Einstellungen' }).click()
       await expect(page.getByRole('dialog', { name: 'Einstellungen' })).toBeVisible()
-      expect(await violations(page)).toEqual([])
+      expect(await violations(page, 'dialog[open]')).toEqual([])
       await page.getByRole('button', { name: 'Schliessen' }).click()
 
       await page.getByRole('link', { name: '«Zuhause ↔ Arbeit» bearbeiten' }).click()
