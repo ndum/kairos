@@ -24,8 +24,6 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-        env:
-          KAIROS_BASE: /kairos/
       - name: Coverage badge
         run: |
           npm run test:coverage
