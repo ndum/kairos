@@ -157,7 +157,7 @@ describe('stopsNear', () => {
         stations: [
           {
             id: null,
-            name: 'Rheinstrasse 27, 4410 Liestal',
+            name: 'Rathausstrasse 11, 4410 Liestal',
             coordinate: { x: 47.4862, y: 7.7305 },
           },
           { id: '8578318', name: 'Liestal, Kantonsspital', coordinate: { x: 47.4871, y: 7.7305 } },

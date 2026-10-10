@@ -20,10 +20,10 @@ const Harness = defineComponent(() => {
   ]
 })
 
-const home = { latitude: 47.48607, longitude: 7.73068 }
+const home = { latitude: 47.48402, longitude: 7.7346 }
 
 const address: FoundPlace = {
-  name: 'Rheinstrasse 27, 4410 Liestal',
+  name: 'Rathausstrasse 36, 4410 Liestal',
   kind: 'address',
   coordinates: home,
 }
@@ -34,9 +34,9 @@ const stopAt = (name: string, latitude: number, longitude: number): StopRef => (
   coordinates: { latitude, longitude },
 })
 
-// About 190, 120 and 540 meters from home.
+// About 250, 140 and 410 meters from the town hall.
 const station = stopAt('Liestal', 47.48446, 7.73137)
-const hospital = stopAt('Liestal, Kantonsspital', 47.48717, 7.73052)
+const gate = stopAt('Liestal, Törli', 47.48289, 7.73531)
 const oris = stopAt('Liestal, Oris', 47.48125, 7.73099)
 
 function setup(options: RenderOptions = {}) {
@@ -45,7 +45,7 @@ function setup(options: RenderOptions = {}) {
     location: { kind: 'found', coordinates: home },
     ...options,
     timetable: {
-      stopsNear: () => Promise.resolve([station, hospital]),
+      stopsNear: () => Promise.resolve([station, gate]),
       searchStops: () => Promise.resolve([oris]),
     },
   })
@@ -60,16 +60,16 @@ test('suggests the stops near an address and takes the walk to the chosen one', 
 
   await userEvent.fill(
     screen.getByRole('combobox', { name: 'Adresse oder Firma' }),
-    'Rheinstrasse 27',
+    'Rathausstrasse 36',
   )
-  await screen.getByRole('option', { name: 'Rheinstrasse 27, 4410 Liestal' }).click()
+  await screen.getByRole('option', { name: 'Rathausstrasse 36, 4410 Liestal' }).click()
 
   await expect.element(screen.getByTestId('position')).toHaveTextContent(JSON.stringify(home))
-  await expect.element(screen.getByText('120 m, etwa 2 Min. zu Fuss')).toBeVisible()
-  await screen.getByRole('radio', { name: /^Liestal\s?190 m/ }).click()
+  await expect.element(screen.getByText('140 m, etwa 3 Min. zu Fuss')).toBeVisible()
+  await screen.getByRole('radio', { name: /^Liestal\s?250 m/ }).click()
 
   await expect.element(screen.getByTestId('stop')).toHaveTextContent('Liestal')
-  await expect.element(screen.getByTestId('walk')).toHaveTextContent('4')
+  await expect.element(screen.getByTestId('walk')).toHaveTextContent('5')
 })
 
 test('takes the current position and removes it again', async () => {
@@ -79,7 +79,7 @@ test('takes the current position and removes it again', async () => {
 
   await expect.element(screen.getByText('Standort übernommen.')).toBeVisible()
   await expect.element(screen.getByTestId('position')).toHaveTextContent(JSON.stringify(home))
-  await expect.element(screen.getByRole('radio', { name: /Kantonsspital/ })).toBeVisible()
+  await expect.element(screen.getByRole('radio', { name: /Törli/ })).toBeVisible()
 
   await screen.getByRole('button', { name: 'Lage entfernen' }).click()
   await expect.element(screen.getByTestId('position')).toHaveTextContent('null')
@@ -95,7 +95,7 @@ test('searches another stop by name and estimates the walk to it', async () => {
   await screen.getByRole('option', { name: 'Liestal, Oris' }).click()
 
   await expect.element(screen.getByTestId('stop')).toHaveTextContent('Liestal, Oris')
-  await expect.element(screen.getByTestId('walk')).toHaveTextContent('9')
+  await expect.element(screen.getByTestId('walk')).toHaveTextContent('7')
 })
 
 test('finds the stop by name while the position is unknown', async () => {

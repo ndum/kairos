@@ -22,25 +22,25 @@ describe('addressName', () => {
 describe('SwisstopoAddressSearch', () => {
   it('finds addresses with their position', async () => {
     const fetch = answer({
-      results: [result('Rheinstrasse 27 <b>4410 Liestal</b>', 47.4861, 7.7307)],
+      results: [result('Rathausstrasse 36 <b>4410 Liestal</b>', 47.48402, 7.7346)],
     })
 
-    const places = await new SwisstopoAddressSearch({ fetch }).searchPlaces('Rheinstrasse 27')
+    const places = await new SwisstopoAddressSearch({ fetch }).searchPlaces('Rathausstrasse 36')
 
     const input = fetch.mock.calls[0]?.[0]
     if (typeof input !== 'string') throw new Error('Expected a request to a URL string')
     const url = new URL(input)
     expect(url.pathname).toBe('/rest/services/api/SearchServer')
     expect(Object.fromEntries(url.searchParams)).toMatchObject({
-      searchText: 'Rheinstrasse 27',
+      searchText: 'Rathausstrasse 36',
       origins: 'address',
       sr: '4326',
     })
     expect(places).toEqual([
       {
-        name: 'Rheinstrasse 27, 4410 Liestal',
+        name: 'Rathausstrasse 36, 4410 Liestal',
         kind: 'address',
-        coordinates: { latitude: 47.4861, longitude: 7.7307 },
+        coordinates: { latitude: 47.48402, longitude: 7.7346 },
       },
     ])
   })
