@@ -1,5 +1,6 @@
 import type { Coordinates } from './geo'
 import type { Line } from './journey'
+import type { Schedule } from './schedule'
 import type { Duration } from './time'
 
 export interface StopRef {
@@ -37,6 +38,8 @@ export interface Route {
   readonly buffer: Duration
   /** Lines such as the S1 or bus 20. An empty list accepts every line. */
   readonly preferredLines: readonly PreferredLine[]
+  /** Weekdays with fixed times, if the user set any. */
+  readonly schedule?: Schedule
 }
 
 /** Outbound travels from the first place to the second, return the other way round. */

@@ -9,18 +9,18 @@ Kairos tells you when to leave the house to catch your train, bus or tram. It is
 
 ## What it does
 
-The board is the heart of the app. It shows the next connection of your route with a large countdown that turns from green to amber five minutes before you have to leave. Kairos always recommends the fastest connection: a trip that leaves earlier but does not arrive earlier is left out. When an earlier train is still within reach if you skip your buffer, a short hint says so. The other direction of the route is right next to it, one tap away.
+The board is the heart of the app. It shows the next connection of your route with a large countdown that turns from green to amber five minutes before you have to leave. Kairos always recommends the fastest connection: a trip that leaves earlier but does not arrive earlier is left out. When an earlier train is still within reach if you skip your buffer, a short hint says so. A small sign shows the weather when you leave, and a hint warns when rain or snow falls on the walk to the stop or from it. The other direction of the route is right next to it, one tap away.
 
-Everything on the board is live. Delays of two minutes or more move the leave time, changed platforms stand out, and a trip on other lines that arrives earlier shows up as a hint. Every trip opens its details with the stops in between, the platforms, the train number and the operator. From there you can pin the trip, which then gets a countdown of its own, or let the route prefer its lines. The planner finds connections for a given departure or arrival time.
+Everything on the board is live. Delays of two minutes or more move the leave time, changed platforms stand out, and a trip on other lines that arrives earlier shows up as a hint. Every trip opens its details with the stops in between, the platforms, the train number and the operator. From there you can pin the trip, which then gets a countdown of its own, let the route prefer its lines, share the trip as text or add it to your calendar with a reminder at the time to leave. The planner finds connections for a given departure or arrival time.
 
-A route connects two places, for example home and work. You find a place by its address, by the name of a company or with your current position, and Kairos suggests the stops nearby with an estimate of the walk to each. A place can have a second stop, for example a bus stop next to the station, and Kairos then takes whichever connection gets you there first. In the last step you decide whether Kairos always takes the fastest connection, which is the default, or sticks to one of the usual variants or to lines of your choice. Once saved, a new route goes straight to the board, or you add the next one right away. Routes can be shared with a link or a QR code, which never carry the positions of the places.
+A route connects two places, for example home and work. You find a place by its address, by the name of a company or with your current position, and Kairos suggests the stops nearby with an estimate of the walk to each. A place can have a second stop, for example a bus stop next to the station, and Kairos then takes whichever connection gets you there first. In the last step you decide whether Kairos always takes the fastest connection, which is the default, or sticks to one of the usual variants or to lines of your choice. For school or work with fixed times, a schedule per weekday tells Kairos by when you have to be there and from when you head back. On those days the board counts down to the last connection that still gets you there in time, lists the earlier ones as a fallback and switches to the way back at the end of the day. Once saved, a new route goes straight to the board, or you add the next one right away. Routes can be shared with a link or a QR code, which never carry the positions of the places.
 
-With access to the location, Kairos opens the board in the direction that starts where you are, and the board tells you whether the location or the time of day decided. The app installs on the iPhone Home Screen and on the desktop, starts offline with the last data it has, can keep the screen awake and comes in German and English, light and dark, built to WCAG 2.2 AA.
+With access to the location, Kairos opens the board in the direction that starts where you are, and the board tells you whether the location or the time of day decided. On a computer, the title of the tab or window counts down the minutes as well, and so does the icon of the installed app, even while other windows are in front. The app installs on the iPhone Home Screen and on the desktop, starts offline with the last data it has, can keep the screen awake and comes in German and English, light and dark, built to WCAG 2.2 AA.
 
 ## Screenshots
 
 <p align="center">
-  <img src="docs/screenshots/now-phone-light.jpg" alt="The board on an iPhone, counting down seven minutes until leaving for the IR 37" width="260" />
+  <img src="docs/screenshots/now-phone-light.jpg" alt="The board on an iPhone, counting down seven minutes until leaving for the IR 37, with the weather and a hint about rain on the last walk" width="260" />
   &nbsp;
   <img src="docs/screenshots/now-phone-dark.jpg" alt="The same board at night, in the dark appearance" width="260" />
 </p>
@@ -29,7 +29,7 @@ With access to the location, Kairos opens the board in the direction that starts
 
 ![Planning by departure time on a desktop screen at night](docs/screenshots/plan-desktop-dark.jpg)
 
-The screenshots use recorded timetable data and are captured from the production build with `npm run docs:screenshots`.
+The screenshots use recorded timetable data and a made-up forecast, and are captured from the production build with `npm run docs:screenshots`.
 
 ## How the leave time is computed
 
@@ -55,9 +55,11 @@ flowchart TD
     reach -- no --> missed[Left out]
 ```
 
+A schedule changes the starting point. With a time to arrive by, Kairos asks the timetable for the connections that arrive by then and counts down to the last one that is still reachable with the buffer, so you leave as late as possible. Once none is left, the board shows the next connections and says that they arrive too late. With a time for the way back, the board starts with the first connection you can reach after it. The schedule also picks the direction of the board: the way there until an hour after the arrival time, then the way back. The location of the device, if allowed, still comes first.
+
 ## Architecture
 
-Kairos runs entirely in the browser and has no backend. Timetables, stops, companies and buildings come from [transport.opendata.ch](https://transport.opendata.ch), street addresses from the search service of [swisstopo](https://api3.geo.admin.ch). Routes, settings and the last known connections stay in the local storage of the device.
+Kairos runs entirely in the browser and has no backend. Timetables, stops, companies and buildings come from [transport.opendata.ch](https://transport.opendata.ch), street addresses from the search service of [swisstopo](https://api3.geo.admin.ch) and the weather from [Open-Meteo](https://open-meteo.com). Routes, settings and the last known connections stay in the local storage of the device.
 
 ```mermaid
 flowchart LR
@@ -68,12 +70,14 @@ flowchart LR
     end
     transport[transport.opendata.ch<br/>timetable, stops and places]
     swisstopo[api3.geo.admin.ch<br/>street addresses]
+    weather[api.open-meteo.com<br/>weather at the stops]
     pages[GitHub Pages]
 
     commuter --> app
     app <--> storage
     app -- HTTPS, JSON --> transport
     app -- HTTPS, JSON --> swisstopo
+    app -- HTTPS, JSON --> weather
     pages -- static files --> app
 ```
 
@@ -84,7 +88,7 @@ flowchart TB
     ui[UI<br/>Vue components, views, stores and UI-only preferences]
     application[Application<br/>use cases, trip monitor, place finder, ports]
     domain[Domain<br/>leave times, urgency, trip selection, variants, walking estimate]
-    infrastructure[Infrastructure<br/>Transport API and swisstopo adapters, storage, clock, location]
+    infrastructure[Infrastructure<br/>Transport API, swisstopo and Open-Meteo adapters, storage, clock, location, calendar files]
 
     ui --> application
     ui --> domain
@@ -190,7 +194,7 @@ docs/screenshots/    Screenshots of this README
 
 Kairos has no account, no tracking and no cookies. Routes and settings stay on the device. A shared link carries routes, but never the positions of places. To choose the direction of the board, the position of the device is only used on the device itself.
 
-The place search sends what you type to swisstopo and to the Transport API. To find the stops near a place, including one taken from the current position, it sends the position rounded to about a hundred meters. The page comes with a strict Content Security Policy that allows connections to these two services only.
+The place search sends what you type to swisstopo and to the Transport API. To find the stops near a place, including one taken from the current position, it sends the position rounded to about a hundred meters. The weather is asked for at the stops of a route, rounded to about a kilometre, never at the places themselves, and it can be switched off in the settings. The page comes with a strict Content Security Policy that allows connections to these three services only.
 
 ## Quality gates
 
@@ -206,7 +210,7 @@ Contributions are welcome. Please read the [contributing guide](CONTRIBUTING.md)
 
 ## Data sources and credits
 
-Timetable data: [opentransportdata.swiss](https://opentransportdata.swiss), provided through the [Transport API](https://transport.opendata.ch) of Opendata.ch. Companies and buildings: © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors, through the same API. Street addresses: © [swisstopo](https://www.swisstopo.admin.ch).
+Timetable data: [opentransportdata.swiss](https://opentransportdata.swiss), provided through the [Transport API](https://transport.opendata.ch) of Opendata.ch. Companies and buildings: © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors, through the same API. Street addresses: © [swisstopo](https://www.swisstopo.admin.ch). Weather data: [Open-Meteo.com](https://open-meteo.com) under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), based on the forecasts of national weather services such as MeteoSwiss.
 
 The interface is set in [Geist](https://github.com/vercel/geist-font) under the [SIL Open Font License 1.1](public/licenses/geist-font.txt) and uses [Tabler Icons](https://tabler.io/icons) under the MIT License.
 

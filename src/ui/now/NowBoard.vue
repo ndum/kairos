@@ -10,6 +10,7 @@ import {
   watchEffect,
 } from 'vue'
 import { useI18n } from 'vue-i18n'
+import IconCalendarTime from '~icons/tabler/calendar-time'
 import IconClock from '~icons/tabler/clock'
 import IconCurrentLocation from '~icons/tabler/current-location'
 
@@ -38,7 +39,9 @@ import JourneyCard from './JourneyCard.vue'
 import LiveStatus from './LiveStatus.vue'
 import OppositeCard from './OppositeCard.vue'
 import UpcomingCard from './UpcomingCard.vue'
+import { useCountdownTitle } from './use-countdown-title'
 import { useLiveBoard } from './use-live-board'
+import { useTripWeather } from './use-trip-weather'
 
 const props = defineProps<{
   route: Route
@@ -90,6 +93,16 @@ watchEffect(() => {
 })
 onUnmounted(scene.clear)
 
+useCountdownTitle(
+  computed(() => primary.board.value.main?.leaveAt ?? null),
+  now,
+)
+
+const weather = useTripWeather(
+  computed(() => primary.board.value.main),
+  primary.endpoints,
+)
+
 // The details of a later trip or of the next trip back, which the user may also pin.
 const pins = usePinStore()
 const toasts = useToastStore()
@@ -119,6 +132,7 @@ const canPrefer = computed(() => !!selected.value && !prefers(props.route, selec
           v-if="directionNote === 'location' || directionNote === 'locating'"
           aria-hidden="true"
         />
+        <IconCalendarTime v-else-if="directionNote === 'schedule'" aria-hidden="true" />
         <IconClock v-else aria-hidden="true" />
         {{ t(`now.directionNote.${directionNote}`) }}
       </p>
@@ -135,6 +149,7 @@ const canPrefer = computed(() => !!selected.value && !prefers(props.route, selec
       :ends="primary.endpoints.value"
       :now
       :status="primary.snapshot.value.status"
+      :weather
       @retry="primary.refresh"
     />
     <JourneyCard
@@ -147,6 +162,7 @@ const canPrefer = computed(() => !!selected.value && !prefers(props.route, selec
     <div class="side">
       <UpcomingCard
         :trips="primary.board.value.upcoming"
+        :earlier="primary.board.value.target?.kind === 'arrive' && !primary.board.value.late"
         @details="(trip) => showDetails(trip, direction)"
       />
       <OppositeCard

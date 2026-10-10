@@ -1,6 +1,6 @@
 import { type Browser, test } from '@playwright/test'
 
-import { fixture, liestalToMesseplatz } from '../../e2e/support'
+import { fixture, liestalToMesseplatz, weatherFixture } from '../../e2e/support'
 
 interface Shot {
   readonly name: string
@@ -14,6 +14,15 @@ const CONNECTIONS: Readonly<Record<string, string>> = {
   '8500023': 'connections.json',
   '8500899': 'connections-return.json',
 }
+
+/** Quarter hours from 06:45: cloudy at the stop in Liestal, light rain in Basel at 07:30. */
+const QUARTERS = [1792385100, 1792386000, 1792386900, 1792387800, 1792388700]
+const LIESTAL_WEATHER = weatherFixture(QUARTERS.map((time) => [time, 8.2, 0, 2] as const))
+const BASEL_WEATHER = weatherFixture(
+  QUARTERS.map(
+    (time) => [time, 9.1, time === 1792387800 ? 0.3 : 0, time === 1792387800 ? 61 : 3] as const,
+  ),
+)
 
 /** The example route as someone using the app in English would name it. */
 const route = {
@@ -51,6 +60,11 @@ async function device(browser: Browser, shot: Shot) {
     const from = new URL(route.request().url()).searchParams.get('from') ?? ''
     const name = CONNECTIONS[from]
     const body = name ? fixture(name) : '{"connections":[]}'
+    return route.fulfill({ contentType: 'application/json', body })
+  })
+  await page.route('https://api.open-meteo.com/**', (route) => {
+    const latitude = Number(new URL(route.request().url()).searchParams.get('latitude'))
+    const body = latitude < 47.5 ? LIESTAL_WEATHER : BASEL_WEATHER
     return route.fulfill({ contentType: 'application/json', body })
   })
   await page.goto('/')

@@ -57,6 +57,20 @@ describe('CompressedRouteCodec', () => {
     ])
   })
 
+  it('keeps the schedule of a route and leaves it out of routes without one', async () => {
+    const schooldays: Route = {
+      ...routes[0],
+      schedule: [
+        { weekday: 1, arriveBy: 7 * 60 + 45, returnFrom: 16 * 60 + 30 },
+        { weekday: 3, arriveBy: null, returnFrom: 12 * 60 },
+      ],
+    } as Route
+    const decoded = await codec.decode(await codec.encode([schooldays, routes[2] as Route]))
+
+    expect(decoded).toEqual([schooldays, routes[2]])
+    expect(decoded[1]).not.toHaveProperty('schedule')
+  })
+
   it('keeps the second stop of a place and leaves it out of places without one', async () => {
     const tram = {
       stop: {

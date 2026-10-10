@@ -60,7 +60,11 @@ export default defineConfig(({ mode }) => ({
         cleanupOutdatedCaches: true,
       },
     }),
-    contentSecurityPolicy(['https://transport.opendata.ch', 'https://api3.geo.admin.ch']),
+    contentSecurityPolicy([
+      'https://transport.opendata.ch',
+      'https://api3.geo.admin.ch',
+      'https://api.open-meteo.com',
+    ]),
     mode === 'lan' && basicSsl(),
   ],
   resolve: {

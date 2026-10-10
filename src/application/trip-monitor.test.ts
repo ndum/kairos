@@ -71,6 +71,18 @@ describe('TripMonitor', () => {
     expect(cache.read(key)).toBeNull()
   })
 
+  it('asks for the journeys that arrive by a time and keeps them apart', async () => {
+    monitor.watch({ ...target, at: at('07:55'), arriveBy: true })
+    await settle()
+
+    expect(findJourneys).toHaveBeenCalledWith(
+      { from, to, at: at('07:55'), arriveBy: true, limit: JOURNEY_LIMIT },
+      expect.any(AbortSignal),
+    )
+    expect(cache.read(cacheKey(pairs, at('07:55'), true))?.journeys).toEqual(firstBatch)
+    expect(cache.read(cacheKey(pairs, at('07:55')))).toBeNull()
+  })
+
   it('asks for every pair of stops and puts their journeys together', async () => {
     const bus = stop('Riverside, Bus Stop')
     findJourneys.mockResolvedValueOnce(firstBatch).mockResolvedValueOnce(secondBatch)

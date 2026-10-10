@@ -151,6 +151,66 @@ test('edits an existing route on one page and keeps its id', async () => {
   expect(screen.repository.routes).toEqual([{ ...commute, name: 'Work' }])
 })
 
+test('sets the schedule of a route and copies Monday to the other weekdays', async () => {
+  const commute = route('commute', 'Commute', [home, office])
+  const screen = await renderWithApp(RouteEditorView, {
+    path: '/routes/commute',
+    props: { id: 'commute' },
+    routes: [commute],
+    timetable,
+  })
+  const schedule = screen.getByRole('region', { name: 'Stundenplan' })
+
+  await userEvent.fill(schedule.getByRole('textbox', { name: 'Montag: Ankunft bis' }), '07:45')
+  await userEvent.fill(schedule.getByLabelText('Montag: Rückweg ab'), '16:30')
+  await schedule.getByRole('button', { name: 'Montag für Dienstag bis Freitag übernehmen' }).click()
+  await expect.element(schedule.getByLabelText('Freitag: Rückweg ab')).toHaveValue('16:30')
+  await screen.getByRole('button', { name: 'Route speichern' }).click()
+
+  const day = { arriveBy: 7 * 60 + 45, returnFrom: 16 * 60 + 30 }
+  expect(screen.repository.routes[0]?.schedule).toEqual(
+    [1, 2, 3, 4, 5].map((weekday) => ({ weekday, ...day })),
+  )
+})
+
+test('refuses a way back that starts before the arrival', async () => {
+  const commute = route('commute', 'Commute', [home, office])
+  const screen = await renderWithApp(RouteEditorView, {
+    path: '/routes/commute',
+    props: { id: 'commute' },
+    routes: [commute],
+    timetable,
+  })
+
+  await userEvent.fill(screen.getByLabelText('Dienstag: Ankunft bis'), '10:00')
+  await userEvent.fill(screen.getByLabelText('Dienstag: Rückweg ab'), '09:00')
+  await screen.getByRole('button', { name: 'Route speichern' }).click()
+
+  await expect.element(screen.getByText('Der Rückweg beginnt vor der Ankunft.')).toBeVisible()
+  expect(screen.repository.routes).toEqual([commute])
+})
+
+test('keeps the schedule closed in the assistant until the user opens it', async () => {
+  const screen = await renderWithApp(RouteEditorView, { path: '/routes/new', timetable })
+
+  await choosePlace(screen, 'Zuhause', 'River', 'Riverside')
+  await screen.getByRole('button', { name: 'Weiter' }).click()
+  await choosePlace(screen, 'Arbeit', 'Market', 'Market Square')
+  await screen.getByRole('button', { name: 'Weiter' }).click()
+
+  const toggle = screen.getByRole('button', { name: 'Stundenplan' })
+  await expect.element(toggle).toHaveAttribute('aria-expanded', 'false')
+  await expect.element(screen.getByLabelText('Montag: Ankunft bis')).not.toBeVisible()
+
+  await toggle.click()
+  await userEvent.fill(screen.getByLabelText('Montag: Ankunft bis'), '08:00')
+  await screen.getByRole('button', { name: 'Route speichern' }).click()
+
+  expect(screen.repository.routes[0]?.schedule).toEqual([
+    { weekday: 1, arriveBy: 8 * 60, returnFrom: null },
+  ])
+})
+
 test('adds a second stop to a place', async () => {
   const commute = route('commute', 'Commute', [home, office])
   const screen = await renderWithApp(RouteEditorView, {

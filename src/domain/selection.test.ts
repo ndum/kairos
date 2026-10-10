@@ -3,7 +3,12 @@ import { describe, expect, it } from 'vitest'
 import type { Leg } from '@/domain/journey'
 import { at, commute, journey, morningCommute, ride, walk } from '@/test/builders'
 
-import { distinctByFirstDeparture, selectTrips, withoutSlowerTrips } from './selection'
+import {
+  distinctByFirstDeparture,
+  selectInTime,
+  selectTrips,
+  withoutSlowerTrips,
+} from './selection'
 import { type Trip, planTrip } from './trip'
 
 const tripAt = (departure: string): Trip => {
@@ -47,6 +52,33 @@ describe('selectTrips', () => {
 
   it('handles an empty timetable', () => {
     expect(selectTrips([], at('06:40'))).toEqual({ main: null, tight: null, upcoming: [] })
+  })
+})
+
+describe('selectInTime', () => {
+  // Each trip leaves the place 11 minutes before its S1 and arrives 23 minutes after it.
+  const trips = [tripAt('07:29'), tripAt('06:59'), tripAt('07:35'), tripAt('07:05')]
+
+  it('picks the latest trip that arrives in time and the earlier ones nearest first', () => {
+    const selection = selectInTime(trips, at('06:40'), at('07:55'))
+
+    expect(selection.main?.departureAt).toBe(at('07:29'))
+    expect(departures(selection.upcoming)).toEqual([at('07:05'), at('06:59')])
+    expect(selection.tight).toBeNull()
+  })
+
+  it('offers the latest trip in time without the buffer once its leave time has passed', () => {
+    const selection = selectInTime(trips, at('07:20'), at('07:55'))
+
+    expect(selection.main).toBeNull()
+    expect(selection.tight?.departureAt).toBe(at('07:29'))
+    expect(selection.upcoming).toEqual([])
+  })
+
+  it('finds nothing once no trip arrives in time any more', () => {
+    const selection = selectInTime(trips, at('07:25'), at('07:55'))
+
+    expect(selection).toEqual({ main: null, tight: null, upcoming: [] })
   })
 })
 

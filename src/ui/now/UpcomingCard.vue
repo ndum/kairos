@@ -10,7 +10,11 @@ import GlassCard from '../components/GlassCard.vue'
 import LineBadge from '../components/LineBadge.vue'
 import { useFormat } from '../composables/use-format'
 
-defineProps<{ trips: readonly Trip[] }>()
+defineProps<{
+  trips: readonly Trip[]
+  /** The trips leave before the main one, which arrives just in time. */
+  earlier?: boolean
+}>()
 
 const emit = defineEmits<{ details: [trip: Trip] }>()
 
@@ -22,7 +26,7 @@ const headingId = useId()
 <template>
   <GlassCard tag="section" :aria-labelledby="headingId" class="upcoming flex flex-col">
     <h2 :id="headingId" class="mb-1.5 px-2.5 text-lg font-semibold min-[900px]:text-xl">
-      {{ t('now.upcoming.title') }}
+      {{ earlier ? t('now.upcoming.earlier') : t('now.upcoming.title') }}
     </h2>
     <ol v-if="trips.length > 0">
       <li v-for="trip in trips" :key="trip.leaveAt">

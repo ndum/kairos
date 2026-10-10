@@ -22,8 +22,10 @@ import {
   formOf,
   nameError,
   placeErrors,
+  scheduleErrors,
   suggestedName,
 } from '../routes/route-form'
+import ScheduleField from '../routes/ScheduleField.vue'
 import { useRouteStore } from '../stores/routes'
 import { useToastStore } from '../stores/toasts'
 
@@ -65,11 +67,12 @@ watch(
 const errors = computed(() => ({
   places: [placeErrors(form, 0), placeErrors(form, 1)] as const,
   name: nameError(form),
+  schedule: scheduleErrors(form),
 }))
 
 function isComplete(index: number): boolean {
   if (index === 0 || index === 1) return Object.keys(errors.value.places[index]).length === 0
-  return errors.value.name === undefined
+  return errors.value.name === undefined && errors.value.schedule.length === 0
 }
 
 /** Steps can be visited once the ones before them are complete. */
@@ -206,6 +209,13 @@ function submitPage(): void {
         <p v-else class="text-ink-muted">{{ t('editor.missingStops') }}</p>
       </GlassCard>
 
+      <GlassCard aria-labelledby="section-schedule" class="flex flex-col gap-6">
+        <h2 id="section-schedule" class="text-2xl font-semibold tracking-tight">
+          {{ t('editor.schedule.label') }}
+        </h2>
+        <ScheduleField v-model="form.schedule" :errors="attempted ? errors.schedule : []" />
+      </GlassCard>
+
       <div class="flex justify-end">
         <BaseButton variant="primary" type="submit">{{ t('editor.save') }}</BaseButton>
       </div>
@@ -288,16 +298,21 @@ function submitPage(): void {
             :errors="attempted ? errors.places[1] : {}"
             :other-name="form.places[0].name"
           />
-          <LineStep
-            v-else-if="stops"
-            key="lines"
-            v-model:lines="form.preferredLines"
-            v-model:buffer="form.buffer"
-            v-model:name="form.name"
-            :stops
-            :name-error="attempted ? errors.name : undefined"
-            @rename="renamed = true"
-          />
+          <div v-else-if="stops" key="lines" class="flex flex-col gap-7">
+            <LineStep
+              v-model:lines="form.preferredLines"
+              v-model:buffer="form.buffer"
+              v-model:name="form.name"
+              :stops
+              :name-error="attempted ? errors.name : undefined"
+              @rename="renamed = true"
+            />
+            <ScheduleField
+              v-model="form.schedule"
+              :errors="attempted ? errors.schedule : []"
+              collapsible
+            />
+          </div>
         </Transition>
 
         <div class="flex items-center justify-between gap-3 pt-1">

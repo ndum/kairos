@@ -29,6 +29,16 @@ describe('LocalStorageRouteRepository', () => {
     expect(repository.load()).toEqual([commute, training])
   })
 
+  it('keeps the schedule of a route', () => {
+    const schooldays = {
+      ...commute,
+      schedule: [{ weekday: 5, arriveBy: 9 * 60 + 40, returnFrom: null }],
+    } as const
+    repository.save([schooldays])
+
+    expect(repository.load()).toEqual([schooldays])
+  })
+
   it('keeps the second stop of a place', () => {
     const withBus = route('bus', 'Bus', [
       {

@@ -57,7 +57,8 @@
       "time": "Direction by time of day",
       "locating": "Finding your location …",
       "denied": "No access to the location, direction by time of day",
-      "unavailable": "Location not found, direction by time of day"
+      "unavailable": "Location not found, direction by time of day",
+      "schedule": "Direction by schedule"
     },
     "swap": "Switch direction",
     "journey": {
@@ -87,7 +88,8 @@
       "details": "Show details",
       "times": "departs {departure}, arrives {arrival}",
       "leave": "leave",
-      "arrival": "arrives {time}"
+      "arrival": "arrives {time}",
+      "earlier": "Earlier"
     },
     "live": {
       "loading": "Loading",
@@ -105,6 +107,38 @@
     "arrivalAt": "Arrival at {place}",
     "opposite": {
       "next": "Next: leave at {leave}, arrives {arrival}"
+    },
+    "schedule": {
+      "inTime": "In time for {time}",
+      "late": "Too late for {time}",
+      "returnFrom": "Way back from {time}"
+    },
+    "tab": {
+      "minutes": "Leave in {minutes} min",
+      "now": "Leave now",
+      "at": "Leave at {time}"
+    },
+    "weather": {
+      "label": "Weather when leaving: {sky}, {temperature} degrees",
+      "sky": {
+        "clear": "clear",
+        "cloudy": "cloudy",
+        "fog": "fog",
+        "drizzle": "drizzle",
+        "rain": "rain",
+        "snow": "snow",
+        "thunder": "thunderstorm"
+      },
+      "wet": {
+        "rain": {
+          "to-stop": "Rain on the walk to the stop around {time}.",
+          "from-stop": "Rain on the walk from {stop} around {time}."
+        },
+        "snow": {
+          "to-stop": "Snow on the walk to the stop around {time}.",
+          "from-stop": "Snow on the walk from {stop} around {time}."
+        }
+      }
     }
   },
   "plan": {
@@ -141,6 +175,25 @@
     "sheet": {
       "title": "Leave at {time}",
       "summary": "{leave} to {arrival}, {minutes} min, {transfers}"
+    },
+    "share": {
+      "action": "Share",
+      "calendar": "Add to calendar",
+      "copied": "Trip copied.",
+      "failed": "Sharing is not possible here.",
+      "leave": "Leave at {time}",
+      "ride": "{time} {line} from {stop}",
+      "towards": "towards {headsign}",
+      "arrival": "Arrive at {place} at {time}",
+      "reminder": "Leave for {place}",
+      "line": {
+        "train": "{name}",
+        "tram": "Tram {name}",
+        "bus": "Bus {name}",
+        "ship": "Boat {name}",
+        "cableway": "Cable car {name}",
+        "other": "{name}"
+      }
     }
   },
   "routes": {
@@ -253,6 +306,7 @@
       "nameTooLong": "{max} characters at most.",
       "stopMissing": "Choose a stop from the list.",
       "stopSame": "Choose a stop other than the one at the start.",
+      "returnBeforeArrival": "The way back starts before the arrival.",
       "secondStopSame": "This stop is already part of the route."
     },
     "lines": {
@@ -291,6 +345,15 @@
       "now": "Go to “Now”",
       "another": "Add another route",
       "routes": "Go to routes"
+    },
+    "schedule": {
+      "label": "Schedule",
+      "hint": "For fixed times, at school for example. On these days, Kairos shows the last connection that gets you there in time, and from the time of the way back the connections back. Empty fields leave a day as usual.",
+      "arriveBy": "Arrive by",
+      "returnFrom": "Way back from",
+      "arriveByOn": "{day}: arrive by",
+      "returnFromOn": "{day}: way back from",
+      "copyMonday": "Use Monday for Tuesday to Friday"
     }
   },
   "placeField": {
@@ -387,11 +450,16 @@
     },
     "version": "Version",
     "source": "Source code",
-    "privacy": "Timetable data: opentransportdata.swiss. Routes and settings stay on this device."
+    "privacy": "Timetable data: opentransportdata.swiss. Weather: Open-Meteo.com. Routes and settings stay on this device.",
+    "weather": {
+      "label": "Weather",
+      "hint": "The temperature when leaving and rain on the walks. For this, Kairos asks Open-Meteo with the approximate position of the stops."
+    }
   },
   "update": {
     "available": "A new version of Kairos is ready.",
     "reload": "Update"
   },
-  "credit": "Timetable data: opentransportdata.swiss"
+  "credit": "Timetable data: opentransportdata.swiss",
+  "creditWithWeather": "Timetable data: opentransportdata.swiss. Weather: Open-Meteo.com"
 }

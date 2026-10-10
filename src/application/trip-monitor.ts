@@ -31,6 +31,8 @@ export interface MonitorTarget {
   readonly nextLeaveAt: (journeys: readonly Journey[], now: Instant) => Instant | null
   /** Asks for journeys from this time instead of now, for example for a trip planned later. */
   readonly at?: Instant
+  /** Asks for the journeys that arrive by the time instead of those that leave after it. */
+  readonly arriveBy?: boolean
 }
 
 export interface TripMonitorDependencies {
@@ -51,9 +53,10 @@ const INITIAL: MonitorSnapshot = {
   nextRefreshAt: null,
 }
 
-export function cacheKey(pairs: readonly StopPair[], at?: Instant): string {
+export function cacheKey(pairs: readonly StopPair[], at?: Instant, arriveBy = false): string {
   const stops = pairs.map(({ from, to }) => `${from.id}>${to.id}`).join('+')
-  return at === undefined ? stops : `${stops}@${at}`
+  if (at === undefined) return stops
+  return `${stops}${arriveBy ? '<' : '@'}${at}`
 }
 
 /**
@@ -98,7 +101,7 @@ export class TripMonitor {
   watch(target: MonitorTarget): void {
     this.#cancel()
     this.#target = target
-    this.#key = cacheKey(target.pairs, target.at)
+    this.#key = cacheKey(target.pairs, target.at, target.arriveBy)
     this.#failures = 0
 
     const cached = this.#deps.cache.read(this.#key)
@@ -131,7 +134,10 @@ export class TripMonitor {
       const at = Math.max(now, target.at ?? now)
       const answers = await Promise.all(
         target.pairs.map(({ from, to }) =>
-          timetable.findJourneys({ from, to, at, limit: JOURNEY_LIMIT }, request.signal),
+          timetable.findJourneys(
+            { from, to, at, ...(target.arriveBy && { arriveBy: true }), limit: JOURNEY_LIMIT },
+            request.signal,
+          ),
         ),
       )
       const journeys = answers.flat()

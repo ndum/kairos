@@ -11,6 +11,7 @@ import {
   formOf,
   nameError,
   placeErrors,
+  scheduleErrors,
   suggestedName,
 } from './route-form'
 
@@ -24,6 +25,7 @@ const filled = (): RouteForm => ({
   ],
   buffer: 3,
   preferredLines: [trainLine('S1'), busLine('20')],
+  schedule: emptyForm().schedule,
 })
 
 describe('formOf and draftOf', () => {
@@ -51,8 +53,35 @@ describe('formOf and draftOf', () => {
     expect(draftOf(formOf(located)).places[0].coordinates).toEqual(position)
   })
 
+  it('keep the times of the schedule and leave out empty days', () => {
+    const schooldays = {
+      ...commute,
+      schedule: [
+        { weekday: 1, arriveBy: 7 * 60 + 45, returnFrom: 16 * 60 + 30 },
+        { weekday: 5, arriveBy: null, returnFrom: 11 * 60 },
+      ],
+    } as const
+    const form = formOf(schooldays)
+
+    expect(form.schedule[0]).toEqual({ weekday: 1, arriveBy: '07:45', returnFrom: '16:30' })
+    expect(form.schedule[4]).toEqual({ weekday: 5, arriveBy: '', returnFrom: '11:00' })
+    expect(form.schedule[6]).toEqual({ weekday: 7, arriveBy: '', returnFrom: '' })
+    expect(draftOf(form).schedule).toEqual(schooldays.schedule)
+    expect(draftOf(filled())).not.toHaveProperty('schedule')
+  })
+
   it('refuse a form without stops', () => {
     expect(() => draftOf(emptyForm())).toThrow()
+  })
+})
+
+describe('scheduleErrors', () => {
+  it('names the days whose way back starts before the arrival', () => {
+    const form = filled()
+    form.schedule[1] = { weekday: 2, arriveBy: '10:00', returnFrom: '09:30' }
+    form.schedule[2] = { weekday: 3, arriveBy: '08:00', returnFrom: '' }
+
+    expect(scheduleErrors(form)).toEqual([2])
   })
 })
 

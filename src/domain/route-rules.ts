@@ -1,5 +1,6 @@
 import { lineKey } from './line-preference'
 import { type Place, type PreferredLine, type Route, stopsOf } from './route'
+import { isValidSchedule } from './schedule'
 import { type Duration, MINUTE } from './time'
 
 export const NAME_MAX_LENGTH = 40
@@ -32,7 +33,8 @@ export const isValidRoute = (route: Route): boolean =>
   isValidName(route.name) &&
   route.places.every(isValidPlace) &&
   hasDistinctStops(route) &&
-  inRange(route.buffer, BUFFER_MAX)
+  inRange(route.buffer, BUFFER_MAX) &&
+  isValidSchedule(route.schedule ?? [])
 
 /** Trims line names and drops blanks and duplicates, keeping the first spelling. */
 export function normalizeLines(lines: readonly PreferredLine[]): PreferredLine[] {

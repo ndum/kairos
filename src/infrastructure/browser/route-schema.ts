@@ -13,12 +13,22 @@ const PlaceSchema = v.object({
 
 const PreferredLinesSchema = v.array(v.object({ name: v.string(), mode: TransportModeSchema }))
 
+// Added in 1.3 without a new version: older data simply has no schedule.
+const ScheduleSchema = v.array(
+  v.object({
+    weekday: v.picklist([1, 2, 3, 4, 5, 6, 7] as const),
+    arriveBy: v.nullable(v.number()),
+    returnFrom: v.nullable(v.number()),
+  }),
+)
+
 export const RouteSchema = v.object({
   id: v.string(),
   name: v.string(),
   places: v.tuple([PlaceSchema, PlaceSchema]),
   buffer: v.number(),
   preferredLines: PreferredLinesSchema,
+  schedule: v.optional(ScheduleSchema),
 })
 
 const PlaceV1Schema = v.object({ ...PlaceSchema.entries, reserve: v.number() })

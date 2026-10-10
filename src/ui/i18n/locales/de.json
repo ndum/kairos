@@ -58,7 +58,8 @@
       "time": "Richtung nach Uhrzeit",
       "locating": "Standort wird gesucht …",
       "denied": "Kein Zugriff auf den Standort, Richtung nach Uhrzeit",
-      "unavailable": "Standort nicht gefunden, Richtung nach Uhrzeit"
+      "unavailable": "Standort nicht gefunden, Richtung nach Uhrzeit",
+      "schedule": "Richtung nach Stundenplan"
     },
     "journey": {
       "title": "Deine Verbindung",
@@ -87,7 +88,8 @@
       "times": "ab {departure}, an {arrival}",
       "details": "Details anzeigen",
       "leave": "losgehen",
-      "arrival": "an {time}"
+      "arrival": "an {time}",
+      "earlier": "Früher"
     },
     "live": {
       "loading": "Lädt",
@@ -105,6 +107,38 @@
     "arrivalAt": "Ankunft {place}",
     "opposite": {
       "next": "Nächste: losgehen {leave}, an {arrival}"
+    },
+    "schedule": {
+      "inTime": "Rechtzeitig für {time}",
+      "late": "Zu spät für {time}",
+      "returnFrom": "Rückweg ab {time}"
+    },
+    "tab": {
+      "minutes": "Losgehen in {minutes} Min.",
+      "now": "Jetzt losgehen",
+      "at": "Losgehen um {time}"
+    },
+    "weather": {
+      "label": "Wetter beim Losgehen: {sky}, {temperature} Grad",
+      "sky": {
+        "clear": "klar",
+        "cloudy": "bewölkt",
+        "fog": "Nebel",
+        "drizzle": "Nieselregen",
+        "rain": "Regen",
+        "snow": "Schnee",
+        "thunder": "Gewitter"
+      },
+      "wet": {
+        "rain": {
+          "to-stop": "Gegen {time} regnet es auf dem Fussweg zur Haltestelle.",
+          "from-stop": "Gegen {time} regnet es auf dem Fussweg ab {stop}."
+        },
+        "snow": {
+          "to-stop": "Gegen {time} schneit es auf dem Fussweg zur Haltestelle.",
+          "from-stop": "Gegen {time} schneit es auf dem Fussweg ab {stop}."
+        }
+      }
     }
   },
   "plan": {
@@ -141,6 +175,25 @@
     "sheet": {
       "title": "Losgehen um {time}",
       "summary": "{leave} bis {arrival}, {minutes} Min., {transfers}"
+    },
+    "share": {
+      "action": "Teilen",
+      "calendar": "Zum Kalender",
+      "copied": "Fahrt kopiert.",
+      "failed": "Teilen ist hier nicht möglich.",
+      "leave": "Losgehen um {time}",
+      "ride": "{time} {line} ab {stop}",
+      "towards": "Richtung {headsign}",
+      "arrival": "Ankunft {place} um {time}",
+      "reminder": "Losgehen nach {place}",
+      "line": {
+        "train": "{name}",
+        "tram": "Tram {name}",
+        "bus": "Bus {name}",
+        "ship": "Schiff {name}",
+        "cableway": "Seilbahn {name}",
+        "other": "{name}"
+      }
     }
   },
   "routes": {
@@ -253,6 +306,7 @@
       "nameTooLong": "Höchstens {max} Zeichen.",
       "stopMissing": "Wähle eine Haltestelle aus der Liste.",
       "stopSame": "Wähle eine andere Haltestelle als beim Start.",
+      "returnBeforeArrival": "Der Rückweg beginnt vor der Ankunft.",
       "secondStopSame": "Diese Haltestelle gehört schon zur Route."
     },
     "lines": {
@@ -291,6 +345,15 @@
       "now": "Zu «Jetzt»",
       "another": "Weitere Route anlegen",
       "routes": "Zu den Routen"
+    },
+    "schedule": {
+      "label": "Stundenplan",
+      "hint": "Für feste Zeiten, etwa in der Schule. An diesen Tagen zeigt Kairos die letzte Verbindung, mit der du rechtzeitig ankommst, und ab der Zeit für den Rückweg die Verbindungen zurück. Leere Felder lassen den Tag wie gewohnt.",
+      "arriveBy": "Ankunft bis",
+      "returnFrom": "Rückweg ab",
+      "arriveByOn": "{day}: Ankunft bis",
+      "returnFromOn": "{day}: Rückweg ab",
+      "copyMonday": "Montag für Dienstag bis Freitag übernehmen"
     }
   },
   "placeField": {
@@ -387,11 +450,16 @@
     },
     "version": "Version",
     "source": "Quellcode",
-    "privacy": "Fahrplandaten: opentransportdata.swiss. Routen und Einstellungen bleiben auf diesem Gerät."
+    "privacy": "Fahrplandaten: opentransportdata.swiss. Wetter: Open-Meteo.com. Routen und Einstellungen bleiben auf diesem Gerät.",
+    "weather": {
+      "label": "Wetter",
+      "hint": "Temperatur beim Losgehen und Regen auf den Fusswegen. Kairos fragt dafür Open-Meteo mit der ungefähren Lage der Haltestellen."
+    }
   },
   "update": {
     "available": "Eine neue Version von Kairos ist bereit.",
     "reload": "Aktualisieren"
   },
-  "credit": "Fahrplandaten: opentransportdata.swiss"
+  "credit": "Fahrplandaten: opentransportdata.swiss",
+  "creditWithWeather": "Fahrplandaten: opentransportdata.swiss. Wetter: Open-Meteo.com"
 }

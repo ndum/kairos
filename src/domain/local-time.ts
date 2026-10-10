@@ -1,3 +1,4 @@
+import type { Weekday } from './schedule'
 import { HOUR, type Instant, MINUTE } from './time'
 
 /** Kairos works with Swiss timetables, so local time is always Swiss time. */
@@ -33,6 +34,13 @@ export function toLocal(instant: Instant): LocalDateTime {
     time: `${hour}:${minute}`,
     minuteOfDay: Number(hour) * 60 + Number(minute),
   }
+}
+
+/** Day of the week in Swiss time, as in ISO 8601: 1 is Monday, 7 is Sunday. */
+export function weekdayOf(instant: Instant): Weekday {
+  const [year = 0, month = 1, day = 1] = toLocal(instant).date.split('-').map(Number)
+  const sundayFirst = new Date(Date.UTC(year, month - 1, day)).getUTCDay()
+  return (sundayFirst === 0 ? 7 : sundayFirst) as Weekday
 }
 
 /** Offset of Swiss time from UTC at an instant, in milliseconds. */
