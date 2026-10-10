@@ -211,6 +211,11 @@
         "unavailable": "Your location is not available right now.",
         "removed": "Position removed."
       },
+      "credit": {
+        "addresses": "Addresses:",
+        "companies": "Companies:",
+        "osm": "© OpenStreetMap contributors"
+      },
       "nearby": {
         "label": "Stops nearby",
         "detail": "{distance}, about {minutes} min on foot",

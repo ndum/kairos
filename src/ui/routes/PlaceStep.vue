@@ -38,6 +38,10 @@ const id = useId()
 
 const SUGGESTIONS = ['home', 'work', 'school'] as const
 
+// The place search shows addresses of swisstopo and companies from OpenStreetMap.
+const SWISSTOPO = 'https://www.swisstopo.admin.ch'
+const OPENSTREETMAP = 'https://www.openstreetmap.org/copyright'
+
 const suggestions = computed(() =>
   SUGGESTIONS.map((key) => t(`editor.place.suggestions.${key}`)).filter(
     (name) => name !== props.otherName?.trim(),
@@ -189,6 +193,17 @@ function chooseStop(stop: StopRef | null): void {
       <p role="status" class="text-sm text-ink-muted" :class="{ 'sr-only': !positionMessage }">
         {{ positionMessage }}
       </p>
+      <p class="credit text-xs text-ink-subtle">
+        {{ t('editor.place.credit.addresses') }}
+        <a :href="SWISSTOPO" target="_blank" rel="noopener noreferrer" v-text="'© swisstopo'" />.
+        {{ t('editor.place.credit.companies') }}
+        <a
+          :href="OPENSTREETMAP"
+          target="_blank"
+          rel="noopener noreferrer"
+          v-text="t('editor.place.credit.osm')"
+        />.
+      </p>
     </div>
 
     <div class="flex flex-col gap-3">
@@ -280,6 +295,11 @@ function chooseStop(stop: StopRef | null): void {
     background: var(--color-glass);
     color: var(--color-ink);
   }
+}
+
+.credit a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 /* A row per stop, which reacts as a whole like the radio button it holds. */
