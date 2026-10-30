@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/ndum/kairos/compare/v1.2.0...v1.3.0) (2026-10-30)
+
+
+### Features
+
+* **now:** tell the user when the timetable is down ([#43](https://github.com/ndum/kairos/issues/43)) ([12974ef](https://github.com/ndum/kairos/commit/12974efb7a11a305ebd31bd740556ec89ce80c27))
+
+
+### Performance
+
+* **i18n:** load German on demand like the other languages ([#42](https://github.com/ndum/kairos/issues/42)) ([5a501f1](https://github.com/ndum/kairos/commit/5a501f11a9704746f1e12e4d9bb393c847063c21))
+
 ## [1.2.0](https://github.com/ndum/kairos/compare/v1.1.1...v1.2.0) (2026-10-10)
 
 
