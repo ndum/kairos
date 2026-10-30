@@ -54,7 +54,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",
-    "@commitlint/cli": "^21.2.3",
+    "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.3",
     "@eslint/js": "^10.0.1",
     "@iconify-json/tabler": "^1.2.42",
@@ -73,7 +73,7 @@
     "eslint": "^10.13.0",
     "eslint-plugin-vue": "^10.11.1",
     "globals": "^17.13.0",
-    "lefthook": "^2.2.1",
+    "lefthook": "^2.2.2",
     "playwright": "^1.64.0",
     "prettier": "^3.9.10",
     "prettier-plugin-tailwindcss": "^0.8.1",
