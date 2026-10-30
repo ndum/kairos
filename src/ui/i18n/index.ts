@@ -1,23 +1,21 @@
 import { type Composer, createI18n } from 'vue-i18n'
 
-import { DEFAULT_LOCALE, LOCALE_STORAGE_KEY, type Locale, resolveLocale } from './locale'
-import de from './locales/de.json'
+import { LOCALE_STORAGE_KEY, type Locale, resolveLocale } from './locale'
+import type de from './locales/de.json'
 
 export type MessageSchema = typeof de
 
 /**
- * German is the default and the fallback, so it comes with the app. Every other language loads
- * when it is used, which keeps the JavaScript of the start small.
+ * Every language loads when it is used, German included, which keeps the JavaScript of the
+ * start small. The app waits for the language of the device before it starts. A test keeps all
+ * languages complete, so no fallback is needed.
  */
-type LoadedLater = Exclude<Locale, 'de'>
-
-const loaders: Record<LoadedLater, () => Promise<MessageSchema>> = {
+const loaders: Record<Locale, () => Promise<MessageSchema>> = {
+  de: () => import('./locales/de.json').then((module) => module.default),
   en: () => import('./locales/en.json').then((module) => module.default),
   fr: () => import('./locales/fr.json').then((module) => module.default),
   it: () => import('./locales/it.json').then((module) => module.default),
 }
-
-const loadsLater = (locale: Locale): locale is LoadedLater => locale in loaders
 
 /** Reading localStorage throws when the user blocks site data. */
 function storedPreference(): string | null {
@@ -34,8 +32,8 @@ export function createAppI18n(
   return createI18n<[MessageSchema], Locale, false>({
     legacy: false,
     locale,
-    fallbackLocale: DEFAULT_LOCALE,
-    messages: { de } as Record<Locale, MessageSchema>,
+    fallbackLocale: false,
+    messages: {} as Record<Locale, MessageSchema>,
   })
 }
 
@@ -44,6 +42,6 @@ export async function loadLocale(
   composer: Pick<Composer, 'availableLocales' | 'setLocaleMessage'>,
   locale: Locale,
 ): Promise<void> {
-  if (!loadsLater(locale) || composer.availableLocales.includes(locale)) return
+  if (composer.availableLocales.includes(locale)) return
   composer.setLocaleMessage(locale, await loaders[locale]())
 }
