@@ -52,6 +52,11 @@
     "unavailable": "L’orario non è raggiungibile al momento.",
     "retry": "Riprova",
     "noTrips": "Nessun collegamento nelle prossime ore.",
+    "outage": {
+      "title": "Orario disturbato",
+      "text": "Il servizio dell’orario al momento non risponde. Kairos continua a riprovare.",
+      "stale": "Nel frattempo possono mancare ritardi e soppressioni."
+    },
     "swap": "Cambia direzione",
     "directionNote": {
       "location": "Direzione secondo la posizione",
@@ -96,6 +101,7 @@
       "live": "In diretta",
       "stale": "Offline",
       "error": "Offline",
+      "disrupted": "Disturbo",
       "updated": "Aggiornato alle {time}",
       "refresh": "Aggiorna ora"
     },

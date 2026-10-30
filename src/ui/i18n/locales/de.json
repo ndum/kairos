@@ -52,6 +52,11 @@
     "unavailable": "Der Fahrplan ist gerade nicht erreichbar.",
     "retry": "Erneut versuchen",
     "noTrips": "Keine Verbindung in den nächsten Stunden.",
+    "outage": {
+      "title": "Fahrplan gestört",
+      "text": "Der Fahrplandienst antwortet gerade nicht. Kairos versucht es laufend wieder.",
+      "stale": "Bis dahin können Verspätungen und Ausfälle fehlen."
+    },
     "swap": "Richtung wechseln",
     "directionNote": {
       "location": "Richtung nach Standort",
@@ -96,6 +101,7 @@
       "live": "Live",
       "stale": "Offline",
       "error": "Offline",
+      "disrupted": "Störung",
       "updated": "Stand {time}",
       "refresh": "Jetzt aktualisieren"
     },

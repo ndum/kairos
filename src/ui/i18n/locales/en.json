@@ -52,6 +52,11 @@
     "unavailable": "The timetable cannot be reached right now.",
     "retry": "Try again",
     "noTrips": "No connection in the next hours.",
+    "outage": {
+      "title": "Timetable disrupted",
+      "text": "The timetable service is not responding right now. Kairos keeps trying again.",
+      "stale": "Until then, delays and cancellations may be missing."
+    },
     "directionNote": {
       "location": "Direction by location",
       "time": "Direction by time of day",
@@ -96,6 +101,7 @@
       "live": "Live",
       "stale": "Offline",
       "error": "Offline",
+      "disrupted": "Disrupted",
       "updated": "As of {time}",
       "refresh": "Refresh now"
     },
