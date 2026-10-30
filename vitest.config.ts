@@ -47,6 +47,9 @@ export default defineConfig((env) =>
           test: {
             name: 'browser',
             include: ['src/**/*.browser.test.ts'],
+            // The default port 63315 lies in the dynamic range, which Windows may reserve for
+            // Hyper-V or WSL. A busy port moves on to the next free one.
+            api: { port: 5199 },
             browser: {
               enabled: true,
               headless: true,
