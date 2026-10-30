@@ -8,14 +8,14 @@ import type { MonitorSnapshot } from '@/application/trip-monitor'
 import IconButton from '../components/IconButton.vue'
 import { useFormat } from '../composables/use-format'
 
-const props = defineProps<{ snapshot: MonitorSnapshot }>()
+const props = defineProps<{ snapshot: MonitorSnapshot; disrupted?: boolean }>()
 
 const emit = defineEmits<{ refresh: [] }>()
 
 const { t } = useI18n()
 const format = useFormat()
 
-const state = computed(() => t(`now.live.${props.snapshot.status}`))
+const state = computed(() => t(`now.live.${props.disrupted ? 'disrupted' : props.snapshot.status}`))
 const offline = computed(
   () => props.snapshot.status === 'stale' || props.snapshot.status === 'error',
 )

@@ -14,7 +14,7 @@ import IconCalendarTime from '~icons/tabler/calendar-time'
 import IconClock from '~icons/tabler/clock'
 import IconCurrentLocation from '~icons/tabler/current-location'
 
-import type { MonitorSnapshot } from '@/application/trip-monitor'
+import type { MonitorSnapshot, MonitorStatus } from '@/application/trip-monitor'
 
 import { ridesOf } from '@/domain/journey'
 import {
@@ -38,6 +38,7 @@ import HeroCard from './HeroCard.vue'
 import JourneyCard from './JourneyCard.vue'
 import LiveStatus from './LiveStatus.vue'
 import OppositeCard from './OppositeCard.vue'
+import OutageNotice from './OutageNotice.vue'
 import UpcomingCard from './UpcomingCard.vue'
 import { useCountdownTitle } from './use-countdown-title'
 import { useLiveBoard } from './use-live-board'
@@ -78,6 +79,12 @@ const status = computed<MonitorSnapshot>(() => {
   if (online.value) return snapshot
   return { ...snapshot, status: snapshot.fetchedAt === null ? 'error' : 'stale' }
 })
+
+// Online, a failed refresh means the timetable itself is down. The cards then say so instead
+// of claiming there are no trips, since the cached ones may all have left already.
+const disrupted = computed(() => online.value && primary.snapshot.value.error !== null)
+const cardStatus = (snapshot: MonitorSnapshot): MonitorStatus =>
+  online.value && snapshot.error !== null && snapshot.status === 'stale' ? 'error' : snapshot.status
 
 // The panorama follows the main trip: its urgency colours the sky and its train arrives.
 const scene = useSceneStore()
@@ -137,10 +144,12 @@ const canPrefer = computed(() => !!selected.value && !prefers(props.route, selec
         {{ t(`now.directionNote.${directionNote}`) }}
       </p>
     </div>
-    <LiveStatus :snapshot="status" @refresh="primary.refresh" />
+    <LiveStatus :snapshot="status" :disrupted @refresh="primary.refresh" />
   </div>
 
   <slot name="before" />
+
+  <OutageNotice v-if="disrupted" :stale="primary.snapshot.value.fetchedAt !== null" />
 
   <div class="board">
     <HeroCard
@@ -148,7 +157,7 @@ const canPrefer = computed(() => !!selected.value && !prefers(props.route, selec
       :board="primary.board.value"
       :ends="primary.endpoints.value"
       :now
-      :status="primary.snapshot.value.status"
+      :status="cardStatus(primary.snapshot.value)"
       :weather
       @retry="primary.refresh"
     />
@@ -168,7 +177,7 @@ const canPrefer = computed(() => !!selected.value && !prefers(props.route, selec
       <OppositeCard
         :board="secondary.board.value"
         :ends="secondary.endpoints.value"
-        :status="secondary.snapshot.value.status"
+        :status="cardStatus(secondary.snapshot.value)"
         @swap="emit('swap')"
         @details="(trip) => showDetails(trip, oppositeDirection(direction))"
       />

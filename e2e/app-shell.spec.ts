@@ -33,6 +33,9 @@ test('names the page and starts at its heading after moving to it', async ({ pag
 test('lets keyboard users skip to the content', async ({ page, isMobile }) => {
   test.skip(isMobile, 'Phones have no keyboard to tab with')
   await page.goto('/#/routes')
+  // The app shows once its language has loaded, and only then is there something to tab to.
+  const heading = page.getByRole('heading', { name: 'Routen', level: 1 })
+  await expect(heading).toBeVisible()
 
   await page.keyboard.press('Tab')
   const skip = page.getByRole('button', { name: 'Zum Inhalt springen' })
@@ -40,7 +43,7 @@ test('lets keyboard users skip to the content', async ({ page, isMobile }) => {
   await expect(skip).toBeInViewport()
   await page.keyboard.press('Enter')
 
-  await expect(page.getByRole('heading', { name: 'Routen', level: 1 })).toBeFocused()
+  await expect(heading).toBeFocused()
 })
 
 test.describe('in English', () => {

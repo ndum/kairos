@@ -350,12 +350,30 @@ test('offers to try again when the timetable cannot be reached', async () => {
     },
   })
 
-  await expect.element(screen.getByText('Der Fahrplan ist gerade nicht erreichbar.')).toBeVisible()
+  await expect
+    .element(screen.getByRole('region', { name: /Home nach Office/ }))
+    .toMatchTextContent(/Der Fahrplan ist gerade nicht erreichbar\./)
   await screen.getByRole('button', { name: 'Erneut versuchen' }).click()
 
   await expect
     .element(screen.getByRole('region', { name: /Home nach Office/ }))
     .toMatchTextContent(/9\s*Min\./)
+})
+
+test('reports a disrupted timetable instead of claiming there are no trips', async () => {
+  const screen = await renderWithApp(NowView, {
+    routes: [commute],
+    timetable: { findJourneys: () => Promise.reject(new Error('Service unavailable')) },
+  })
+
+  await expect.element(screen.getByRole('region', { name: 'Fahrplan gestört' })).toBeVisible()
+  await expect
+    .element(screen.getByRole('status').filter({ hasText: 'Störung' }))
+    .toBeInTheDocument()
+  await expect
+    .element(screen.getByRole('region', { name: /Office nach Home/ }))
+    .toMatchTextContent(/Der Fahrplan ist gerade nicht erreichbar\./)
+  expect(screen.getByText('Keine Verbindung in den nächsten Stunden.').elements()).toHaveLength(0)
 })
 
 test('counts down to a pinned trip and forgets it on request', async () => {

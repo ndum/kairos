@@ -52,6 +52,11 @@
     "unavailable": "L’horaire n’est pas joignable pour le moment.",
     "retry": "Réessayer",
     "noTrips": "Aucune liaison dans les prochaines heures.",
+    "outage": {
+      "title": "Horaire perturbé",
+      "text": "Le service d’horaire ne répond pas pour le moment. Kairos réessaie régulièrement.",
+      "stale": "D’ici là, des retards et des suppressions peuvent manquer."
+    },
     "swap": "Changer de sens",
     "directionNote": {
       "location": "Sens selon la position",
@@ -96,6 +101,7 @@
       "live": "En direct",
       "stale": "Hors ligne",
       "error": "Hors ligne",
+      "disrupted": "Perturbé",
       "updated": "Mis à jour à {time}",
       "refresh": "Actualiser maintenant"
     },

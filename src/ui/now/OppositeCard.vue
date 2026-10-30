@@ -28,6 +28,10 @@ const format = useFormat()
 const directionId = useId()
 
 const main = computed(() => props.board.main)
+const emptyText = computed(() => {
+  if (props.status === 'loading') return t('now.loading')
+  return props.status === 'error' ? t('now.unavailable') : t('now.noTrips')
+})
 </script>
 
 <template>
@@ -43,9 +47,7 @@ const main = computed(() => props.board.main)
         }}
         <IconChevronRight aria-hidden="true" class="flex-none text-ink-subtle" />
       </button>
-      <p v-else class="text-ink-muted">
-        {{ status === 'loading' ? t('now.loading') : t('now.noTrips') }}
-      </p>
+      <p v-else class="text-ink-muted">{{ emptyText }}</p>
     </div>
     <button
       type="button"
