@@ -48,6 +48,10 @@
       "minutes": "Still reachable without the buffer: departs {time}, leave in {minutes} min.",
       "now": "Still reachable without the buffer: departs {time}, leave right now."
     },
+    "endOfDay": {
+      "last": "Last connection today.",
+      "tomorrow": "Nothing runs any more today, the next connection is tomorrow."
+    },
     "loading": "Loading connections …",
     "unavailable": "The timetable cannot be reached right now.",
     "retry": "Try again",

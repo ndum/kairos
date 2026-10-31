@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest'
 
+import { HOUR } from '@/domain/time'
+import { type Trip, planTrip } from '@/domain/trip'
 import { at, commute, journey, morningCommute, ride, walk } from '@/test/builders'
 
-import { buildBoard, nextLeaveAt } from './board'
+import { buildBoard, endOfDayOf, nextLeaveAt } from './board'
 
 const endpoints = commute
 const preferredLines = ['S1', '20']
@@ -130,5 +132,33 @@ describe('nextLeaveAt', () => {
       at('06:48'),
     )
     expect(nextLeaveAt(buildBoard([], endpoints, preferredLines, at('06:40')))).toBeNull()
+  })
+})
+
+describe('endOfDayOf', () => {
+  const evening = planTrip(morningCommute('23:30'), commute)
+  if (!evening) throw new Error('Expected a trip')
+  const later = (trip: Trip, hours: number): Trip => ({
+    ...trip,
+    departureAt: trip.departureAt + hours * HOUR,
+  })
+
+  it('marks the main trip as the last one when the next leaves on the next timetable day', () => {
+    expect(endOfDayOf(evening, [evening, later(evening, 6)], at('23:00'))).toBe('last')
+  })
+
+  it('keeps quiet while a trip after midnight still follows', () => {
+    expect(endOfDayOf(evening, [evening, later(evening, 1)], at('23:00'))).toBeNull()
+  })
+
+  it('keeps quiet when the journeys end with the main trip', () => {
+    expect(endOfDayOf(evening, [evening], at('23:00'))).toBeNull()
+    expect(endOfDayOf(null, [], at('23:00'))).toBeNull()
+  })
+
+  it('says that nothing runs any more today once the main trip is on the next day', () => {
+    const tomorrow = later(evening, 6)
+
+    expect(endOfDayOf(tomorrow, [tomorrow], at('23:50'))).toBe('tomorrow')
   })
 })
