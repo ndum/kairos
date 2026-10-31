@@ -2,6 +2,8 @@ import type { Clock } from '@/application/ports/clock'
 import type { CachedJourneys, JourneyCache } from '@/application/ports/journey-cache'
 import type { PinnedTrip } from '@/application/pinned-trip'
 import type { PinStore } from '@/application/ports/pin-store'
+import type { RideStore } from '@/application/ports/ride-store'
+import type { Ride } from '@/application/ride'
 import type { RouteRepository } from '@/application/ports/route-repository'
 import type { Cancel, Scheduler } from '@/application/ports/scheduler'
 import type { Route } from '@/domain/route'
@@ -133,6 +135,22 @@ export class MemoryPinStore implements PinStore {
 
   save(pinned: PinnedTrip | null): void {
     this.pinned = pinned
+  }
+}
+
+export class MemoryRideStore implements RideStore {
+  ride: Ride | null
+
+  constructor(ride: Ride | null = null) {
+    this.ride = ride
+  }
+
+  load(): Ride | null {
+    return this.ride
+  }
+
+  save(ride: Ride | null): void {
+    this.ride = ride
   }
 }
 

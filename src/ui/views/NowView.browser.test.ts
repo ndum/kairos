@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, test, vi } from 'vitest'
 
 import { pinTrip } from '@/application/pinned-trip'
+import { rideOf } from '@/application/ride'
 import type { TimetablePort } from '@/application/ports/timetable'
 import type { WeatherPort } from '@/application/ports/weather'
 import type { Journey } from '@/domain/journey'
@@ -374,6 +375,53 @@ test('reports a disrupted timetable instead of claiming there are no trips', asy
     .element(screen.getByRole('region', { name: /Office nach Home/ }))
     .toMatchTextContent(/Der Fahrplan ist gerade nicht erreichbar\./)
   expect(screen.getByText('Keine Verbindung in den nächsten Stunden.').elements()).toHaveLength(0)
+})
+
+test('keeps the trips that just left a tap away', async () => {
+  const screen = await renderWithApp(NowView, {
+    routes: [commute],
+    timetable: timetable([morningCommute('06:52'), ...morning]),
+  })
+
+  await screen.getByText('Eine frühere Verbindung').click()
+  await screen.getByRole('button', { name: /Abfahrt um 06:52/ }).click()
+
+  const sheet = screen.getByRole('dialog')
+  await expect.element(sheet).toBeVisible()
+  expect(sheet.getByRole('button', { name: 'Merken' }).elements()).toHaveLength(0)
+})
+
+test('shows the ride the user is on until they say otherwise', async () => {
+  const trip = planTrip(morningCommute('06:55'), endpoints(commute, 'outbound'))
+  if (!trip) throw new Error('Expected a trip')
+  const ride = rideOf(commute, 'outbound', trip)
+  const screen = await renderWithApp(NowView, {
+    routes: [commute],
+    timetable: timetable(morning),
+    ride,
+  })
+
+  const card = screen.getByRole('region', { name: /Unterwegs/ })
+  await expect.element(card).toMatchTextContent(/Ankunft in\s*\d+\s*Min\./)
+  await card.getByRole('button', { name: 'Nicht in dieser Fahrt' }).click()
+
+  await expect.element(card).not.toBeInTheDocument()
+  // The next trip, 9 minutes ahead, is followed instead.
+  expect(screen.services.rides.load()?.key).not.toBe(ride.key)
+})
+
+test('follows the next trip and shows it once the user had to leave', async () => {
+  const screen = await renderWithApp(NowView, { routes: [commute], timetable: timetable(morning) })
+  await expect
+    .element(screen.getByRole('region', { name: /Home nach Office/ }))
+    .toMatchTextContent(/Losgehen in\s*9\s*Min\./)
+  expect(screen.getByRole('region', { name: /Unterwegs/ }).elements()).toHaveLength(0)
+
+  screen.clock.time = at('07:10')
+
+  await expect
+    .element(screen.getByRole('region', { name: /Unterwegs/ }))
+    .toMatchTextContent(/ab 07:20/)
 })
 
 test('counts down to a pinned trip and forgets it on request', async () => {

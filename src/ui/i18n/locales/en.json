@@ -96,6 +96,11 @@
       "arrival": "arrives {time}",
       "earlier": "Earlier"
     },
+    "missed": {
+      "summary": "One earlier connection | {count} earlier connections",
+      "departure": "departed",
+      "departureAt": "Departure at"
+    },
     "live": {
       "loading": "Loading",
       "live": "Live",
@@ -108,6 +113,12 @@
     "pinned": {
       "label": "Pinned trip",
       "missed": "This trip can no longer be reached."
+    },
+    "ride": {
+      "label": "On the way",
+      "arrivalIn": "Arriving in",
+      "arrivalAt": "Arriving at",
+      "dismiss": "Not on this trip"
     },
     "at": "at",
     "arrivalAt": "Arrival at {place}",

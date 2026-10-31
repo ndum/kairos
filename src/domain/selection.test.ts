@@ -6,6 +6,7 @@ import { at, commute, journey, morningCommute, ride, walk } from '@/test/builder
 import {
   distinctByFirstDeparture,
   selectInTime,
+  selectMissed,
   selectTrips,
   withoutSlowerTrips,
 } from './selection'
@@ -79,6 +80,22 @@ describe('selectInTime', () => {
     const selection = selectInTime(trips, at('07:25'), at('07:55'))
 
     expect(selection).toEqual({ main: null, tight: null, upcoming: [] })
+  })
+})
+
+describe('selectMissed', () => {
+  it('lists the latest three trips of the last hour that can no longer be caught', () => {
+    const trips = ['06:35', '06:45', '06:59', '07:05', '07:29', '07:55'].map(tripAt)
+
+    expect(departures(selectMissed(trips, at('07:40')))).toEqual([
+      at('07:29'),
+      at('07:05'),
+      at('06:59'),
+    ])
+  })
+
+  it('leaves out trips that can still be caught without the buffer', () => {
+    expect(selectMissed([tripAt('07:05')], at('06:50'))).toEqual([])
   })
 })
 

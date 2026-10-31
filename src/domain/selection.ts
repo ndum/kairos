@@ -1,5 +1,5 @@
 import { ridesOf } from './journey'
-import type { Instant } from './time'
+import { HOUR, type Instant } from './time'
 import type { Trip } from './trip'
 import { urgencyOf } from './urgency'
 
@@ -13,6 +13,10 @@ export interface TripSelection {
 }
 
 export const UPCOMING_COUNT = 2
+
+/** How far back the board still lists trips the user can no longer catch. */
+export const MISSED_WINDOW = HOUR
+export const MISSED_COUNT = 3
 
 const byLeaveTime = (a: Trip, b: Trip): number => a.leaveAt - b.leaveAt
 
@@ -31,6 +35,21 @@ export function selectTrips(
     tight: earlier.at(-1) ?? null,
     upcoming: main ? reachable.slice(mainIndex + 1, mainIndex + 1 + upcomingCount) : [],
   }
+}
+
+/**
+ * Trips the user can no longer catch that left within the window, latest first. The user may
+ * be on one of them, so a slower trip stays in the list even when a later one arrives first.
+ */
+export function selectMissed(
+  trips: readonly Trip[],
+  now: Instant,
+  count = MISSED_COUNT,
+): readonly Trip[] {
+  return trips
+    .filter((trip) => urgencyOf(trip, now) === 'missed' && trip.departureAt >= now - MISSED_WINDOW)
+    .sort((a, b) => b.departureAt - a.departureAt)
+    .slice(0, count)
 }
 
 /**

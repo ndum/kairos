@@ -1,5 +1,6 @@
 import type { Journey } from '@/domain/journey'
 import type { StopPair } from '@/domain/route'
+import { MISSED_WINDOW } from '@/domain/selection'
 import type { Duration, Instant } from '@/domain/time'
 
 import type { Clock } from './ports/clock'
@@ -33,6 +34,8 @@ export interface MonitorTarget {
   readonly at?: Instant
   /** Asks for the journeys that arrive by the time instead of those that leave after it. */
   readonly arriveBy?: boolean
+  /** Also asks for the journeys of the last hour while asking from now on, to list missed ones. */
+  readonly lookBack?: boolean
 }
 
 export interface TripMonitorDependencies {
@@ -44,6 +47,8 @@ export interface TripMonitorDependencies {
 
 /** Journeys per request. Variants of the same train are counted separately. */
 export const JOURNEY_LIMIT = 8
+/** Journeys per request that also covers the last hour, the most the timetable gives at once. */
+export const LOOK_BACK_LIMIT = 16
 
 const INITIAL: MonitorSnapshot = {
   status: 'loading',
@@ -131,14 +136,15 @@ export class TripMonitor {
     const request = new AbortController()
     this.#request = request
     try {
-      const at = Math.max(now, target.at ?? now)
+      const from = Math.max(now, target.at ?? now)
+      const lookBack = target.lookBack === true && !target.arriveBy && from === now
+      const query = {
+        at: lookBack ? from - MISSED_WINDOW : from,
+        ...(target.arriveBy && { arriveBy: true }),
+        limit: lookBack ? LOOK_BACK_LIMIT : JOURNEY_LIMIT,
+      }
       const answers = await Promise.all(
-        target.pairs.map(({ from, to }) =>
-          timetable.findJourneys(
-            { from, to, at, ...(target.arriveBy && { arriveBy: true }), limit: JOURNEY_LIMIT },
-            request.signal,
-          ),
-        ),
+        target.pairs.map((pair) => timetable.findJourneys({ ...pair, ...query }, request.signal)),
       )
       const journeys = answers.flat()
       if (request.signal.aborted) return

@@ -96,6 +96,11 @@
       "arrival": "an {time}",
       "earlier": "Früher"
     },
+    "missed": {
+      "summary": "Eine frühere Verbindung | {count} frühere Verbindungen",
+      "departure": "ab",
+      "departureAt": "Abfahrt um"
+    },
     "live": {
       "loading": "Lädt",
       "live": "Live",
@@ -108,6 +113,12 @@
     "pinned": {
       "label": "Gemerkte Fahrt",
       "missed": "Diese Fahrt ist nicht mehr erreichbar."
+    },
+    "ride": {
+      "label": "Unterwegs",
+      "arrivalIn": "Ankunft in",
+      "arrivalAt": "Ankunft um",
+      "dismiss": "Nicht in dieser Fahrt"
     },
     "at": "um",
     "arrivalAt": "Ankunft {place}",

@@ -28,13 +28,18 @@ import { useTripSharing } from './use-trip-sharing'
 
 const open = defineModel<boolean>('open', { required: true })
 
-const props = defineProps<{
-  trip: Trip
-  ends: Endpoints
-  pinned: boolean
-  /** Offers to prefer the lines of the trip, unless the route already does. */
-  canPrefer?: boolean
-}>()
+const props = withDefaults(
+  defineProps<{
+    trip: Trip
+    ends: Endpoints
+    pinned: boolean
+    /** Offers to prefer the lines of the trip, unless the route already does. */
+    canPrefer?: boolean
+    /** Offers to pin the trip. A trip that can no longer be caught is not worth it. */
+    canPin?: boolean
+  }>(),
+  { canPin: true },
+)
 
 const emit = defineEmits<{ pin: []; unpin: []; prefer: [] }>()
 
@@ -79,8 +84,9 @@ function addToCalendar(): void {
       <ItineraryBar :segments />
       <TripTimeline :trip :ends />
     </div>
-    <div class="grid grid-cols-2 gap-2.5">
+    <div v-if="canPin || canPrefer" class="grid grid-cols-2 gap-2.5">
       <BaseButton
+        v-if="canPin"
         :variant="pinned ? 'secondary' : 'primary'"
         :class="{ 'col-span-2': !canPrefer }"
         @click="pinned ? emit('unpin') : emit('pin')"
@@ -89,7 +95,7 @@ function addToCalendar(): void {
         <IconPinned v-else aria-hidden="true" />
         {{ pinned ? t('plan.unpin') : t('plan.pin') }}
       </BaseButton>
-      <BaseButton v-if="canPrefer" @click="emit('prefer')">
+      <BaseButton v-if="canPrefer" :class="{ 'col-span-2': !canPin }" @click="emit('prefer')">
         <IconStar aria-hidden="true" />
         {{ t('plan.prefer') }}
       </BaseButton>
