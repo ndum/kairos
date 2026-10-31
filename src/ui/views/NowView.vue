@@ -17,11 +17,14 @@ import RouteSwitcher from '../now/RouteSwitcher.vue'
 import { useDeviceLocation } from '../now/use-device-location'
 import { useRouteChoice } from '../now/use-route-choice'
 import { usePinStore } from '../stores/pin'
+import { useRideStore } from '../stores/ride'
 import { useRouteStore } from '../stores/routes'
 
 const LinkImportDialog = defineAsyncComponent(() => import('../routes/LinkImportDialog.vue'))
 // Only needed while a trip is pinned.
 const PinnedCard = defineAsyncComponent(() => import('../now/PinnedCard.vue'))
+// Only needed while the user is on the way.
+const RideCard = defineAsyncComponent(() => import('../now/RideCard.vue'))
 
 const { t } = useI18n()
 const store = useRouteStore()
@@ -47,6 +50,19 @@ watchEffect(() => {
   if (!pinned) return
   if (!pinnedRoute.value || now.value > pinned.departureAt + 2 * HOUR) pins.unpin()
 })
+
+const rides = useRideStore()
+const rideRoute = computed(() => store.routes.find(({ id }) => id === rides.ride?.routeId) ?? null)
+// The ride shows from the time the user had to leave. The card itself notices the arrival,
+// this only catches rides that are long over or whose route is gone.
+const onTheWay = computed(
+  () => !!rides.ride && !!rideRoute.value && now.value >= rides.ride.leaveAt,
+)
+watchEffect(() => {
+  const ride = rides.ride
+  if (!ride) return
+  if (!rideRoute.value || now.value > ride.departureAt + 4 * HOUR) rides.forget()
+})
 </script>
 
 <template>
@@ -61,6 +77,14 @@ watchEffect(() => {
       @swap="choice.swap"
     >
       <template #before>
+        <RideCard
+          v-if="onTheWay && rides.ride && rideRoute"
+          :ride="rides.ride"
+          :route="rideRoute"
+          :now
+          @dismiss="rides.forget"
+          @arrived="rides.forget"
+        />
         <PinnedCard
           v-if="pins.pinned && pinnedRoute"
           :pinned="pins.pinned"

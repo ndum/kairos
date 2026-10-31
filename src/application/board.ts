@@ -6,6 +6,7 @@ import {
   type TripSelection,
   distinctByFirstDeparture,
   selectInTime,
+  selectMissed,
   selectTrips,
   withoutSlowerTrips,
 } from '@/domain/selection'
@@ -21,6 +22,8 @@ export interface Board {
   readonly tight: Trip | null
   /** Trips after the main one, or the earlier ones when the schedule sets an arrival time. */
   readonly upcoming: readonly Trip[]
+  /** Preferred trips that can no longer be caught and left within the last hour, latest first. */
+  readonly missed: readonly Trip[]
   /** A faster trip on other lines, or a replacement when the main trip is cancelled. */
   readonly alternative: Trip | null
   readonly transferRisk: TransferRisk
@@ -46,11 +49,14 @@ export function buildBoard(
     .map((journey) => planTrip(journey, endpoints))
     .filter((trip) => trip !== null)
   const split = splitByPreference(trips, preferredLines)
-  const preferred = withoutSlowerTrips(distinctByFirstDeparture(split.preferred))
+  const distinct = distinctByFirstDeparture(split.preferred)
+  const preferred = withoutSlowerTrips(distinct)
   const alternatives = distinctByFirstDeparture(split.alternatives)
+  const missed = selectMissed(distinct, now)
 
   const board = (selection: TripSelection, from: Instant, late = false): Board => ({
     ...selection,
+    missed,
     alternative: noteworthyAlternative(selection.main, alternatives, from),
     transferRisk: selection.main ? transferRiskOf(selection.main.journey) : 'ok',
     target,

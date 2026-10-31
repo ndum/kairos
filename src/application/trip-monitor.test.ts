@@ -6,7 +6,13 @@ import { at, morningCommute, stop } from '@/test/builders'
 import { FakeClock, FakeScheduler, MemoryJourneyCache, settle } from '@/test/fakes'
 
 import { TimetableError, type TimetablePort } from './ports/timetable'
-import { JOURNEY_LIMIT, type MonitorTarget, TripMonitor, cacheKey } from './trip-monitor'
+import {
+  JOURNEY_LIMIT,
+  LOOK_BACK_LIMIT,
+  type MonitorTarget,
+  TripMonitor,
+  cacheKey,
+} from './trip-monitor'
 
 const from = stop('Riverside')
 const to = stop('Market Square')
@@ -106,6 +112,27 @@ describe('TripMonitor', () => {
         { from: bus, to },
       ]),
     ).not.toBe(key)
+  })
+
+  it('also asks for the last hour to list missed trips', async () => {
+    monitor.watch({ ...target, lookBack: true })
+    await settle()
+
+    expect(findJourneys).toHaveBeenCalledWith(
+      { from, to, at: at('05:40'), limit: LOOK_BACK_LIMIT },
+      expect.any(AbortSignal),
+    )
+    expect(cache.read(key)?.journeys).toEqual(firstBatch)
+  })
+
+  it('looks back only while it asks from now on', async () => {
+    monitor.watch({ ...target, lookBack: true, at: at('17:00') })
+    await settle()
+
+    expect(findJourneys).toHaveBeenCalledWith(
+      { from, to, at: at('17:00'), limit: JOURNEY_LIMIT },
+      expect.any(AbortSignal),
+    )
   })
 
   it('asks from now on once the later time has come', async () => {

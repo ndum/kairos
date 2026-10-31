@@ -96,6 +96,11 @@
       "arrival": "arrivée {time}",
       "earlier": "Plus tôt"
     },
+    "missed": {
+      "summary": "Une liaison précédente | {count} liaisons précédentes",
+      "departure": "départ",
+      "departureAt": "Départ à"
+    },
     "live": {
       "loading": "Chargement",
       "live": "En direct",
@@ -108,6 +113,12 @@
     "pinned": {
       "label": "Course épinglée",
       "missed": "Cette course n’est plus atteignable."
+    },
+    "ride": {
+      "label": "En route",
+      "arrivalIn": "Arrivée dans",
+      "arrivalAt": "Arrivée à",
+      "dismiss": "Pas dans cette course"
     },
     "at": "à",
     "arrivalAt": "Arrivée {place}",

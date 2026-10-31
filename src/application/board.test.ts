@@ -64,6 +64,15 @@ describe('buildBoard', () => {
     expect(board.upcoming).toEqual([])
   })
 
+  it('lists the missed trips, also a slower one that a later trip outruns', () => {
+    const slow = journey(ride('S1', 'Riverside', '07:05', 'Market Square', '07:45'))
+    const fast = journey(ride('S1', 'Riverside', '07:10', 'Market Square', '07:30'))
+    const board = buildBoard([slow, fast, morningCommute('07:29')], endpoints, [], at('07:15'))
+
+    expect(board.missed.map((trip) => trip.departureAt)).toEqual([at('07:10'), at('07:05')])
+    expect(board.main?.departureAt).toBe(at('07:29'))
+  })
+
   it('selects the trips on the preferred lines', () => {
     const board = buildBoard(journeys, endpoints, preferredLines, at('06:40'))
 
@@ -72,6 +81,7 @@ describe('buildBoard', () => {
     expect(board.tight).toBeNull()
     expect(board.alternative).toBeNull()
     expect(board.transferRisk).toBe('ok')
+    expect(board.missed).toEqual([])
   })
 
   it('keeps the preferred variant when another line is faster and offers that line as a hint', () => {

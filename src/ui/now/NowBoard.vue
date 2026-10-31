@@ -31,6 +31,7 @@ import { urgencyOf } from '@/domain/urgency'
 import { useDialog } from '../composables/use-dialog'
 import { usePreferLines } from '../composables/use-prefer-lines'
 import { usePinStore } from '../stores/pin'
+import { useRideStore } from '../stores/ride'
 import { useSceneStore } from '../stores/scene'
 import { useToastStore } from '../stores/toasts'
 import type { DirectionNote } from './direction-note'
@@ -100,6 +101,13 @@ watchEffect(() => {
 })
 onUnmounted(scene.clear)
 
+// Shortly before leaving, the main trip becomes the ride the user is probably on.
+const rides = useRideStore()
+watchEffect(() => {
+  const { main } = primary.board.value
+  if (main) rides.follow(props.route, props.direction, main, props.now)
+})
+
 useCountdownTitle(
   computed(() => primary.board.value.main?.leaveAt ?? null),
   now,
@@ -125,6 +133,8 @@ function pin({ trip, direction }: { trip: Trip; direction: Direction }): void {
   pins.pin(props.route, direction, trip)
   toasts.show(t('plan.pinnedToast'))
 }
+
+const isMissed = (trip: Trip): boolean => urgencyOf(trip, props.now) === 'missed'
 
 const { prefers, prefer } = usePreferLines()
 const canPrefer = computed(() => !!selected.value && !prefers(props.route, selected.value.trip))
@@ -172,6 +182,7 @@ const canPrefer = computed(() => !!selected.value && !prefers(props.route, selec
       <UpcomingCard
         :trips="primary.board.value.upcoming"
         :earlier="primary.board.value.target?.kind === 'arrive' && !primary.board.value.late"
+        :missed="primary.board.value.missed"
         @details="(trip) => showDetails(trip, direction)"
       />
       <OppositeCard
@@ -191,6 +202,7 @@ const canPrefer = computed(() => !!selected.value && !prefers(props.route, selec
     :ends="selected.ends"
     :pinned="pins.isPinned(selected.trip)"
     :can-prefer
+    :can-pin="!isMissed(selected.trip)"
     @pin="pin(selected)"
     @unpin="pins.unpin"
     @prefer="prefer(route, selected.trip)"

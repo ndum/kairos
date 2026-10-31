@@ -70,6 +70,7 @@ export function useLiveBoard(route: Ref<Route>, direction: Ref<Direction>, now: 
       const goal = target.value
       monitor.watch({
         pairs: stopPairs(current),
+        lookBack: true,
         nextLeaveAt: (journeys, at) =>
           nextLeaveAt(buildBoard(journeys, current, lines.value, at, goal)),
         ...windowOf(goal, current, late.value),

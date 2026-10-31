@@ -4,6 +4,7 @@ import { createMemoryHistory } from 'vue-router'
 import { render } from 'vitest-browser-vue'
 
 import type { PinnedTrip } from '@/application/pinned-trip'
+import type { Ride } from '@/application/ride'
 import { PlaceFinder } from '@/application/place-finder'
 import type { LocationPort, LocationResult } from '@/application/ports/location'
 import type { PlaceSearchPort } from '@/application/ports/place-search'
@@ -27,6 +28,7 @@ import {
   FakeScheduler,
   MemoryJourneyCache,
   MemoryPinStore,
+  MemoryRideStore,
   MemoryRouteRepository,
 } from './fakes'
 
@@ -47,6 +49,8 @@ export interface RenderOptions {
   readonly location?: LocationResult
   /** A trip pinned before the app starts. */
   readonly pinned?: PinnedTrip
+  /** The ride remembered before the app starts. */
+  readonly ride?: Ride
   /** Forecasts of the weather service, none by default. */
   readonly weather?: WeatherPort
 }
@@ -83,6 +87,7 @@ export function testServices(options: RenderOptions = {}) {
       current: () => Promise.resolve(options.location ?? { kind: 'unavailable' }),
     } satisfies LocationPort,
     pins: new MemoryPinStore(options.pinned ?? null),
+    rides: new MemoryRideStore(options.ride ?? null),
     calendar: new ICalendarWriter(clock),
     weather: new WeatherForecasts({ weather: options.weather ?? noWeather, clock }),
     createTripMonitor: () => new TripMonitor({ timetable, cache, clock, scheduler }),

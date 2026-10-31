@@ -96,6 +96,11 @@
       "arrival": "arrivo {time}",
       "earlier": "Prima"
     },
+    "missed": {
+      "summary": "Un collegamento precedente | {count} collegamenti precedenti",
+      "departure": "partenza",
+      "departureAt": "Partenza alle"
+    },
     "live": {
       "loading": "Caricamento",
       "live": "In diretta",
@@ -108,6 +113,12 @@
     "pinned": {
       "label": "Corsa fissata",
       "missed": "Questa corsa non è più raggiungibile."
+    },
+    "ride": {
+      "label": "In viaggio",
+      "arrivalIn": "Arrivo tra",
+      "arrivalAt": "Arrivo alle",
+      "dismiss": "Non su questa corsa"
     },
     "at": "alle",
     "arrivalAt": "Arrivo {place}",
