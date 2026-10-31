@@ -118,7 +118,10 @@
       "label": "In viaggio",
       "arrivalIn": "Arrivo tra",
       "arrivalAt": "Arrivo alle",
-      "dismiss": "Non su questa corsa"
+      "dismiss": "Non su questa corsa",
+      "departs": "partenza {time}",
+      "broken": "Questa coincidenza non funziona più.",
+      "nextConnection": "Prossima coincidenza alle {time}, arrivo {arrival}"
     },
     "at": "alle",
     "arrivalAt": "Arrivo {place}",

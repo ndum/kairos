@@ -118,7 +118,10 @@
       "label": "En route",
       "arrivalIn": "Arrivée dans",
       "arrivalAt": "Arrivée à",
-      "dismiss": "Pas dans cette course"
+      "dismiss": "Pas dans cette course",
+      "departs": "départ {time}",
+      "broken": "Cette correspondance ne fonctionne plus.",
+      "nextConnection": "Prochaine correspondance à {time}, arrivée {arrival}"
     },
     "at": "à",
     "arrivalAt": "Arrivée {place}",

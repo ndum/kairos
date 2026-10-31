@@ -1,5 +1,5 @@
-import { type Journey, type StopEvent, expectedTime } from './journey'
-import { type Duration, minutes } from './time'
+import { type Journey, type RideLeg, type StopEvent, expectedTime, ridesOf } from './journey'
+import { type Duration, type Instant, minutes } from './time'
 
 /**
  * - ok: the connection works as planned
@@ -57,4 +57,16 @@ export function transferRiskOf(journey: Journey): TransferRisk {
   const risks = new Set(transfersOf(journey).map((transfer) => transfer.risk))
   if (risks.has('broken')) return 'broken'
   return risks.has('tight') ? 'tight' : 'ok'
+}
+
+/** The next transfer whose connecting vehicle has not left yet, with that vehicle. */
+export function nextTransfer(
+  journey: Journey,
+  now: Instant,
+): { readonly transfer: Transfer; readonly ride: RideLeg } | null {
+  const transfers = transfersOf(journey)
+  const index = transfers.findIndex((transfer) => expectedTime(transfer.departure) > now)
+  const transfer = transfers[index]
+  const ride = ridesOf(journey)[index + 1]
+  return transfer && ride ? { transfer, ride } : null
 }
