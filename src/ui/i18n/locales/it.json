@@ -48,6 +48,10 @@
       "minutes": "Ancora raggiungibile senza margine: partenza {time}, parti tra {minutes} min.",
       "now": "Ancora raggiungibile senza margine: partenza {time}, parti subito."
     },
+    "endOfDay": {
+      "last": "Ultimo collegamento di oggi.",
+      "tomorrow": "Oggi non circola più nulla, il prossimo collegamento è domani."
+    },
     "loading": "Caricamento dei collegamenti …",
     "unavailable": "L’orario non è raggiungibile al momento.",
     "retry": "Riprova",

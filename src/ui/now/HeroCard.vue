@@ -5,6 +5,7 @@ import IconBolt from '~icons/tabler/bolt'
 import IconCalendarTime from '~icons/tabler/calendar-time'
 import IconChevronRight from '~icons/tabler/chevron-right'
 import IconLoader from '~icons/tabler/loader-2'
+import IconMoon from '~icons/tabler/moon'
 import IconUmbrella from '~icons/tabler/umbrella'
 
 import type { Board } from '@/application/board'
@@ -211,6 +212,10 @@ const alternative = computed(() => {
             : t('now.tight.now', { time: format.time(board.tight.departureAt) })
         }}
       </span>
+    </p>
+    <p v-if="board.main && board.endOfDay" class="note" role="status">
+      <IconMoon aria-hidden="true" class="mt-0.5 flex-none" />
+      <span>{{ t(`now.endOfDay.${board.endOfDay}`) }}</span>
     </p>
   </GlassCard>
 </template>

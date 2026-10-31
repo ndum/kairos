@@ -48,6 +48,10 @@
       "minutes": "Encore possible sans marge : départ {time}, partir dans {minutes} min.",
       "now": "Encore possible sans marge : départ {time}, pars tout de suite."
     },
+    "endOfDay": {
+      "last": "Dernière liaison aujourd’hui.",
+      "tomorrow": "Plus rien ne circule aujourd’hui, la prochaine liaison est demain."
+    },
     "loading": "Chargement des liaisons …",
     "unavailable": "L’horaire n’est pas joignable pour le moment.",
     "retry": "Réessayer",

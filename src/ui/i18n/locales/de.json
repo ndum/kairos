@@ -48,6 +48,10 @@
       "minutes": "Ohne Puffer noch erreichbar: Abfahrt {time}, losgehen in {minutes} Min.",
       "now": "Ohne Puffer noch erreichbar: Abfahrt {time}, sofort losgehen."
     },
+    "endOfDay": {
+      "last": "Letzte Verbindung heute.",
+      "tomorrow": "Heute fährt nichts mehr, die nächste Verbindung ist morgen."
+    },
     "loading": "Verbindungen werden geladen …",
     "unavailable": "Der Fahrplan ist gerade nicht erreichbar.",
     "retry": "Erneut versuchen",
