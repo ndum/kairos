@@ -66,6 +66,11 @@
       "schedule": "Direction by schedule"
     },
     "swap": "Switch direction",
+    "preview": {
+      "tomorrow": "Tomorrow",
+      "text": "{day}: leave at {leave}, arrive {arrival}",
+      "by": "The schedule says there by {time}"
+    },
     "journey": {
       "title": "Your connection",
       "walkTo": "{minutes} min walk to {stop}",

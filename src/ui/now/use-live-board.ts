@@ -35,7 +35,8 @@ function windowOf(
 }
 
 /** One time is asked for all stops of a place, so the shortest walk leaves none out. */
-const shortestWalk = (place: Place): Duration => Math.min(...stopsOf(place).map(({ walk }) => walk))
+export const shortestWalk = (place: Place): Duration =>
+  Math.min(...stopsOf(place).map(({ walk }) => walk))
 
 const keyOf = (target: ScheduleTarget | null): string => {
   if (target === null) return ''

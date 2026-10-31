@@ -58,6 +58,11 @@
       "stale": "Bis dahin können Verspätungen und Ausfälle fehlen."
     },
     "swap": "Richtung wechseln",
+    "preview": {
+      "tomorrow": "Morgen",
+      "text": "{day}: um {leave} losgehen, an {arrival}",
+      "by": "Laut Stundenplan bis {time} am Ziel"
+    },
     "directionNote": {
       "location": "Richtung nach Standort",
       "time": "Richtung nach Uhrzeit",

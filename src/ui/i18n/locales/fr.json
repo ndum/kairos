@@ -58,6 +58,11 @@
       "stale": "D’ici là, des retards et des suppressions peuvent manquer."
     },
     "swap": "Changer de sens",
+    "preview": {
+      "tomorrow": "Demain",
+      "text": "{day} : partir à {leave}, arrivée {arrival}",
+      "by": "Selon l’horaire, sur place à {time}"
+    },
     "directionNote": {
       "location": "Sens selon la position",
       "time": "Sens selon l’heure",

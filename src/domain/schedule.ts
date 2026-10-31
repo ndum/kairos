@@ -1,5 +1,6 @@
 import { fromLocal, toLocal, weekdayOf } from './local-time'
 import type { Direction } from './route'
+import { serviceDayOf } from './service-day'
 import { HOUR, type Instant, MINUTE } from './time'
 
 /** Days of the week as in ISO 8601: 1 is Monday, 7 is Sunday. */
@@ -98,4 +99,27 @@ export function clockTime(minuteOfDay: number): string {
   const hours = String(Math.floor(minuteOfDay / 60)).padStart(2, '0')
   const minutes = String(minuteOfDay % 60).padStart(2, '0')
   return `${hours}:${minutes}`
+}
+
+/** From this minute of the evening on, the board looks ahead to the next arrival time. */
+export const PREVIEW_FROM = 17 * 60
+/** How many days the preview looks ahead, enough to get from Friday to Monday. */
+export const PREVIEW_DAYS = 3
+
+/**
+ * The next arrival time of the schedule on a later day, from the evening until the timetable
+ * day ends. During the day the board itself shows what the schedule asks.
+ */
+export function nextArrival(schedule: Schedule | undefined, now: Instant): Instant | null {
+  const { minuteOfDay } = toLocal(now)
+  const evening = minuteOfDay >= PREVIEW_FROM || serviceDayOf(now) !== toLocal(now).date
+  if (!schedule?.length || !evening) return null
+
+  const noon = fromLocal(serviceDayOf(now), '12:00')
+  for (let days = 1; days <= PREVIEW_DAYS; days++) {
+    const date = toLocal(noon + days * 24 * HOUR).date
+    const day = scheduleDayAt(schedule, fromLocal(date, '12:00'))
+    if (day?.arriveBy != null) return fromLocal(date, clockTime(day.arriveBy))
+  }
+  return null
 }
