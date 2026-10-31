@@ -4,6 +4,7 @@ import type { PlaceFinder } from '@/application/place-finder'
 import type { CalendarWriter } from '@/application/ports/calendar'
 import type { Clock } from '@/application/ports/clock'
 import type { LocationPort } from '@/application/ports/location'
+import type { DelayStore } from '@/application/ports/delay-store'
 import type { PinStore } from '@/application/ports/pin-store'
 import type { RideStore } from '@/application/ports/ride-store'
 import type { RouteCodec } from '@/application/ports/route-codec'
@@ -24,6 +25,7 @@ export interface AppServices {
   readonly location: LocationPort
   readonly pins: PinStore
   readonly rides: RideStore
+  readonly delays: DelayStore
   readonly calendar: CalendarWriter
   readonly weather: WeatherForecasts
   /** Each board watches its connection with a monitor of its own. */

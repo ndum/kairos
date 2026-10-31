@@ -247,7 +247,14 @@
     "undo": "Annulla",
     "saved": "«{name}» salvato.",
     "notSaved": "Al momento questo dispositivo non permette a Kairos di salvare dati. I tuoi percorsi restano solo finché chiudi Kairos.",
-    "orStop": "oppure {stop}"
+    "orStop": "oppure {stop}",
+    "punctuality": {
+      "title": "Puntualità dei tuoi viaggi",
+      "average": "in media puntuale | in media 1 min di ritardo | in media {count} min di ritardo",
+      "late": "{late} viaggi su {count} con 3 min o più di ritardo",
+      "hint": "Su questa linea aspettati ritardi.",
+      "note": "Dalle ultime 2 settimane, solo i viaggi che Kairos ha visto."
+    }
   },
   "editor": {
     "newTitle": "Nuovo percorso",

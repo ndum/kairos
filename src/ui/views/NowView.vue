@@ -83,8 +83,9 @@ watchEffect(() => {
           :ride="rides.ride"
           :route="rideRoute"
           :now
-          @dismiss="rides.forget"
+          @dismiss="rides.dismiss"
           @arrived="rides.forget"
+          @observe="rides.observe"
         />
         <PinnedCard
           v-if="pins.pinned && pinnedRoute"

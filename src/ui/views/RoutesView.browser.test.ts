@@ -1,7 +1,8 @@
 import { expect, test } from 'vitest'
 import { defineComponent, h } from 'vue'
 
-import { busLine, gym, home, office, route, trainLine } from '@/test/builders'
+import { HOUR, minutes } from '@/domain/time'
+import { at, busLine, gym, home, office, route, trainLine } from '@/test/builders'
 import { renderWithApp } from '@/test/render'
 
 import ToastHost from '../components/ToastHost.vue'
@@ -33,6 +34,33 @@ test('shows each route with its places and lines', async () => {
   await expect
     .element(screen.getByRole('article', { name: 'Training' }).getByText('Alle Linien'))
     .toBeVisible()
+})
+
+test('tells how punctual the lines were on the rides of the user', async () => {
+  const ride = (daysAgo: number, delay: number) => ({
+    routeId: 'commute',
+    line: 'S1',
+    mode: 'train' as const,
+    departureAt: at('07:05') - daysAgo * 24 * HOUR,
+    departureDelay: minutes(delay),
+    arrivalDelay: minutes(delay),
+  })
+  const screen = await renderWithApp(RoutesView, {
+    path: '/routes',
+    routes: [commute, training],
+    delays: [ride(1, 0), ride(2, 4), ride(3, 5)],
+  })
+  const card = screen.getByRole('article', { name: 'Commute' })
+
+  await expect.element(card.getByText('im Schnitt 3 Min. später')).toBeVisible()
+  await expect.element(card.getByText('2 von 3 Fahrten 3 Min. oder mehr später')).toBeVisible()
+  await expect.element(card.getByText('Rechne bei dieser Linie mit Verspätung.')).toBeVisible()
+  expect(
+    screen
+      .getByRole('article', { name: 'Training' })
+      .getByText('Pünktlichkeit deiner Fahrten')
+      .elements(),
+  ).toHaveLength(0)
 })
 
 test('changes the order of the routes', async () => {

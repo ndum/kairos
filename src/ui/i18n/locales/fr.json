@@ -247,7 +247,14 @@
     "undo": "Annuler",
     "saved": "« {name} » enregistré.",
     "notSaved": "Cet appareil ne permet pas à Kairos d’enregistrer des données pour le moment. Tes trajets ne sont conservés que jusqu’à la fermeture de Kairos.",
-    "orStop": "ou {stop}"
+    "orStop": "ou {stop}",
+    "punctuality": {
+      "title": "Ponctualité de tes trajets",
+      "average": "à l’heure en moyenne | 1 min de retard en moyenne | {count} min de retard en moyenne",
+      "late": "{late} trajets sur {count} avec 3 min de retard ou plus",
+      "hint": "Compte avec des retards sur cette ligne.",
+      "note": "Sur les 2 dernières semaines, seulement les trajets que Kairos a vus."
+    }
   },
   "editor": {
     "newTitle": "Nouveau trajet",

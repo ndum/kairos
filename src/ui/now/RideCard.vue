@@ -27,7 +27,7 @@ import PlatformText from './PlatformText.vue'
 
 const props = defineProps<{ ride: Ride; route: Route; now: Instant }>()
 
-const emit = defineEmits<{ dismiss: []; arrived: [] }>()
+const emit = defineEmits<{ dismiss: []; arrived: []; observe: [journey: Journey] }>()
 
 const { t } = useI18n()
 const format = useFormat()
@@ -64,6 +64,9 @@ onScopeDispose(() => {
 const trip = computed(() =>
   planTrip(currentJourney(props.ride, snapshot.value.journeys), ends.value),
 )
+watch(trip, (current) => {
+  if (current) emit('observe', current.journey)
+})
 const countdown = computed(() => (trip.value ? countdownTo(trip.value.arrivalAt, props.now) : null))
 
 // The next change of vehicle, and once delays break it, the next connection from that stop.

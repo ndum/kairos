@@ -14,6 +14,7 @@ import { StopSearch } from '@/application/stop-search'
 import { TripMonitor } from '@/application/trip-monitor'
 import { WeatherForecasts } from '@/application/weather-forecasts'
 import type { WeatherPort } from '@/application/ports/weather'
+import type { DelayRecord } from '@/domain/punctuality'
 import type { Route } from '@/domain/route'
 import { ICalendarWriter } from '@/infrastructure/calendar/icalendar-writer'
 import { CompressedRouteCodec } from '@/infrastructure/sharing/compressed-route-codec'
@@ -27,6 +28,7 @@ import {
   FakeClock,
   FakeScheduler,
   MemoryJourneyCache,
+  MemoryDelayStore,
   MemoryPinStore,
   MemoryRideStore,
   MemoryRouteRepository,
@@ -51,6 +53,8 @@ export interface RenderOptions {
   readonly pinned?: PinnedTrip
   /** The ride remembered before the app starts. */
   readonly ride?: Ride
+  /** Delays of earlier rides, none by default. */
+  readonly delays?: DelayRecord[]
   /** Forecasts of the weather service, none by default. */
   readonly weather?: WeatherPort
 }
@@ -88,6 +92,7 @@ export function testServices(options: RenderOptions = {}) {
     } satisfies LocationPort,
     pins: new MemoryPinStore(options.pinned ?? null),
     rides: new MemoryRideStore(options.ride ?? null),
+    delays: new MemoryDelayStore(options.delays),
     calendar: new ICalendarWriter(clock),
     weather: new WeatherForecasts({ weather: options.weather ?? noWeather, clock }),
     createTripMonitor: () => new TripMonitor({ timetable, cache, clock, scheduler }),
