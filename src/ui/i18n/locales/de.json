@@ -127,7 +127,10 @@
       "label": "Unterwegs",
       "arrivalIn": "Ankunft in",
       "arrivalAt": "Ankunft um",
-      "dismiss": "Nicht in dieser Fahrt"
+      "dismiss": "Nicht in dieser Fahrt",
+      "departs": "ab {time}",
+      "broken": "Dieser Anschluss reicht nicht mehr.",
+      "nextConnection": "Nächster Anschluss ab {time}, an {arrival}"
     },
     "at": "um",
     "arrivalAt": "Ankunft {place}",

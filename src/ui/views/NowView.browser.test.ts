@@ -403,11 +403,42 @@ test('shows the ride the user is on until they say otherwise', async () => {
 
   const card = screen.getByRole('region', { name: /Unterwegs/ })
   await expect.element(card).toMatchTextContent(/Ankunft in\s*\d+\s*Min\./)
+  await expect.element(card).toMatchTextContent(/Umsteigen in Central, Bus Station/)
+  await expect.element(card).toMatchTextContent(/ab 07:09/)
+  await expect.element(card).toMatchTextContent(/1 Min\. zum Umsteigen/)
   await card.getByRole('button', { name: 'Nicht in dieser Fahrt' }).click()
 
   await expect.element(card).not.toBeInTheDocument()
   // The next trip, 9 minutes ahead, is followed instead.
   expect(screen.services.rides.load()?.key).not.toBe(ride.key)
+})
+
+test('suggests the next connection once a delay breaks the transfer', async () => {
+  // Three minutes late, the S1 reaches the bus stop at 07:11, after the bus at 07:09.
+  const trip = planTrip(morningCommute('06:55', { delay: 3 }), endpoints(commute, 'outbound'))
+  if (!trip) throw new Error('Expected a trip')
+  const screen = await renderWithApp(NowView, {
+    routes: [commute],
+    ride: rideOf(commute, 'outbound', trip),
+    timetable: {
+      findJourneys: ({ from }) =>
+        Promise.resolve(
+          from.id === 'Central, Bus Station'
+            ? [
+                journey(
+                  ride('20', 'Central, Bus Station', '07:16', 'Market Square', '07:20', {
+                    mode: 'bus',
+                  }),
+                ),
+              ]
+            : morning,
+        ),
+    },
+  })
+
+  const card = screen.getByRole('region', { name: /Unterwegs/ })
+  await expect.element(card).toMatchTextContent(/Dieser Anschluss reicht nicht mehr\./)
+  await expect.element(card).toMatchTextContent(/Nächster Anschluss ab 07:16, an 07:20/)
 })
 
 test('follows the next trip and shows it once the user had to leave', async () => {

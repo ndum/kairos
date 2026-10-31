@@ -127,7 +127,10 @@
       "label": "On the way",
       "arrivalIn": "Arriving in",
       "arrivalAt": "Arriving at",
-      "dismiss": "Not on this trip"
+      "dismiss": "Not on this trip",
+      "departs": "departs {time}",
+      "broken": "This connection no longer works.",
+      "nextConnection": "Next connection departs {time}, arrives {arrival}"
     },
     "at": "at",
     "arrivalAt": "Arrival at {place}",
