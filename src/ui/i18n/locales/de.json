@@ -48,6 +48,10 @@
       "minutes": "Ohne Puffer noch erreichbar: Abfahrt {time}, losgehen in {minutes} Min.",
       "now": "Ohne Puffer noch erreichbar: Abfahrt {time}, sofort losgehen."
     },
+    "endOfDay": {
+      "last": "Letzte Verbindung heute.",
+      "tomorrow": "Heute fährt nichts mehr, die nächste Verbindung ist morgen."
+    },
     "loading": "Verbindungen werden geladen …",
     "unavailable": "Der Fahrplan ist gerade nicht erreichbar.",
     "retry": "Erneut versuchen",
@@ -58,6 +62,11 @@
       "stale": "Bis dahin können Verspätungen und Ausfälle fehlen."
     },
     "swap": "Richtung wechseln",
+    "preview": {
+      "tomorrow": "Morgen",
+      "text": "{day}: um {leave} losgehen, an {arrival}",
+      "by": "Laut Stundenplan bis {time} am Ziel"
+    },
     "directionNote": {
       "location": "Richtung nach Standort",
       "time": "Richtung nach Uhrzeit",
@@ -118,7 +127,10 @@
       "label": "Unterwegs",
       "arrivalIn": "Ankunft in",
       "arrivalAt": "Ankunft um",
-      "dismiss": "Nicht in dieser Fahrt"
+      "dismiss": "Nicht in dieser Fahrt",
+      "departs": "ab {time}",
+      "broken": "Dieser Anschluss reicht nicht mehr.",
+      "nextConnection": "Nächster Anschluss ab {time}, an {arrival}"
     },
     "at": "um",
     "arrivalAt": "Ankunft {place}",

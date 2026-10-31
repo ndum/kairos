@@ -2,6 +2,7 @@ import type { Journey } from '@/domain/journey'
 import { noteworthyAlternative, splitByPreference } from '@/domain/line-preference'
 import type { Endpoints } from '@/domain/route'
 import type { ScheduleTarget } from '@/domain/schedule'
+import { serviceDayOf } from '@/domain/service-day'
 import {
   type TripSelection,
   distinctByFirstDeparture,
@@ -13,6 +14,12 @@ import {
 import type { Instant } from '@/domain/time'
 import { type TransferRisk, transferRiskOf } from '@/domain/transfer'
 import { type Trip, planTrip } from '@/domain/trip'
+
+/**
+ * - last: no other trip follows the main one on the same timetable day
+ * - tomorrow: nothing runs any more today, the main trip is on the next timetable day
+ */
+export type EndOfDay = 'last' | 'tomorrow'
 
 /** Everything the app shows for one direction of a route at a given moment. */
 export interface Board {
@@ -31,6 +38,26 @@ export interface Board {
   readonly target: ScheduleTarget | null
   /** No trip arrives in time any more, so the board shows the next ones instead. */
   readonly late: boolean
+  /** How the main trip relates to the end of the timetable day, if it does at all. */
+  readonly endOfDay: EndOfDay | null
+}
+
+/**
+ * Whether the main trip is the last of its timetable day or already on the next one. Only a
+ * later trip in the journeys tells that the main one is the last, since the timetable gives
+ * a limited number of journeys.
+ */
+export function endOfDayOf(
+  main: Trip | null,
+  trips: readonly Trip[],
+  now: Instant,
+): EndOfDay | null {
+  if (!main) return null
+  const day = serviceDayOf(main.departureAt)
+  if (day > serviceDayOf(now)) return 'tomorrow'
+  const later = trips.filter((trip) => trip.departureAt > main.departureAt)
+  if (later.length === 0) return null
+  return later.every((trip) => serviceDayOf(trip.departureAt) > day) ? 'last' : null
 }
 
 /**
@@ -61,6 +88,7 @@ export function buildBoard(
     transferRisk: selection.main ? transferRiskOf(selection.main.journey) : 'ok',
     target,
     late,
+    endOfDay: endOfDayOf(selection.main, preferred, now),
   })
 
   if (target?.kind === 'arrive') {

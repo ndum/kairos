@@ -403,6 +403,9 @@ test('shows the ride the user is on until they say otherwise', async () => {
 
   const card = screen.getByRole('region', { name: /Unterwegs/ })
   await expect.element(card).toMatchTextContent(/Ankunft in\s*\d+\s*Min\./)
+  await expect.element(card).toMatchTextContent(/Umsteigen in Central, Bus Station/)
+  await expect.element(card).toMatchTextContent(/ab 07:09/)
+  await expect.element(card).toMatchTextContent(/1 Min\. zum Umsteigen/)
   await card.getByRole('button', { name: 'Nicht in dieser Fahrt' }).click()
 
   await expect.element(card).not.toBeInTheDocument()
@@ -412,6 +415,34 @@ test('shows the ride the user is on until they say otherwise', async () => {
     at('07:20'),
     at('07:34'),
   ])
+})
+
+test('suggests the next connection once a delay breaks the transfer', async () => {
+  // Three minutes late, the S1 reaches the bus stop at 07:11, after the bus at 07:09.
+  const trip = planTrip(morningCommute('06:55', { delay: 3 }), endpoints(commute, 'outbound'))
+  if (!trip) throw new Error('Expected a trip')
+  const screen = await renderWithApp(NowView, {
+    routes: [commute],
+    ride: rideOf(commute, 'outbound', trip),
+    timetable: {
+      findJourneys: ({ from }) =>
+        Promise.resolve(
+          from.id === 'Central, Bus Station'
+            ? [
+                journey(
+                  ride('20', 'Central, Bus Station', '07:16', 'Market Square', '07:20', {
+                    mode: 'bus',
+                  }),
+                ),
+              ]
+            : morning,
+        ),
+    },
+  })
+
+  const card = screen.getByRole('region', { name: /Unterwegs/ })
+  await expect.element(card).toMatchTextContent(/Dieser Anschluss reicht nicht mehr\./)
+  await expect.element(card).toMatchTextContent(/Nächster Anschluss ab 07:16, an 07:20/)
 })
 
 test('follows the next trip and shows it once the user had to leave', async () => {
@@ -426,6 +457,33 @@ test('follows the next trip and shows it once the user had to leave', async () =
   await expect
     .element(screen.getByRole('region', { name: /Unterwegs/ }))
     .toMatchTextContent(/ab 07:20/)
+})
+
+/** The same journey a number of days later. */
+const daysLater = (value: Journey, days: number): Journey =>
+  JSON.parse(JSON.stringify(value), (key, field: unknown) =>
+    (key === 'scheduledAt' || key === 'expectedAt') && typeof field === 'number'
+      ? field + days * 24 * 60 * 60 * 1000
+      : field,
+  ) as Journey
+
+test('shows in the evening when to leave on the next day of the schedule', async () => {
+  const school = {
+    ...commute,
+    schedule: [{ weekday: 2, arriveBy: 8 * 60, returnFrom: null }] as const,
+  }
+  const screen = await renderWithApp(NowView, {
+    routes: [school],
+    now: at('18:00'),
+    timetable: {
+      findJourneys: ({ arriveBy }) =>
+        Promise.resolve(arriveBy ? morning.map((trip) => daysLater(trip, 1)) : []),
+    },
+  })
+
+  // The S1 at 07:35 and the bus reach the office at 07:58, the latest trip in time.
+  await expect.element(screen.getByText('Morgen: um 07:24 losgehen, an 07:58')).toBeVisible()
+  await expect.element(screen.getByText('Laut Stundenplan bis 08:00 am Ziel')).toBeVisible()
 })
 
 test('counts down to a pinned trip and forgets it on request', async () => {

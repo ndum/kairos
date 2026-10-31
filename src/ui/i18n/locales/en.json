@@ -48,6 +48,10 @@
       "minutes": "Still reachable without the buffer: departs {time}, leave in {minutes} min.",
       "now": "Still reachable without the buffer: departs {time}, leave right now."
     },
+    "endOfDay": {
+      "last": "Last connection today.",
+      "tomorrow": "Nothing runs any more today, the next connection is tomorrow."
+    },
     "loading": "Loading connections …",
     "unavailable": "The timetable cannot be reached right now.",
     "retry": "Try again",
@@ -66,6 +70,11 @@
       "schedule": "Direction by schedule"
     },
     "swap": "Switch direction",
+    "preview": {
+      "tomorrow": "Tomorrow",
+      "text": "{day}: leave at {leave}, arrive {arrival}",
+      "by": "The schedule says there by {time}"
+    },
     "journey": {
       "title": "Your connection",
       "walkTo": "{minutes} min walk to {stop}",
@@ -118,7 +127,10 @@
       "label": "On the way",
       "arrivalIn": "Arriving in",
       "arrivalAt": "Arriving at",
-      "dismiss": "Not on this trip"
+      "dismiss": "Not on this trip",
+      "departs": "departs {time}",
+      "broken": "This connection no longer works.",
+      "nextConnection": "Next connection departs {time}, arrives {arrival}"
     },
     "at": "at",
     "arrivalAt": "Arrival at {place}",

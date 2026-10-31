@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
 
-import { journey, morningCommute, ride, walk } from '@/test/builders'
+import { at, journey, morningCommute, ride, walk } from '@/test/builders'
 
 import { minutes } from './time'
-import { transferRiskOf, transfersOf } from './transfer'
+import { nextTransfer, transferRiskOf, transfersOf } from './transfer'
 
 describe('transfersOf', () => {
   it('measures the slack after the walk between two vehicles', () => {
@@ -61,5 +61,28 @@ describe('transferRiskOf', () => {
     )
 
     expect(transferRiskOf(tight)).toBe('tight')
+  })
+})
+
+describe('nextTransfer', () => {
+  const commute = morningCommute('07:05')
+
+  it('finds the transfer ahead with the vehicle to change to', () => {
+    for (const now of [at('07:00'), at('07:12')]) {
+      const next = nextTransfer(commute, now)
+
+      expect(next?.ride.line.name).toBe('20')
+      expect(next?.transfer.slack).toBe(minutes(1))
+    }
+  })
+
+  it('finds nothing once the last vehicle has left or without a transfer', () => {
+    expect(nextTransfer(commute, at('07:20'))).toBeNull()
+    expect(
+      nextTransfer(
+        journey(ride('S1', 'Riverside', '07:05', 'Market Square', '07:30')),
+        at('07:00'),
+      ),
+    ).toBeNull()
   })
 })

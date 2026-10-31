@@ -48,6 +48,10 @@
       "minutes": "Encore possible sans marge : départ {time}, partir dans {minutes} min.",
       "now": "Encore possible sans marge : départ {time}, pars tout de suite."
     },
+    "endOfDay": {
+      "last": "Dernière liaison aujourd’hui.",
+      "tomorrow": "Plus rien ne circule aujourd’hui, la prochaine liaison est demain."
+    },
     "loading": "Chargement des liaisons …",
     "unavailable": "L’horaire n’est pas joignable pour le moment.",
     "retry": "Réessayer",
@@ -58,6 +62,11 @@
       "stale": "D’ici là, des retards et des suppressions peuvent manquer."
     },
     "swap": "Changer de sens",
+    "preview": {
+      "tomorrow": "Demain",
+      "text": "{day} : partir à {leave}, arrivée {arrival}",
+      "by": "Selon l’horaire, sur place à {time}"
+    },
     "directionNote": {
       "location": "Sens selon la position",
       "time": "Sens selon l’heure",
@@ -118,7 +127,10 @@
       "label": "En route",
       "arrivalIn": "Arrivée dans",
       "arrivalAt": "Arrivée à",
-      "dismiss": "Pas dans cette course"
+      "dismiss": "Pas dans cette course",
+      "departs": "départ {time}",
+      "broken": "Cette correspondance ne fonctionne plus.",
+      "nextConnection": "Prochaine correspondance à {time}, arrivée {arrival}"
     },
     "at": "à",
     "arrivalAt": "Arrivée {place}",

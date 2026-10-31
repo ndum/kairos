@@ -192,6 +192,7 @@ const canPrefer = computed(() => !!selected.value && !prefers(props.route, selec
         @swap="emit('swap')"
         @details="(trip) => showDetails(trip, oppositeDirection(direction))"
       />
+      <slot name="side" />
     </div>
   </div>
 
