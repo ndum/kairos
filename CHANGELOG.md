@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.5.0](https://github.com/ndum/kairos/compare/v1.4.0...v1.5.0) (2026-10-31)
+
+
+### Features
+
+* **now:** preview the next day of the schedule in the evening ([#48](https://github.com/ndum/kairos/issues/48)) ([51600f0](https://github.com/ndum/kairos/commit/51600f033bc08de63dc86c1632b2850c33beff48))
+* **now:** say when the next trip is the last one of the day ([#47](https://github.com/ndum/kairos/issues/47)) ([9db2935](https://github.com/ndum/kairos/commit/9db29358cf1de998bc430db07db1d8a2cbc114ff))
+* **now:** show the next transfer on the way ([#49](https://github.com/ndum/kairos/issues/49)) ([3cf9828](https://github.com/ndum/kairos/commit/3cf982887adf9524aaad0a211119234b84249190))
+* **routes:** show how punctual the lines were on the user's rides ([#50](https://github.com/ndum/kairos/issues/50)) ([1ee19ac](https://github.com/ndum/kairos/commit/1ee19aca4ce9c71d34c75aac3d3c06dbb1b56fca))
+
 ## [1.4.0](https://github.com/ndum/kairos/compare/v1.3.0...v1.4.0) (2026-10-31)
 
 
