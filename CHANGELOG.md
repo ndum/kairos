@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/ndum/kairos/compare/v1.3.0...v1.4.0) (2026-10-31)
+
+
+### Features
+
+* **now:** show missed trips and the ride the user is on ([#45](https://github.com/ndum/kairos/issues/45)) ([966e03c](https://github.com/ndum/kairos/commit/966e03c48ec9ed20430343510a63a6b500dacbb7))
+
 ## [1.3.0](https://github.com/ndum/kairos/compare/v1.2.0...v1.3.0) (2026-10-30)
 
 
