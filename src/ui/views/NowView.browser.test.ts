@@ -406,8 +406,12 @@ test('shows the ride the user is on until they say otherwise', async () => {
   await card.getByRole('button', { name: 'Nicht in dieser Fahrt' }).click()
 
   await expect.element(card).not.toBeInTheDocument()
-  // The next trip, 9 minutes ahead, is followed instead.
+  // The next trip, 9 minutes ahead, is followed instead, and only its delays are noted.
   expect(screen.services.rides.load()?.key).not.toBe(ride.key)
+  expect(screen.services.delays.load().map((record) => record.departureAt)).toEqual([
+    at('07:20'),
+    at('07:34'),
+  ])
 })
 
 test('follows the next trip and shows it once the user had to leave', async () => {

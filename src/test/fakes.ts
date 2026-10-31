@@ -1,11 +1,13 @@
 import type { Clock } from '@/application/ports/clock'
 import type { CachedJourneys, JourneyCache } from '@/application/ports/journey-cache'
 import type { PinnedTrip } from '@/application/pinned-trip'
+import type { DelayStore } from '@/application/ports/delay-store'
 import type { PinStore } from '@/application/ports/pin-store'
 import type { RideStore } from '@/application/ports/ride-store'
 import type { Ride } from '@/application/ride'
 import type { RouteRepository } from '@/application/ports/route-repository'
 import type { Cancel, Scheduler } from '@/application/ports/scheduler'
+import type { DelayRecord } from '@/domain/punctuality'
 import type { Route } from '@/domain/route'
 import type { Duration, Instant } from '@/domain/time'
 
@@ -151,6 +153,22 @@ export class MemoryRideStore implements RideStore {
 
   save(ride: Ride | null): void {
     this.ride = ride
+  }
+}
+
+export class MemoryDelayStore implements DelayStore {
+  records: DelayRecord[]
+
+  constructor(records: DelayRecord[] = []) {
+    this.records = records
+  }
+
+  load(): DelayRecord[] {
+    return this.records
+  }
+
+  save(records: readonly DelayRecord[]): void {
+    this.records = [...records]
   }
 }
 

@@ -235,7 +235,14 @@
     "undo": "Undo",
     "saved": "“{name}” saved.",
     "notSaved": "This device does not let Kairos store data right now. Your routes are kept only until you close Kairos.",
-    "orStop": "or {stop}"
+    "orStop": "or {stop}",
+    "punctuality": {
+      "title": "Punctuality of your trips",
+      "average": "on time on average | 1 min late on average | {count} min late on average",
+      "late": "{late} of {count} trips 3 min or more late",
+      "hint": "Expect delays on this line.",
+      "note": "From the last 2 weeks, only trips Kairos has seen."
+    }
   },
   "editor": {
     "newTitle": "New route",

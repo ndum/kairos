@@ -235,7 +235,14 @@
     "undo": "Rückgängig",
     "saved": "«{name}» gespeichert.",
     "notSaved": "Dieses Gerät lässt Kairos gerade keine Daten speichern. Deine Routen bleiben nur erhalten, bis du Kairos schliesst.",
-    "orStop": "oder {stop}"
+    "orStop": "oder {stop}",
+    "punctuality": {
+      "title": "Pünktlichkeit deiner Fahrten",
+      "average": "im Schnitt pünktlich | im Schnitt 1 Min. später | im Schnitt {count} Min. später",
+      "late": "{late} von {count} Fahrten 3 Min. oder mehr später",
+      "hint": "Rechne bei dieser Linie mit Verspätung.",
+      "note": "Aus den letzten 2 Wochen, nur Fahrten, die Kairos gesehen hat."
+    }
   },
   "editor": {
     "newTitle": "Neue Route",

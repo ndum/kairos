@@ -13,6 +13,7 @@ import BaseButton from '../components/BaseButton.vue'
 import GlassCard from '../components/GlassCard.vue'
 import IconButton from '../components/IconButton.vue'
 import LineBadge from '../components/LineBadge.vue'
+import PunctualityList from './PunctualityList.vue'
 
 defineProps<{
   route: Route
@@ -94,6 +95,8 @@ const inMinutes = (duration: Duration): number => Math.round(duration / MINUTE)
         {{ t('routes.allLines') }}
       </span>
     </div>
+
+    <PunctualityList :route-id="route.id" />
 
     <div class="mt-auto flex flex-wrap gap-2">
       <BaseButton

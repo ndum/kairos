@@ -7,7 +7,7 @@ import IconTrain from '~icons/tabler/train'
 import { currentJourney } from '@/application/pinned-trip'
 import type { Ride } from '@/application/ride'
 import type { MonitorSnapshot } from '@/application/trip-monitor'
-import { ridesOf } from '@/domain/journey'
+import { type Journey, ridesOf } from '@/domain/journey'
 import { type Route, endpoints, stopPairs } from '@/domain/route'
 import type { Instant } from '@/domain/time'
 import { planTrip } from '@/domain/trip'
@@ -24,7 +24,7 @@ import DirectionTag from './DirectionTag.vue'
 
 const props = defineProps<{ ride: Ride; route: Route; now: Instant }>()
 
-const emit = defineEmits<{ dismiss: []; arrived: [] }>()
+const emit = defineEmits<{ dismiss: []; arrived: []; observe: [journey: Journey] }>()
 
 const { t } = useI18n()
 const format = useFormat()
@@ -60,6 +60,9 @@ onScopeDispose(() => {
 const trip = computed(() =>
   planTrip(currentJourney(props.ride, snapshot.value.journeys), ends.value),
 )
+watch(trip, (current) => {
+  if (current) emit('observe', current.journey)
+})
 const countdown = computed(() => (trip.value ? countdownTo(trip.value.arrivalAt, props.now) : null))
 
 watch(

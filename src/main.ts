@@ -8,6 +8,7 @@ import { TripMonitor } from './application/trip-monitor'
 import { WeatherForecasts } from './application/weather-forecasts'
 import { BrowserLocation } from './infrastructure/browser/browser-location'
 import { LocalStorageJourneyCache } from './infrastructure/browser/local-storage-journey-cache'
+import { LocalStorageDelayStore } from './infrastructure/browser/local-storage-delay-store'
 import { LocalStoragePinStore } from './infrastructure/browser/local-storage-pin-store'
 import { LocalStorageRideStore } from './infrastructure/browser/local-storage-ride-store'
 import { LocalStorageRouteRepository } from './infrastructure/browser/local-storage-route-repository'
@@ -42,6 +43,7 @@ const services: AppServices = {
   location: new BrowserLocation(),
   pins: new LocalStoragePinStore(),
   rides: new LocalStorageRideStore(),
+  delays: new LocalStorageDelayStore(),
   calendar: new ICalendarWriter(systemClock),
   weather: new WeatherForecasts({ weather: new OpenMeteoWeather(), clock: systemClock }),
   createTripMonitor: () =>
