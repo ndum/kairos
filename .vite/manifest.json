@@ -3,12 +3,12 @@
     "file": "assets/AppDialog-B3IdDfa4.css",
     "src": "_AppDialog-B3IdDfa4.css"
   },
-  "_AppDialog-DJLPEjWq.js": {
-    "file": "assets/AppDialog-DJLPEjWq.js",
+  "_AppDialog-B8cMbAhY.js": {
+    "file": "assets/AppDialog-B8cMbAhY.js",
     "name": "AppDialog",
     "imports": [
       "_vendor-CQtCfKZn.js",
-      "_app-B5dNh4kT.js"
+      "_app-CxALfepQ.js"
     ],
     "css": [
       "assets/AppDialog-B3IdDfa4.css"
@@ -21,25 +21,29 @@
       "_vendor-CQtCfKZn.js"
     ]
   },
-  "_TripSheet-DBM0qWMp.css": {
-    "file": "assets/TripSheet-DBM0qWMp.css",
-    "src": "_TripSheet-DBM0qWMp.css"
-  },
-  "_TripSheet-DgxFA_SW.js": {
-    "file": "assets/TripSheet-DgxFA_SW.js",
+  "_TripSheet-7H35CN4d.js": {
+    "file": "assets/TripSheet-7H35CN4d.js",
     "name": "TripSheet",
     "imports": [
       "_vendor-CQtCfKZn.js",
-      "_app-B5dNh4kT.js",
+      "_app-CxALfepQ.js",
       "_share-2-pP8pZsYg.js",
-      "_AppDialog-DJLPEjWq.js"
+      "_AppDialog-B8cMbAhY.js"
     ],
     "css": [
       "assets/TripSheet-DBM0qWMp.css"
     ]
   },
-  "_app-B5dNh4kT.js": {
-    "file": "assets/app-B5dNh4kT.js",
+  "_TripSheet-DBM0qWMp.css": {
+    "file": "assets/TripSheet-DBM0qWMp.css",
+    "src": "_TripSheet-DBM0qWMp.css"
+  },
+  "_app-CVE_CUkN.css": {
+    "file": "assets/app-CVE_CUkN.css",
+    "src": "_app-CVE_CUkN.css"
+  },
+  "_app-CxALfepQ.js": {
+    "file": "assets/app-CxALfepQ.js",
     "name": "app",
     "imports": [
       "_vendor-CQtCfKZn.js"
@@ -61,7 +65,7 @@
       "src/ui/views/ImportView.vue"
     ],
     "css": [
-      "assets/app-Dp_ibxXI.css"
+      "assets/app-CVE_CUkN.css"
     ],
     "assets": [
       "assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2",
@@ -70,10 +74,6 @@
       "assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2",
       "assets/geist-latin-wght-normal-BgDaEnEv.woff2"
     ]
-  },
-  "_app-Dp_ibxXI.css": {
-    "file": "assets/app-Dp_ibxXI.css",
-    "src": "_app-Dp_ibxXI.css"
   },
   "_copy-DNywgany.js": {
     "file": "assets/copy-DNywgany.js",
@@ -103,11 +103,11 @@
       "_vendor-CQtCfKZn.js"
     ]
   },
-  "_route-sharing-C596qNex.js": {
-    "file": "assets/route-sharing-C596qNex.js",
+  "_route-sharing-pALByUp-.js": {
+    "file": "assets/route-sharing-pALByUp-.js",
     "name": "route-sharing",
     "imports": [
-      "_app-B5dNh4kT.js"
+      "_app-CxALfepQ.js"
     ]
   },
   "_share-2-pP8pZsYg.js": {
@@ -122,12 +122,12 @@
     "name": "vendor"
   },
   "index.html": {
-    "file": "assets/index-D3SWR0MZ.js",
+    "file": "assets/index-DVCLTl14.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
     "imports": [
-      "_app-B5dNh4kT.js"
+      "_app-CxALfepQ.js"
     ]
   },
   "node_modules/@fontsource-variable/geist/files/geist-cyrillic-ext-wght-normal.woff2": {
@@ -163,92 +163,92 @@
     "isDynamicEntry": true
   },
   "src/ui/i18n/locales/de.json": {
-    "file": "assets/de-BcVhw6v5.js",
+    "file": "assets/de-1GES-ehq.js",
     "name": "de",
     "src": "src/ui/i18n/locales/de.json",
     "isDynamicEntry": true
   },
   "src/ui/i18n/locales/en.json": {
-    "file": "assets/en-Cb8aeV_r.js",
+    "file": "assets/en-DcZ3bzli.js",
     "name": "en",
     "src": "src/ui/i18n/locales/en.json",
     "isDynamicEntry": true
   },
   "src/ui/i18n/locales/fr.json": {
-    "file": "assets/fr-BCtGVixq.js",
+    "file": "assets/fr-BiOASiOJ.js",
     "name": "fr",
     "src": "src/ui/i18n/locales/fr.json",
     "isDynamicEntry": true
   },
   "src/ui/i18n/locales/it.json": {
-    "file": "assets/it-B0Bej6Fm.js",
+    "file": "assets/it-CZM4TtbO.js",
     "name": "it",
     "src": "src/ui/i18n/locales/it.json",
     "isDynamicEntry": true
   },
   "src/ui/now/PinnedCard.vue": {
-    "file": "assets/PinnedCard-NelpJu1T.js",
+    "file": "assets/PinnedCard-DSlnvOL2.js",
     "name": "PinnedCard",
     "src": "src/ui/now/PinnedCard.vue",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-CQtCfKZn.js",
-      "_app-B5dNh4kT.js",
+      "_app-CxALfepQ.js",
       "_list-details-W1IswoQR.js",
-      "_TripSheet-DgxFA_SW.js"
+      "_TripSheet-7H35CN4d.js"
     ],
     "css": [
       "assets/PinnedCard-BorohXAm.css"
     ]
   },
   "src/ui/now/RideCard.vue": {
-    "file": "assets/RideCard-efSvNL65.js",
+    "file": "assets/RideCard-BgL4pGrA.js",
     "name": "RideCard",
     "src": "src/ui/now/RideCard.vue",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-CQtCfKZn.js",
-      "_app-B5dNh4kT.js",
+      "_app-CxALfepQ.js",
       "_list-details-W1IswoQR.js",
-      "_TripSheet-DgxFA_SW.js"
+      "_TripSheet-7H35CN4d.js"
     ],
     "css": [
-      "assets/RideCard-hP07kcMc.css"
+      "assets/RideCard-BclfWsgL.css"
     ]
   },
   "src/ui/plan/TripSheet.vue": {
-    "file": "assets/TripSheet-DJg4lWIB.js",
+    "file": "assets/TripSheet-CVbuPeau.js",
     "name": "TripSheet",
     "src": "src/ui/plan/TripSheet.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_TripSheet-DgxFA_SW.js"
+      "_TripSheet-7H35CN4d.js"
     ]
   },
   "src/ui/routes/LinkImportDialog.vue": {
-    "file": "assets/LinkImportDialog-DJeXQKPq.js",
+    "file": "assets/LinkImportDialog-Ds9Lrr-X.js",
     "name": "LinkImportDialog",
     "src": "src/ui/routes/LinkImportDialog.vue",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-CQtCfKZn.js",
-      "_app-B5dNh4kT.js",
-      "_AppDialog-DJLPEjWq.js",
+      "_app-CxALfepQ.js",
+      "_AppDialog-B8cMbAhY.js",
       "_TextField-DIbfQaLL.js"
     ]
   },
   "src/ui/routes/ShareDialog.vue": {
-    "file": "assets/ShareDialog-BvD6focy.js",
+    "file": "assets/ShareDialog-CW1PfRoa.js",
     "name": "ShareDialog",
     "src": "src/ui/routes/ShareDialog.vue",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-CQtCfKZn.js",
-      "_app-B5dNh4kT.js",
+      "_app-CxALfepQ.js",
       "_share-2-pP8pZsYg.js",
-      "_AppDialog-DJLPEjWq.js",
+      "_AppDialog-B8cMbAhY.js",
       "_copy-DNywgany.js",
-      "_route-sharing-C596qNex.js"
+      "_route-sharing-pALByUp-.js"
     ],
     "dynamicImports": [
       "node_modules/lean-qr/nano.mjs"
@@ -258,14 +258,14 @@
     ]
   },
   "src/ui/settings/SettingsDialog.vue": {
-    "file": "assets/SettingsDialog-Dr8ZlD-4.js",
+    "file": "assets/SettingsDialog-D5FoNgQ_.js",
     "name": "SettingsDialog",
     "src": "src/ui/settings/SettingsDialog.vue",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-CQtCfKZn.js",
-      "_app-B5dNh4kT.js",
-      "_AppDialog-DJLPEjWq.js",
+      "_app-CxALfepQ.js",
+      "_AppDialog-B8cMbAhY.js",
       "_map-pin-CHTWFk2F.js"
     ],
     "css": [
@@ -273,42 +273,42 @@
     ]
   },
   "src/ui/views/ImportView.vue": {
-    "file": "assets/ImportView-BYwKKx72.js",
+    "file": "assets/ImportView-BQUtPtQN.js",
     "name": "ImportView",
     "src": "src/ui/views/ImportView.vue",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-CQtCfKZn.js",
-      "_app-B5dNh4kT.js",
-      "_route-sharing-C596qNex.js"
+      "_app-CxALfepQ.js",
+      "_route-sharing-pALByUp-.js"
     ],
     "css": [
       "assets/ImportView-C7CKm5BM.css"
     ]
   },
   "src/ui/views/PlanView.vue": {
-    "file": "assets/PlanView-apbMMTRz.js",
+    "file": "assets/PlanView--Jg50Z-u.js",
     "name": "PlanView",
     "src": "src/ui/views/PlanView.vue",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-CQtCfKZn.js",
-      "_app-B5dNh4kT.js",
+      "_app-CxALfepQ.js",
       "_list-details-W1IswoQR.js",
-      "_TripSheet-DgxFA_SW.js"
+      "_TripSheet-7H35CN4d.js"
     ],
     "css": [
       "assets/PlanView-BMOVg9tM.css"
     ]
   },
   "src/ui/views/RouteEditorView.vue": {
-    "file": "assets/RouteEditorView-DENmL0dl.js",
+    "file": "assets/RouteEditorView-DwcQYD_v.js",
     "name": "RouteEditorView",
     "src": "src/ui/views/RouteEditorView.vue",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-CQtCfKZn.js",
-      "_app-B5dNh4kT.js",
+      "_app-CxALfepQ.js",
       "_TextField-DIbfQaLL.js",
       "_copy-DNywgany.js",
       "_map-pin-CHTWFk2F.js",
@@ -319,13 +319,13 @@
     ]
   },
   "src/ui/views/RoutesView.vue": {
-    "file": "assets/RoutesView-2gtyfiW1.js",
+    "file": "assets/RoutesView-CBHq1dyP.js",
     "name": "RoutesView",
     "src": "src/ui/views/RoutesView.vue",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-CQtCfKZn.js",
-      "_app-B5dNh4kT.js",
+      "_app-CxALfepQ.js",
       "_share-2-pP8pZsYg.js",
       "_map-pin-CHTWFk2F.js",
       "_plus-bVXnKsUK.js"
