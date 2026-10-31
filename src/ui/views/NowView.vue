@@ -12,6 +12,7 @@ import { useNow } from '../composables/use-now'
 import { HOUR } from '@/domain/time'
 
 import { directionNoteOf } from '../now/direction-note'
+import ArrivalPreview from '../now/ArrivalPreview.vue'
 import NowBoard from '../now/NowBoard.vue'
 import RouteSwitcher from '../now/RouteSwitcher.vue'
 import { useDeviceLocation } from '../now/use-device-location'
@@ -101,6 +102,14 @@ watchEffect(() => {
           @select="choice.select"
         />
         <p v-else class="title">{{ choice.route.value.name }}</p>
+      </template>
+      <template #side>
+        <ArrivalPreview
+          v-if="choice.route.value.schedule?.length"
+          :key="choice.route.value.id"
+          :route="choice.route.value"
+          :now
+        />
       </template>
     </NowBoard>
   </div>

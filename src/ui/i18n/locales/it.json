@@ -62,6 +62,11 @@
       "stale": "Nel frattempo possono mancare ritardi e soppressioni."
     },
     "swap": "Cambia direzione",
+    "preview": {
+      "tomorrow": "Domani",
+      "text": "{day}: parti alle {leave}, arrivo {arrival}",
+      "by": "Secondo l’orario, sul posto alle {time}"
+    },
     "directionNote": {
       "location": "Direzione secondo la posizione",
       "time": "Direzione secondo l’ora",

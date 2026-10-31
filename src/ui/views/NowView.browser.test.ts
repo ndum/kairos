@@ -424,6 +424,33 @@ test('follows the next trip and shows it once the user had to leave', async () =
     .toMatchTextContent(/ab 07:20/)
 })
 
+/** The same journey a number of days later. */
+const daysLater = (value: Journey, days: number): Journey =>
+  JSON.parse(JSON.stringify(value), (key, field: unknown) =>
+    (key === 'scheduledAt' || key === 'expectedAt') && typeof field === 'number'
+      ? field + days * 24 * 60 * 60 * 1000
+      : field,
+  ) as Journey
+
+test('shows in the evening when to leave on the next day of the schedule', async () => {
+  const school = {
+    ...commute,
+    schedule: [{ weekday: 2, arriveBy: 8 * 60, returnFrom: null }] as const,
+  }
+  const screen = await renderWithApp(NowView, {
+    routes: [school],
+    now: at('18:00'),
+    timetable: {
+      findJourneys: ({ arriveBy }) =>
+        Promise.resolve(arriveBy ? morning.map((trip) => daysLater(trip, 1)) : []),
+    },
+  })
+
+  // The S1 at 07:35 and the bus reach the office at 07:58, the latest trip in time.
+  await expect.element(screen.getByText('Morgen: um 07:24 losgehen, an 07:58')).toBeVisible()
+  await expect.element(screen.getByText('Laut Stundenplan bis 08:00 am Ziel')).toBeVisible()
+})
+
 test('counts down to a pinned trip and forgets it on request', async () => {
   const later = planTrip(morningCommute('07:50'), endpoints(commute, 'outbound'))
   if (!later) throw new Error('Expected a trip')

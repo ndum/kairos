@@ -26,8 +26,18 @@ export function useFormat() {
       maximumFractionDigits: digits,
     })
 
+  const weekday = computed(
+    () =>
+      new Intl.DateTimeFormat(formattingLocale(locale.value), {
+        weekday: 'long',
+        timeZone: TIME_ZONE,
+      }),
+  )
+
   return {
     time: (instant: Instant): string => clock.value.format(instant),
+    /** The name of the day in Swiss time: Montag. */
+    weekday: (instant: Instant): string => weekday.value.format(instant),
     minutes: (duration: Duration): number => Math.round(duration / MINUTE),
     /** Names joined like in a sentence: S3 und 1. */
     list: (names: readonly string[]): string =>

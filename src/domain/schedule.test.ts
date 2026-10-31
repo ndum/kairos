@@ -2,13 +2,14 @@ import { describe, expect, it } from 'vitest'
 
 import { at } from '@/test/builders'
 
-import { weekdayOf } from './local-time'
+import { fromLocal, weekdayOf } from './local-time'
 import {
   type Schedule,
   type ScheduleDay,
   clockTime,
   directionBySchedule,
   isValidSchedule,
+  nextArrival,
   scheduleDayAt,
   scheduleTarget,
 } from './schedule'
@@ -105,5 +106,31 @@ describe('clockTime', () => {
   it('writes minutes since midnight as a clock time', () => {
     expect(clockTime(8 * 60 + 5)).toBe('08:05')
     expect(clockTime(0)).toBe('00:00')
+  })
+})
+
+describe('nextArrival', () => {
+  const thursday = (time: string) => fromLocal('2026-10-15', time)
+
+  it('looks ahead to the next day of the schedule in the evening', () => {
+    expect(nextArrival(schedule, thursday('18:00'))).toBe(fromLocal('2026-10-16', '09:40'))
+  })
+
+  it('keeps looking ahead after midnight until the timetable day ends', () => {
+    expect(nextArrival(schedule, fromLocal('2026-10-16', '01:00'))).toBe(
+      fromLocal('2026-10-16', '09:40'),
+    )
+  })
+
+  it('reaches from Friday to Monday', () => {
+    expect(nextArrival(schedule, fromLocal('2026-10-16', '19:00'))).toBe(
+      fromLocal('2026-10-19', '08:00'),
+    )
+  })
+
+  it('stays quiet during the day, without a schedule and when no day follows soon', () => {
+    expect(nextArrival(schedule, thursday('16:59'))).toBeNull()
+    expect(nextArrival(undefined, thursday('18:00'))).toBeNull()
+    expect(nextArrival(schedule, at('18:00'))).toBeNull()
   })
 })
