@@ -57,7 +57,7 @@
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.3",
     "@eslint/js": "^10.0.1",
-    "@iconify-json/tabler": "^1.2.42",
+    "@iconify-json/tabler": "^1.2.43",
     "@intlify/unplugin-vue-i18n": "^11.2.7",
     "@playwright/test": "^1.64.1",
     "@tailwindcss/vite": "^4.3.3",
