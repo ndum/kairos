@@ -1,0 +1,341 @@
+{
+  "_AppDialog-B3IdDfa4.css": {
+    "file": "assets/AppDialog-B3IdDfa4.css",
+    "src": "_AppDialog-B3IdDfa4.css"
+  },
+  "_AppDialog-CwE1ZxOi.js": {
+    "file": "assets/AppDialog-CwE1ZxOi.js",
+    "name": "AppDialog",
+    "imports": [
+      "_vendor-CTbWvcZr.js",
+      "_app-ljYCjq4e.js"
+    ],
+    "css": [
+      "assets/AppDialog-B3IdDfa4.css"
+    ]
+  },
+  "_TextField-BWUohx0q.js": {
+    "file": "assets/TextField-BWUohx0q.js",
+    "name": "TextField",
+    "imports": [
+      "_vendor-CTbWvcZr.js"
+    ]
+  },
+  "_TripSheet-CasX1v1U.js": {
+    "file": "assets/TripSheet-CasX1v1U.js",
+    "name": "TripSheet",
+    "imports": [
+      "_vendor-CTbWvcZr.js",
+      "_app-ljYCjq4e.js",
+      "_share-2-DsP3nBOu.js",
+      "_AppDialog-CwE1ZxOi.js"
+    ],
+    "css": [
+      "assets/TripSheet-DBM0qWMp.css"
+    ]
+  },
+  "_TripSheet-DBM0qWMp.css": {
+    "file": "assets/TripSheet-DBM0qWMp.css",
+    "src": "_TripSheet-DBM0qWMp.css"
+  },
+  "_app-7CcCxIGs.css": {
+    "file": "assets/app-7CcCxIGs.css",
+    "src": "_app-7CcCxIGs.css"
+  },
+  "_app-ljYCjq4e.js": {
+    "file": "assets/app-ljYCjq4e.js",
+    "name": "app",
+    "imports": [
+      "_vendor-CTbWvcZr.js"
+    ],
+    "dynamicImports": [
+      "node_modules/workbox-window/build/workbox-window.prod.es5.mjs",
+      "src/ui/settings/SettingsDialog.vue",
+      "src/ui/i18n/locales/de.json",
+      "src/ui/i18n/locales/en.json",
+      "src/ui/i18n/locales/fr.json",
+      "src/ui/i18n/locales/it.json",
+      "src/ui/plan/TripSheet.vue",
+      "src/ui/routes/LinkImportDialog.vue",
+      "src/ui/now/PinnedCard.vue",
+      "src/ui/now/RideCard.vue",
+      "src/ui/views/RouteEditorView.vue",
+      "src/ui/views/PlanView.vue",
+      "src/ui/views/RoutesView.vue",
+      "src/ui/views/ImportView.vue"
+    ],
+    "css": [
+      "assets/app-7CcCxIGs.css"
+    ],
+    "assets": [
+      "assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2",
+      "assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2",
+      "assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2",
+      "assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2",
+      "assets/geist-latin-wght-normal-BgDaEnEv.woff2"
+    ]
+  },
+  "_copy-B6tQYZsQ.js": {
+    "file": "assets/copy-B6tQYZsQ.js",
+    "name": "copy",
+    "imports": [
+      "_vendor-CTbWvcZr.js"
+    ]
+  },
+  "_list-details-BVqIUGyz.js": {
+    "file": "assets/list-details-BVqIUGyz.js",
+    "name": "list-details",
+    "imports": [
+      "_vendor-CTbWvcZr.js"
+    ]
+  },
+  "_map-pin-jJreLJiZ.js": {
+    "file": "assets/map-pin-jJreLJiZ.js",
+    "name": "map-pin",
+    "imports": [
+      "_vendor-CTbWvcZr.js"
+    ]
+  },
+  "_plus-JlAins_R.js": {
+    "file": "assets/plus-JlAins_R.js",
+    "name": "plus",
+    "imports": [
+      "_vendor-CTbWvcZr.js"
+    ]
+  },
+  "_route-sharing-DWwEs-5I.js": {
+    "file": "assets/route-sharing-DWwEs-5I.js",
+    "name": "route-sharing",
+    "imports": [
+      "_app-ljYCjq4e.js"
+    ]
+  },
+  "_share-2-DsP3nBOu.js": {
+    "file": "assets/share-2-DsP3nBOu.js",
+    "name": "share-2",
+    "imports": [
+      "_vendor-CTbWvcZr.js"
+    ]
+  },
+  "_vendor-CTbWvcZr.js": {
+    "file": "assets/vendor-CTbWvcZr.js",
+    "name": "vendor"
+  },
+  "index.html": {
+    "file": "assets/index-CLpWZH1e.js",
+    "name": "index",
+    "src": "index.html",
+    "isEntry": true,
+    "imports": [
+      "_app-ljYCjq4e.js"
+    ]
+  },
+  "node_modules/@fontsource-variable/geist/files/geist-cyrillic-ext-wght-normal.woff2": {
+    "file": "assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2",
+    "src": "node_modules/@fontsource-variable/geist/files/geist-cyrillic-ext-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/geist/files/geist-cyrillic-wght-normal.woff2": {
+    "file": "assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2",
+    "src": "node_modules/@fontsource-variable/geist/files/geist-cyrillic-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/geist/files/geist-latin-ext-wght-normal.woff2": {
+    "file": "assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2",
+    "src": "node_modules/@fontsource-variable/geist/files/geist-latin-ext-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2": {
+    "file": "assets/geist-latin-wght-normal-BgDaEnEv.woff2",
+    "src": "node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/geist/files/geist-vietnamese-wght-normal.woff2": {
+    "file": "assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2",
+    "src": "node_modules/@fontsource-variable/geist/files/geist-vietnamese-wght-normal.woff2"
+  },
+  "node_modules/lean-qr/nano.mjs": {
+    "file": "assets/nano-C8_guy7z.js",
+    "name": "nano",
+    "src": "node_modules/lean-qr/nano.mjs",
+    "isDynamicEntry": true
+  },
+  "node_modules/workbox-window/build/workbox-window.prod.es5.mjs": {
+    "file": "assets/workbox-window.prod.es5-Bd17z0YL.js",
+    "name": "workbox-window.prod.es5",
+    "src": "node_modules/workbox-window/build/workbox-window.prod.es5.mjs",
+    "isDynamicEntry": true
+  },
+  "src/ui/i18n/locales/de.json": {
+    "file": "assets/de-CYx6wgZ_.js",
+    "name": "de",
+    "src": "src/ui/i18n/locales/de.json",
+    "isDynamicEntry": true
+  },
+  "src/ui/i18n/locales/en.json": {
+    "file": "assets/en-95SbeP-t.js",
+    "name": "en",
+    "src": "src/ui/i18n/locales/en.json",
+    "isDynamicEntry": true
+  },
+  "src/ui/i18n/locales/fr.json": {
+    "file": "assets/fr-ljR5jnGd.js",
+    "name": "fr",
+    "src": "src/ui/i18n/locales/fr.json",
+    "isDynamicEntry": true
+  },
+  "src/ui/i18n/locales/it.json": {
+    "file": "assets/it-1Mba0yLz.js",
+    "name": "it",
+    "src": "src/ui/i18n/locales/it.json",
+    "isDynamicEntry": true
+  },
+  "src/ui/now/PinnedCard.vue": {
+    "file": "assets/PinnedCard-C5aOSOnr.js",
+    "name": "PinnedCard",
+    "src": "src/ui/now/PinnedCard.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-CTbWvcZr.js",
+      "_app-ljYCjq4e.js",
+      "_list-details-BVqIUGyz.js",
+      "_TripSheet-CasX1v1U.js"
+    ],
+    "css": [
+      "assets/PinnedCard-BorohXAm.css"
+    ]
+  },
+  "src/ui/now/RideCard.vue": {
+    "file": "assets/RideCard-C1Dr5mGZ.js",
+    "name": "RideCard",
+    "src": "src/ui/now/RideCard.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-CTbWvcZr.js",
+      "_app-ljYCjq4e.js",
+      "_list-details-BVqIUGyz.js",
+      "_TripSheet-CasX1v1U.js"
+    ],
+    "css": [
+      "assets/RideCard-B83_JkWN.css"
+    ]
+  },
+  "src/ui/plan/TripSheet.vue": {
+    "file": "assets/TripSheet-Cl1kYcn1.js",
+    "name": "TripSheet",
+    "src": "src/ui/plan/TripSheet.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_TripSheet-CasX1v1U.js"
+    ]
+  },
+  "src/ui/routes/LinkImportDialog.vue": {
+    "file": "assets/LinkImportDialog-BnPE9jCI.js",
+    "name": "LinkImportDialog",
+    "src": "src/ui/routes/LinkImportDialog.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-CTbWvcZr.js",
+      "_app-ljYCjq4e.js",
+      "_AppDialog-CwE1ZxOi.js",
+      "_TextField-BWUohx0q.js"
+    ]
+  },
+  "src/ui/routes/ShareDialog.vue": {
+    "file": "assets/ShareDialog-DzvDouRi.js",
+    "name": "ShareDialog",
+    "src": "src/ui/routes/ShareDialog.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-CTbWvcZr.js",
+      "_app-ljYCjq4e.js",
+      "_share-2-DsP3nBOu.js",
+      "_AppDialog-CwE1ZxOi.js",
+      "_copy-B6tQYZsQ.js",
+      "_route-sharing-DWwEs-5I.js"
+    ],
+    "dynamicImports": [
+      "node_modules/lean-qr/nano.mjs"
+    ],
+    "css": [
+      "assets/ShareDialog-kjP24Pte.css"
+    ]
+  },
+  "src/ui/settings/SettingsDialog.vue": {
+    "file": "assets/SettingsDialog-D5ZKbJAW.js",
+    "name": "SettingsDialog",
+    "src": "src/ui/settings/SettingsDialog.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-CTbWvcZr.js",
+      "_app-ljYCjq4e.js",
+      "_AppDialog-CwE1ZxOi.js",
+      "_map-pin-jJreLJiZ.js"
+    ],
+    "css": [
+      "assets/SettingsDialog-f4iebzbV.css"
+    ]
+  },
+  "src/ui/views/ImportView.vue": {
+    "file": "assets/ImportView-BT0FMT36.js",
+    "name": "ImportView",
+    "src": "src/ui/views/ImportView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-CTbWvcZr.js",
+      "_app-ljYCjq4e.js",
+      "_route-sharing-DWwEs-5I.js"
+    ],
+    "css": [
+      "assets/ImportView-C7CKm5BM.css"
+    ]
+  },
+  "src/ui/views/PlanView.vue": {
+    "file": "assets/PlanView-B1tymOQb.js",
+    "name": "PlanView",
+    "src": "src/ui/views/PlanView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-CTbWvcZr.js",
+      "_app-ljYCjq4e.js",
+      "_list-details-BVqIUGyz.js",
+      "_TripSheet-CasX1v1U.js"
+    ],
+    "css": [
+      "assets/PlanView-BMOVg9tM.css"
+    ]
+  },
+  "src/ui/views/RouteEditorView.vue": {
+    "file": "assets/RouteEditorView-DfUk-9jj.js",
+    "name": "RouteEditorView",
+    "src": "src/ui/views/RouteEditorView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-CTbWvcZr.js",
+      "_app-ljYCjq4e.js",
+      "_TextField-BWUohx0q.js",
+      "_copy-B6tQYZsQ.js",
+      "_map-pin-jJreLJiZ.js",
+      "_plus-JlAins_R.js"
+    ],
+    "css": [
+      "assets/RouteEditorView-FxvfqlOw.css"
+    ]
+  },
+  "src/ui/views/RoutesView.vue": {
+    "file": "assets/RoutesView-CaJdXE25.js",
+    "name": "RoutesView",
+    "src": "src/ui/views/RoutesView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-CTbWvcZr.js",
+      "_app-ljYCjq4e.js",
+      "_share-2-DsP3nBOu.js",
+      "_map-pin-jJreLJiZ.js",
+      "_plus-JlAins_R.js"
+    ],
+    "dynamicImports": [
+      "src/ui/routes/ShareDialog.vue",
+      "src/ui/routes/LinkImportDialog.vue"
+    ],
+    "css": [
+      "assets/RoutesView-CF6hHgrX.css"
+    ]
+  }
+}
