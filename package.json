@@ -48,9 +48,9 @@
     "lean-qr": "^2.7.4",
     "pinia": "^4.1.0",
     "valibot": "^1.5.0",
-    "vue": "^3.5.44",
-    "vue-i18n": "^11.4.16",
-    "vue-router": "^5.4.0"
+    "vue": "^3.5.45",
+    "vue-i18n": "^11.4.19",
+    "vue-router": "^5.5.1"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",
@@ -64,7 +64,7 @@
     "@types/node": "^26.6.5",
     "@vite-pwa/assets-generator": "^2.0.0",
     "@vitejs/plugin-basic-ssl": "^2.3.0",
-    "@vitejs/plugin-vue": "^6.0.10",
+    "@vitejs/plugin-vue": "^6.0.11",
     "@vitest/browser-playwright": "^5.0.5",
     "@vitest/coverage-v8": "^5.0.3",
     "@vue/eslint-config-prettier": "^10.2.0",
@@ -85,7 +85,7 @@
     "vite-plugin-pwa": "^2.0.0",
     "vitest": "^5.0.3",
     "vitest-browser-vue": "^3.1.0",
-    "vue-tsc": "^3.3.13",
+    "vue-tsc": "^3.3.14",
     "workbox-build": "^7.4.1",
     "workbox-window": "^7.4.1"
   }
